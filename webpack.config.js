@@ -29,7 +29,7 @@ module.exports = {
                 loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
             },
             {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
                 loader: 'url-loader?limit=100000'
             }
         ]
