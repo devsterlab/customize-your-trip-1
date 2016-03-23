@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import App from './components/App';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
-import 'foundation/scss/foundation.scss';
+import 'foundation-sites/scss/foundation.scss';
 
 const store = createStore(rootReducer);
 
