@@ -8,8 +8,8 @@ class App extends Component {
 
     render() {
         return (
-            <div classNme="row">
-                <div className="large-offset-2 large-8 medium-offset-1 medium-10 columns">
+            <div className="row height-100">
+                <div className="height-100">
                     <ul className="tabs"  style={{textAlign: 'center'}}>
                         <div style={{display: 'inline-block'}}>
                         <li className="tabs-title"><Link to="/flight" aria-selected="true">Flight</Link></li>
@@ -19,8 +19,8 @@ class App extends Component {
                         <li className="tabs-title"><Link to="/summary">Summary</Link></li>
                         </div>
                     </ul>
-                    <div className="tabs-content">
-                        <div className="tabs-panel is-active">
+                    <div className="tabs-content nav-tabs">
+                        <div className="tabs-panel is-active height-100">
                             {this.props.children}
                         </div>
                     </div>

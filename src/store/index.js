@@ -3,7 +3,7 @@ import rootReducer from '../reducers';
 import persistState from 'redux-localstorage'
 
 const createPersistentStore = compose(
-    persistState()
+    persistState(null, {key: 'customizeTrip'})
 )(createStore);
 
 export default function configureStore(initialState) {
