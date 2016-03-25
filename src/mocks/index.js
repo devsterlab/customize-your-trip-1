@@ -1,4 +1,26 @@
+import 'isomorphic-fetch';
+import {setCars} from '../actions/car';
+import {setCities} from '../actions/city';
+import {setFlights} from '../actions/flight';
+import {setHotels} from '../actions/hotel';
+
 const linkToJson = 'http://beta.json-generator.com/api/json/get/V1N4803Tg';
+
+export default function loadMocks(store) {
+    return fetch(linkToJson)
+        .then(response => {
+            if (response.status >= 400) {
+                throw new Error('Bad response from server');
+            }
+            return response.json();
+        })
+        .then(mocks => {
+            store.dispatch(setCars(mocks.cars));
+            store.dispatch(setCities(mocks.cities));
+            store.dispatch(setFlights(mocks.flights));
+            store.dispatch(setHotels(mocks.hotels));
+        });
+}
 
 const mocks = {
 
@@ -98,7 +120,7 @@ const mocks = {
                     var desc = tags.lorem(3, 'sentences');
                     return desc.slice(0, 99);
                 },
-                price: '{{integer(5, 200) * 10}}'
+                price: '{{Math.max(50, Math.abs(Math.round(this.gauss(0, 0.1) * 100) * 10))}}'
             }
         }
     ],

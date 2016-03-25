@@ -1,8 +1,10 @@
-import { compose, createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers';
-import persistState from 'redux-localstorage'
+import persistState from 'redux-localstorage';
+import thunk from 'redux-thunk';
 
 const createPersistentStore = compose(
+    applyMiddleware(thunk),
     persistState(null, {key: 'customizeTrip'})
 )(createStore);
 

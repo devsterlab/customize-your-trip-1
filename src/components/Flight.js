@@ -1,44 +1,75 @@
 import React, { Component, PropTypes } from 'react';
-import TripMap from './TripMap';
-import Geocoding from '../util/geocoding';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Select from './Select';
+import Progress from './Progress';
 
 class Flight extends Component {
+    static propTypes = {
+        children: PropTypes.node,
+        cities: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string,
+            bounds: PropTypes.shape({
+                south: PropTypes.number, west: PropTypes.number,
+                north: PropTypes.number, east: PropTypes.number}),
+            timezone: PropTypes.number
+        })),
+        selectedCityFrom: PropTypes.string,
+        selectedCityTo: PropTypes.string
+    };
+
     constructor(props) {
         super(props);
-
-        this.markers = [];
-        this.polygons = [];
-        Geocoding.geocodeAddress('Madrid').then(res => {
-            console.log(res);
-            let bounds = res[0].geometry.bounds.toJSON();
-            console.log(JSON.stringify(bounds));
-            this.markers.push({position: {
-                lat: bounds.south,
-                lng: bounds.west
-            }});
-            this.markers.push({position: {
-                lat: bounds.north,
-                lng: bounds.east
-            }});
-            this.forceUpdate();
-        });
     }
 
-    static propTypes = {
-        children: PropTypes.node
-    };
+    handleCityFromChange(city) {
+
+    }
+
+    handleCityToChange(city) {
+
+    }
 
     render() {
         return (
             <div className="height-100">
-
-                <div className="row height-100">
-                    <TripMap markers={this.markers} polygons={this.polygons} className="medium-8 columns"/>
-                    <div className="medium-4 columns">Search results</div>
-                </div>
+                <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
+                    <Progress loaded={!!this.props.cities.length} />
+                    <Select className="medium-5 columns"
+                        id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
+                        nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
+                        From city
+                    </Select>
+                    <Select className="medium-5 columns"
+                        id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
+                        nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
+                        To city
+                    </Select>
+                    <div className="medium-2 columns">
+                        <button type="button" className="button inline-button">Search</button>
+                    </div>
+                </form>
             </div>
         );
     }
 }
 
-export default Flight;
+function mapStateToProps(state) {
+    console.log(state);
+    return {
+        cities: state.city.cities,
+        selectedCityFrom: state.city.selectedCityFrom,
+        selectedCityTo: state.city.selectedCityTo
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        //TODO...
+    };
+}
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(Flight);

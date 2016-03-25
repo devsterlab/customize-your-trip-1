@@ -1,6 +1,8 @@
 @import '../node_modules/foundation-sites/assets/foundation';
 @import '../node_modules/mdi/css/materialdesignicons.css';
 
+@include foundation-everything;
+
 // Color used for medium gray UI items within Foundation.
 $medium-gray: #cacaca;
 
@@ -27,4 +29,15 @@ $pagination-item-padding: rem-calc(6 15);
 
 .nav-tabs {
   height: calc(100% - 85px);
+}
+
+.load-progress {
+  margin-top: -16px;
+  margin-bottom: 0;
+}
+
+.inline-button {
+  margin-bottom: 0;
+  margin-top: 24px;
+  width: 100%;
 }
