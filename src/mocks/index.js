@@ -136,7 +136,7 @@ const mocks = {
                 model: '{{lorem(1, "words")}}',
                 carType: '{{random("Two-seaters", "Minicompact", "Subcompact", "Compact", "Mid-size", "Large")}}',
                 price: '{{Math.max(50, Math.abs(Math.round(this.gauss(0, 0.1) * 100) * 10))}}',
-                transmittion: '{{random("manual", "automatic")}}',
+                transmission: '{{random("manual", "automatic")}}',
                 maxPassengers: function (tags) {
                     return this.carType == 'Two-seaters' ? 2 : tags.integer(4, 10);
                 }
