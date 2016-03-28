@@ -3,11 +3,7 @@ import * as types from '../constants/actionTypes';
 const initialState = {
     flights: [],
     flightsLoaded: false,
-    selectedFlight: '',
-    sorting: {
-        field: 'departTime',
-        asc: false
-    }
+    selectedFlight: ''
 };
 
 export default function flight(state = initialState, action) {

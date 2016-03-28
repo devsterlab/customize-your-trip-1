@@ -22,6 +22,10 @@ class FlightCard extends Component {
 
     render() {
         let {flight, small} = this.props;
+        /**
+         * Проблемы с датами, не всегда сразу заходят. Если при каждом обновлении компонента нужно
+         * обновлять дату, можно это делать на рендеринге
+         */
         return (
             <div className={'callout row flight-card ' + (small ? 'small' : '')}
                  onClick={() => this.props.onClick && this.props.onClick(flight)}>

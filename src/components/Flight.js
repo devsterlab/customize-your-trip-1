@@ -40,13 +40,31 @@ class Flight extends Component {
         actions: PropTypes.object
     };
 
+    /**
+     * Это добавил, так как когда заходят данные в стор
+     * то те initialStates в редьюсерах не учитываются
+     * И выпадают ошибки что sorting.asc not found
+     * для таких случаях, если не факт что прийдут все данные, добавляй defaultProps
+     *
+     * По остальному сильно не углублялся, по внешнему виду да, как нужно
+     * @type {{sorting: {field: string, asc: boolean}}}
+     */
+    static defaultProps = {
+        sorting: {
+            field: 'departTime',
+            asc: false
+        }
+    };
+
     constructor(props) {
         super(props);
 
         this.cityFrom = this.cityFromTemp = props.cities.find(el => el.id == props.selectedCityFrom);
         this.cityTo = this.cityToTemp = props.cities.find(el => el.id == props.selectedCityTo);
         this.selectedFlight = props.flights.find(el => el.id == props.selectedFlight);
-        this.state = {flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)};
+        this.state = {
+            flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)
+        };
         this.handleCityFromChange = this.handleCityFromChange.bind(this);
         this.handleCityToChange = this.handleCityToChange.bind(this);
         this.searchFlights = this.searchFlights.bind(this);

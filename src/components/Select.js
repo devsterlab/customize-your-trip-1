@@ -32,6 +32,11 @@ class Select extends Component {
     }
 
     render () {
+        /**
+         * Селект нужно доработать
+         * Первое по клику на поле должен выпадать список,
+         * и после выбора поля, если нажать на выпадающий списко то он снова показывается весь
+         */
         return (
             <label className={this.props.className + ' select ' + (this.isValid() ? '': 'is-invalid-label')}>
                 {this.props.children}
