@@ -85,14 +85,11 @@ $navtabs-height: 85px;
   }
 
   .flights-list {
+    margin-left: 0;
     height: calc(100vh - 183px - #{$navtabs-height});
     overflow-y: auto;
     padding-left: 0;
     padding-right: 15px;
-  }
-
-  ul {
-    margin-left: 0;
   }
 
   .selected-flight {
@@ -147,5 +144,51 @@ $navtabs-height: 85px;
 
   .disabled {
     color: rgba(0, 0, 0, .54);
+  }
+}
+
+.hotels-search {
+
+  .map-wrap {
+    height: calc(100vh - 120px - #{$navtabs-height});
+    padding-right: 0;
+  }
+
+  .hotels-list {
+    margin-left: 0;
+    height: calc(100vh - 120px - #{$navtabs-height});
+    overflow-y: auto;
+    padding-left: 0;
+    padding-right: 15px;
+  }
+}
+
+.hotel-card {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  &.last {
+    margin-bottom: 0;
+  }
+
+  &.selected {
+    border: 2px solid $success-color;
+  }
+
+  &:hover {
+    border-color: $success-color;
+    cursor: pointer;
+  }
+
+  .image {
+    padding-left: 0;
+  }
+
+  .content {
+    padding-left: 0;
+
+    .name {
+      margin-bottom: 0;
+    }
   }
 }

@@ -118,11 +118,11 @@ const mocks = {
                 city: function (tags, parent, index) {
                     return parent.cities[Math.floor(index / 14.4)].id;
                 },
-                name: '{{company()}}',
+                name: '{{company()}} {{company()}}',
                 popularity: '{{integer(6, 10)}}',
                 images: function (tags) {
                     var arr = Array(tags.integer(5, 7))
-                        .join('http://loremflickr.com/200/150/hotel$').split('$');
+                        .join('http://placeimg.com/200/200/arch$').split('$');
                     arr.pop();
                     return arr;
                 },

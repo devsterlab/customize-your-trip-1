@@ -1,7 +1,14 @@
 import React from 'react'
 import {GoogleMapLoader, GoogleMap, Marker, Polygon} from 'react-google-maps';
 
-export default function TripMap(props) {
+const defaultProps = {
+    markers: [],
+    polygons: [],
+    defaultZoom: 10,
+    defaultCenter: {lat: 50.5194023, lng: 30.4623659}
+};
+
+function TripMap(props) {
     return (
         <section className={'height-100 ' + props.className}>
             <GoogleMapLoader
@@ -10,8 +17,8 @@ export default function TripMap(props) {
                 }
                 googleMapElement={
                     <GoogleMap
-                        defaultZoom={3}
-                        defaultCenter={{lat: 50.5194023, lng: 30.4623659}}
+                        defaultZoom={props.defaultZoom}
+                        defaultCenter={props.defaultCenter}
                     >
                         {props.markers.map((marker, index) => {
                             return (
@@ -33,3 +40,7 @@ export default function TripMap(props) {
         </section>
     );
 }
+
+TripMap.defaultProps = defaultProps;
+
+export default TripMap;
