@@ -9,7 +9,7 @@ class Progress extends Component {
         super(props);
 
         this.state = {percent: 0, hide: props.loaded};
-        if (!props.loaded) this.intervalId = setInterval(this.incrementProgress.bind(this), 30);
+        if (!props.loaded) this.intervalId = setInterval(this._incrementProgress.bind(this), 30);
     }
 
     componentWillReceiveProps(props) {
@@ -20,7 +20,7 @@ class Progress extends Component {
         }
     }
 
-    incrementProgress() {
+    _incrementProgress() {
         if (this.state.percent >= 90) {
             return clearInterval(this.intervalId);
         }

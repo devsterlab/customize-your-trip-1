@@ -11,11 +11,11 @@ class Sort extends Component {
     constructor(props) {
         super(props);
 
-        this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this._handleClick.bind(this);
         this.state = {asc: false};
     }
 
-    handleClick() {
+    _handleClick() {
         let asc = this.state.asc;
         if (this.props.selected) asc = !asc;
         this.setState({asc: asc});

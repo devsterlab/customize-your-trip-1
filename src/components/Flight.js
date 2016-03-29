@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { hashHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectCity } from '../actions/city';
@@ -58,22 +59,22 @@ class Flight extends Component {
         };
         Object.assign(this.state, this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
 
-        this.handleCityFromChange = this.handleCityFromChange.bind(this);
-        this.handleCityToChange = this.handleCityToChange.bind(this);
-        this.searchFlights = this.searchFlights.bind(this);
-        this.selectFlight = this.selectFlight.bind(this);
+        this.handleCityFromChange = this._handleCityFromChange.bind(this);
+        this.handleCityToChange = this._handleCityToChange.bind(this);
+        this.searchFlights = this._searchFlights.bind(this);
+        this.selectFlight = this._selectFlight.bind(this);
     }
 
     componentWillReceiveProps(props) {
         this.setState(this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
     }
 
-    handleCityFromChange(city) {
+    _handleCityFromChange(city) {
         this.setState(this.handleCityNotFound(city, 'From'));
         this.props.actions.selectCity(city && city.id, 'From');
     }
 
-    handleCityToChange(city) {
+    _handleCityToChange(city) {
         this.setState(this.handleCityNotFound(city, 'To'));
         this.props.actions.selectCity(city && city.id, 'To');
     }
@@ -100,7 +101,7 @@ class Flight extends Component {
         return this.props.selectedCityFrom && this.props.selectedCityTo && !this.state.errorCityTo;
     }
 
-    searchFlights() {
+    _searchFlights() {
         this.setState({flights: this.sort(this.filterFlights())});
     }
 
@@ -128,9 +129,13 @@ class Flight extends Component {
         this.props.actions.setFlightsSort(field, asc);
     }
 
-    selectFlight(flight) {
+    _selectFlight(flight) {
         this.selectedFlight = flight;
         this.props.actions.selectFlight(flight.id);
+    }
+
+    continue() {
+        hashHistory.push('/hotel');
     }
 
     render() {
@@ -184,7 +189,11 @@ class Flight extends Component {
                         <div className="medium-4 columns selected-flight">
                             <h4>Current selection</h4>
                             {this.selectedFlight &&
-                            <FlightCard flight={this.selectedFlight} small className="selected" />}
+                            [<FlightCard key="0" flight={this.selectedFlight} small className="selected" />,
+                             <button key="1" type="button" className="button expanded success large"
+                                     onClick={() => this.continue()}>
+                                 Continue
+                             </button>]}
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {GoogleMapLoader, GoogleMap, Marker, Polygon} from 'react-google-maps';
 
-export default function TripMap (props) {
+export default function TripMap(props) {
     return (
         <section className={'height-100 ' + props.className}>
             <GoogleMapLoader
