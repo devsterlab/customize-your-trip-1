@@ -24,6 +24,8 @@ class Flight extends Component {
             id: PropTypes.string,
             fromCity: PropTypes.string,
             toCity: PropTypes.string,
+            fromCityName: PropTypes.string,
+            toCityName: PropTypes.string,
             companyName: PropTypes.string,
             available: PropTypes.number,
             price: PropTypes.number,
@@ -40,15 +42,6 @@ class Flight extends Component {
         actions: PropTypes.object
     };
 
-    /**
-     * Это добавил, так как когда заходят данные в стор
-     * то те initialStates в редьюсерах не учитываются
-     * И выпадают ошибки что sorting.asc not found
-     * для таких случаях, если не факт что прийдут все данные, добавляй defaultProps
-     *
-     * По остальному сильно не углублялся, по внешнему виду да, как нужно
-     * @type {{sorting: {field: string, asc: boolean}}}
-     */
     static defaultProps = {
         sorting: {
             field: 'departTime',
@@ -59,12 +52,12 @@ class Flight extends Component {
     constructor(props) {
         super(props);
 
-        this.cityFrom = this.cityFromTemp = props.cities.find(el => el.id == props.selectedCityFrom);
-        this.cityTo = this.cityToTemp = props.cities.find(el => el.id == props.selectedCityTo);
         this.selectedFlight = props.flights.find(el => el.id == props.selectedFlight);
         this.state = {
             flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)
         };
+        Object.assign(this.state, this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
+
         this.handleCityFromChange = this.handleCityFromChange.bind(this);
         this.handleCityToChange = this.handleCityToChange.bind(this);
         this.searchFlights = this.searchFlights.bind(this);
@@ -72,31 +65,29 @@ class Flight extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo);
+        this.setState(this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
     }
 
     handleCityFromChange(city) {
-        this.cityFromTemp = city || this.cityFrom;
-        this.handleCityNotFound(city, 'From');
+        this.setState(this.handleCityNotFound(city, 'From'));
         this.props.actions.selectCity(city && city.id, 'From');
     }
 
     handleCityToChange(city) {
-        this.cityToTemp = city || this.cityTo;
-        this.handleCityNotFound(city, 'To');
+        this.setState(this.handleCityNotFound(city, 'To'));
         this.props.actions.selectCity(city && city.id, 'To');
     }
 
     handleCityNotFound(city, fromTo) {
-        if (!city) this.setState({['errorCity' + fromTo]: 'City not found'});
-        else this.setState({['errorCity' + fromTo]: null});
+        if (!city) return {['errorCity' + fromTo]: 'City not found'};
+        return {['errorCity' + fromTo]: null};
     }
 
-    handleCitiesEqual(cityFrom, cityTo) {
-        if (cityFrom && cityTo) {
-            if (cityFrom == cityTo) this.setState({errorCityTo: 'Select another city'});
-            else this.setState({errorCityTo: null});
+    handleCitiesEqual(cityFromId, cityToId) {
+        if (cityFromId && cityToId && (cityFromId == cityToId)) {
+            return {errorCityTo: 'Select another city'};
         }
+        return {errorCityTo: null};
     }
 
     filterFlights(flights = this.props.flights) {
@@ -110,8 +101,6 @@ class Flight extends Component {
     }
 
     searchFlights() {
-        this.cityFrom = this.cityFromTemp;
-        this.cityTo = this.cityToTemp;
         this.setState({flights: this.sort(this.filterFlights())});
     }
 
@@ -169,10 +158,10 @@ class Flight extends Component {
                 <hr/>
                 <div className="flights-search">
                     <h3 className={'text-center subheader ' +
-                        (this.canSearch() || this.state.flights.length ? 'hide' : '')}>
+                        (this.canSearch() || this.state.flights.length || this.props.selectedFlight ? 'hide' : '')}>
                         Select cities to start
                     </h3>
-                    <div className="row" className={!this.state.flights.length && 'hide'}>
+                    <div className="row" className={!this.state.flights.length && !this.props.selectedFlight && 'hide'}>
                         <div className="medium-8 columns flights-results">
                             <div>
                                 <h4 className="inline">Sort by:</h4>
@@ -183,17 +172,19 @@ class Flight extends Component {
                                 <Sort selected={this.props.sorting.field == 'departTime'}
                                       onClick={asc => this.setFlightsSort('departTime', asc)}>depart time</Sort>
                             </div>
+                            <h2 className={`subheader ${this.state.flights.length && 'hide' || ''}`}>
+                                Flights not found
+                            </h2>
                             <ul className="flights-list">
                                 {this.state.flights.map(flight =>
-                                    <FlightCard key={flight.id} flight={flight} onClick={this.selectFlight}
-                                                cityFrom={this.cityFrom} cityTo={this.cityTo}/>
+                                    <FlightCard key={flight.id} flight={flight} onClick={this.selectFlight} />
                                 )}
                             </ul>
                         </div>
                         <div className="medium-4 columns selected-flight">
                             <h4>Current selection</h4>
-                            {this.selectedFlight && <FlightCard flight={this.selectedFlight} small
-                                                                cityFrom={this.cityFrom} cityTo={this.cityTo}/>}
+                            {this.selectedFlight &&
+                            <FlightCard flight={this.selectedFlight} small className="selected" />}
                         </div>
                     </div>
                 </div>

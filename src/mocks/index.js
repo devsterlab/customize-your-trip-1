@@ -15,6 +15,26 @@ export default function loadMocks(store) {
             return response.json();
         })
         .then(mocks => {
+            let {cities, flights, hotels, cars} = mocks;
+            for (let i = 0; i < cities.length; i++) {
+                let city = cities[i];
+                for (let j = 0; j < flights.length; j++) {
+                    let flight = flights[j];
+                    if (flight.fromCity == city.id) flight.fromCityName = city.name;
+                    if (flight.toCity == city.id) flight.toCityName = city.name;
+                }
+                for (let j = 0; j < hotels.length; j++) {
+                    let hotel = hotels[j];
+                    if (hotel.city == city.id) hotel.cityName = city.name;
+                }
+                for (let j = 0; j < cars.length; j++) {
+                    let car = cars[j];
+                    if (car.city == city.id) car.cityName = city.name;
+                }
+            }
+            return mocks;
+        })
+        .then(mocks => {
             store.dispatch(setCars(mocks.cars));
             store.dispatch(setCities(mocks.cities));
             store.dispatch(setFlights(mocks.flights));

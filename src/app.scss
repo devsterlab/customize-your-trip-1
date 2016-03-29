@@ -104,6 +104,10 @@ $navtabs-height: 85px;
     }
   }
 
+  &.selected {
+    border: 2px solid green;
+  }
+
   &:hover {
     border-color: green;
     cursor: pointer;
