@@ -3,6 +3,8 @@
 
 @include foundation-everything;
 
+@import './components/Spinner/spinner';
+
 // Color used for medium gray UI items within Foundation.
 $medium-gray: #cacaca;
 
@@ -163,11 +165,19 @@ $navtabs-height: 85px;
     overflow-y: auto;
     padding-left: 0;
     padding-right: 15px;
-    &.selected { height: calc(100vh - 437px - #{$navtabs-height}); }
+    &.selected { height: calc(100vh - 430px - #{$navtabs-height}); }
   }
 
   .selection-hr {
     margin-bottom: 10px;
+  }
+
+  .days {
+    float: right;
+    input {
+      width: 80px;
+      margin-left: 16px;
+    }
   }
 }
 
@@ -184,7 +194,9 @@ $navtabs-height: 85px;
 
   &.selected {
     border: 2px solid $success-color !important;
-    img { max-height: 120px; }
+    img {
+      max-height: 120px;
+    }
     .price {
       content: 'Selected';
       background-color: $success-color;
@@ -199,7 +211,19 @@ $navtabs-height: 85px;
     }
   }
 
-  .image {
+  img {
+    min-width: 119px;
+    min-height: 119px;
+    background-color: #ddd;
+  }
+
+  .sk-circle {
+    margin-top: -80px;
+    margin-left: 40px;
+  }
+
+  .image-wrap {
+    min-width: 132px;
     padding-left: 0;
   }
 
@@ -210,6 +234,14 @@ $navtabs-height: 85px;
     }
     .description {
       font-size: 14px;
+      max-height: 45px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .info {
+      margin-left: 4px;
+      font-size: 14px;
+      text-decoration: underline;
     }
   }
 
@@ -221,6 +253,7 @@ $navtabs-height: 85px;
     position: absolute;
     right: 0;
     bottom: 0;
-    padding: 4px 16px 4px 16px;
+    padding: 4px 0 4px 0;
+    overflow: hidden;
   }
 }
