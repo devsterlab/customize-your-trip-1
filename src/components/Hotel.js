@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectHotel, setHotelsSort, setHotelDays } from '../actions/hotel';
+import DateHelper from '../util/dateHelper';
 import TripMap from './TripMap';
 import HotelCard from './HotelCard';
 import Sort from './Sort';
+import Button from './Button';
 
 class Hotel extends Component {
     static propTypes = {
@@ -80,9 +82,21 @@ class Hotel extends Component {
     }
 
     render() {
+        let date = new Date();
         return (
             <div className="height-100">
-                <div className=""><h3>Choose hotel</h3></div>
+                <div className="hotel-header">
+                    <div className="inline">
+                        <h3>{this.props.city.name}</h3>
+                        <span>
+                            Day 1-{this.props.days}&nbsp;
+                            ({DateHelper.format(date)} - {DateHelper.format(DateHelper.addDays(date, this.props.days))})
+                        </span>
+                    </div>
+                    <Button className="success float-right large" disabled={!this.selectedHotel} link="/car">
+                        Continue
+                    </Button>
+                </div>
                 <hr/>
                 <div className="row hotels-search">
                     <div className="medium-7 columns map-wrap">

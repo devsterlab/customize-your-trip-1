@@ -1,5 +1,6 @@
 const minute = 60 * 1000;
 const hour = 60 * minute;
+const day = 24 * hour;
 
 class DateHelper {
     static timeStrToInt(timeStr) {
@@ -19,6 +20,10 @@ class DateHelper {
     static addTime(date, time) {
         let [hours, minutes] = time.split(':');
         return new Date(date.getTime() + hours * hour + minutes * minute);
+    }
+
+    static addDays(date, days) {
+        return new Date(date.getTime() + days * day);
     }
 
     static zerofy(num) {

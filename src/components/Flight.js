@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { hashHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectCity } from '../actions/city';
@@ -9,6 +8,7 @@ import Select from './Select';
 import Progress from './Progress';
 import FlightCard from './FlightCard';
 import Sort from './Sort';
+import Button from './Button';
 
 class Flight extends Component {
     static propTypes = {
@@ -134,10 +134,6 @@ class Flight extends Component {
         this.props.actions.selectFlight(flight.id);
     }
 
-    continue() {
-        hashHistory.push('/hotel');
-    }
-
     render() {
         return (
             <div className="height-100">
@@ -154,10 +150,9 @@ class Flight extends Component {
                         To city
                     </Select>
                     <div className="medium-2 columns">
-                        <button type="button" className="button inline-button"
-                                onClick={this.searchFlights} disabled={!this.canSearch()}>
+                        <Button className="inline-button" onClick={this.searchFlights} disabled={!this.canSearch()}>
                             Search
-                        </button>
+                        </Button>
                     </div>
                 </form>
                 <hr/>
@@ -190,10 +185,9 @@ class Flight extends Component {
                             <h4>Current selection</h4>
                             {this.selectedFlight &&
                             [<FlightCard key="0" flight={this.selectedFlight} small className="selected" />,
-                             <button key="1" type="button" className="button expanded success large"
-                                     onClick={() => this.continue()}>
+                             <Button key="1" className="expanded success large" link="/hotel">
                                  Continue
-                             </button>]}
+                             </Button>]}
                         </div>
                     </div>
                 </div>

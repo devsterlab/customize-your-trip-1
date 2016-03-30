@@ -28,6 +28,15 @@ class Select extends Component {
         this.onBlur = this._onBlur.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        if (!this.props.collection.length && props.collection.length) {
+            this.setState({
+                searchCollection: [],
+                restCollection: props.collection
+            });
+        }
+    }
+
     _handleItemNameChange(e) {
         let item = this.props.collection.find(el => el[this.props.nameField] == e.target.value);
         this.props.onChange(item);
