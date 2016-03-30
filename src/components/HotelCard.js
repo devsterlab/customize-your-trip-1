@@ -32,8 +32,10 @@ class HotelCard extends Component {
                     <div>
                         <h5 className="name">{hotel.name}</h5>
                         <Stars count={hotel.stars}/>
+                        <div className="description">{hotel.description}</div>
                     </div>
                 </div>
+                <div className="price text-center">${hotel.price}</div>
             </div>
         );
     }

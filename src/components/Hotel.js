@@ -1,14 +1,77 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { selectHotel, setHotelsSort } from '../actions/hotel';
 import TripMap from './TripMap';
 import HotelCard from './HotelCard';
+import Sort from './Sort';
 
 class Hotel extends Component {
     static propTypes = {
-        children: PropTypes.node
+        children: PropTypes.node,
+        city: PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string,
+            bounds: PropTypes.shape({
+                south: PropTypes.number, west: PropTypes.number,
+                north: PropTypes.number, east: PropTypes.number}),
+            timezone: PropTypes.number
+        }),
+        hotels: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            city: PropTypes.string,
+            cityName: PropTypes.string,
+            name: PropTypes.string,
+            popularity: PropTypes.number,
+            images: PropTypes.arrayOf(PropTypes.string),
+            stars: PropTypes.number,
+            latitude: PropTypes.number,
+            longitude: PropTypes.number,
+            address: PropTypes.string,
+            description: PropTypes.string,
+            price: PropTypes.number
+        })),
+        sorting: PropTypes.shape({
+            field: PropTypes.string,
+            asc: PropTypes.bool
+        })
     };
 
+    static defaultProps = {
+        sorting: {
+            field: 'popularity',
+            asc: false
+        }
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.selectedHotel = props.hotels.find(el => el.id == props.selectedHotel);
+        this.state = {
+            hotels: this.sort(props.hotels, props.sorting.field, props.sorting.asc)
+        };
+        
+        this.selectHotel = this._selectHotel.bind(this);
+    }
+    
+    sort(hotels, field = this.props.sorting.field, asc = this.props.sorting.asc) {
+        return hotels.sort((h1, h2) => {
+            return asc ? h1[field] - h2[field] : h2[field] - h1[field];
+        });
+    }
+
+    setHotelsSort(field, asc) {
+        let hotels = this.sort(this.state.hotels, field, asc);
+        this.setState({hotels});
+        this.props.actions.setHotelsSort(field, asc);
+    }
+
+    _selectHotel(hotel) {
+        this.selectedHotel = hotel;
+        this.props.actions.selectHotel(hotel.id);
+    }
+    
     render() {
         return (
             <div className="height-100">
@@ -19,10 +82,25 @@ class Hotel extends Component {
                         <TripMap />
                     </div>
                     <div className="medium-5 columns">
-                        <ul className="hotels-list">
-                        {this.props.hotels.map((hotel, index) =>
+                        {this.selectedHotel && <div>
+                            <h4>Current selection</h4>
+                            <HotelCard hotel={this.selectedHotel} className="selected" />
+                            <hr className="selection-hr"/>
+                        </div>}
+                        <h3>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h3>
+                        <div>
+                            <h5 className="inline">Sort by:</h5>
+                            <Sort selected={this.props.sorting.field == 'price'}
+                                  onClick={asc => this.setHotelsSort('price', asc)}>price</Sort>
+                            <Sort selected={this.props.sorting.field == 'stars'}
+                                  onClick={asc => this.setHotelsSort('stars', asc)}>stars</Sort>
+                            <Sort selected={this.props.sorting.field == 'popularity'}
+                                  onClick={asc => this.setHotelsSort('popularity', asc)}>popularity</Sort>
+                        </div>
+                        <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
+                        {this.state.hotels.map((hotel, index) =>
                             <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}`}
-                                       key={hotel.id} hotel={hotel} />
+                                       key={hotel.id} hotel={hotel} onClick={this.selectHotel}/>
                         )}
                         </ul>
                     </div>
@@ -34,13 +112,16 @@ class Hotel extends Component {
 
 function mapStateToProps(state) {
     return {
-        hotels: state.hotel.hotels.filter(el => el.city == state.city.selectedCityTo)
+        city: state.city.cities.find(el => el.id == state.city.selectedCityTo),
+        hotels: state.hotel.hotels.filter(el => el.city == state.city.selectedCityTo),
+        selectedHotel: state.hotel.selectedHotel,
+        sorting: state.hotel.sorting
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({}, dispatch)
+        actions: bindActionCreators({selectHotel, setHotelsSort}, dispatch)
     };
 }
 

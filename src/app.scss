@@ -148,6 +148,9 @@ $navtabs-height: 85px;
 }
 
 .hotels-search {
+  .sort {
+    h5 { font-size: 16px; }
+  }
 
   .map-wrap {
     height: calc(100vh - 120px - #{$navtabs-height});
@@ -156,14 +159,22 @@ $navtabs-height: 85px;
 
   .hotels-list {
     margin-left: 0;
-    height: calc(100vh - 120px - #{$navtabs-height});
+    height: calc(100vh - 207px - #{$navtabs-height});
     overflow-y: auto;
     padding-left: 0;
     padding-right: 15px;
+    &.selected { height: calc(100vh - 437px - #{$navtabs-height}); }
+  }
+
+  .selection-hr {
+    margin-bottom: 10px;
   }
 }
 
 .hotel-card {
+  position: relative;
+  border: 1px dashed #bbb;
+  height: 156px;
   margin-left: 0 !important;
   margin-right: 0 !important;
 
@@ -172,12 +183,20 @@ $navtabs-height: 85px;
   }
 
   &.selected {
-    border: 2px solid $success-color;
+    border: 2px solid $success-color !important;
+    img { max-height: 120px; }
+    .price {
+      content: 'Selected';
+      background-color: $success-color;
+    }
   }
 
   &:hover {
-    border-color: $success-color;
+    border: 1px solid $success-color;
     cursor: pointer;
+    .price {
+      background-color: $success-color;
+    }
   }
 
   .image {
@@ -186,9 +205,22 @@ $navtabs-height: 85px;
 
   .content {
     padding-left: 0;
-
     .name {
       margin-bottom: 0;
     }
+    .description {
+      font-size: 14px;
+    }
+  }
+
+  .price {
+    max-width: 77px;
+    min-width: 77px;
+    color: white;
+    background-color: #ddd;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 4px 16px 4px 16px;
   }
 }
