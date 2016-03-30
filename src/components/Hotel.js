@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectHotel, setHotelsSort } from '../actions/hotel';
+import { selectHotel, setHotelsSort, setHotelDays } from '../actions/hotel';
 import TripMap from './TripMap';
 import HotelCard from './HotelCard';
 import Sort from './Sort';
@@ -34,14 +34,16 @@ class Hotel extends Component {
         sorting: PropTypes.shape({
             field: PropTypes.string,
             asc: PropTypes.bool
-        })
+        }),
+        days: PropTypes.number
     };
 
     static defaultProps = {
         sorting: {
             field: 'popularity',
             asc: false
-        }
+        },
+        maxDays: 99
     };
 
     constructor(props) {
@@ -71,7 +73,12 @@ class Hotel extends Component {
         this.selectedHotel = hotel;
         this.props.actions.selectHotel(hotel.id);
     }
-    
+
+    onDaysBlur(days) {
+        if (days > this.props.maxDays) this.props.actions.setHotelDays(this.props.maxDays);
+        else if (days < 1) this.props.actions.setHotelDays(1);
+    }
+
     render() {
         return (
             <div className="height-100">
@@ -79,15 +86,27 @@ class Hotel extends Component {
                 <hr/>
                 <div className="row hotels-search">
                     <div className="medium-7 columns map-wrap">
-                        <TripMap />
+                        <TripMap city={this.props.city} hotels={this.props.hotels} selectedHotel={this.selectedHotel}
+                                 onMarkerClick={this.selectHotel}/>
                     </div>
                     <div className="medium-5 columns">
-                        {this.selectedHotel && <div>
-                            <h4>Current selection</h4>
-                            <HotelCard hotel={this.selectedHotel} className="selected" />
+                        {this.selectedHotel &&
+                        <div>
+                            <div>
+                                <h4 className="inline">Current selection</h4>
+                                <div className="inline days">
+                                    <span>Days to stay:</span>
+                                    <input className="inline" type="number" min="1" max={this.props.maxDays}
+                                           value={this.props.days}
+                                           onChange={(e) => this.props.actions.setHotelDays(+e.target.value)}
+                                           onBlur={(e) => this.onDaysBlur(e.target.value)}/>
+                                </div>
+                            </div>
+                            <HotelCard hotel={this.selectedHotel} className="selected"
+                                       price={this.props.days * this.selectedHotel.price}/>
                             <hr className="selection-hr"/>
                         </div>}
-                        <h3>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h3>
+                        <h4>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
                         <div>
                             <h5 className="inline">Sort by:</h5>
                             <Sort selected={this.props.sorting.field == 'price'}
@@ -111,17 +130,20 @@ class Hotel extends Component {
 }
 
 function mapStateToProps(state) {
+    let selectedFlight = state.flight.flights.find(el => el.id == state.flight.selectedFlight);
+    let flightCityId = selectedFlight && selectedFlight.toCity;
     return {
-        city: state.city.cities.find(el => el.id == state.city.selectedCityTo),
-        hotels: state.hotel.hotels.filter(el => el.city == state.city.selectedCityTo),
+        city: state.city.cities.find(el => el.id == flightCityId),
+        hotels: state.hotel.hotels.filter(el => el.city == flightCityId),
         selectedHotel: state.hotel.selectedHotel,
-        sorting: state.hotel.sorting
+        sorting: state.hotel.sorting,
+        days: state.hotel.days
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({selectHotel, setHotelsSort}, dispatch)
+        actions: bindActionCreators({selectHotel, setHotelsSort, setHotelDays}, dispatch)
     };
 }
 

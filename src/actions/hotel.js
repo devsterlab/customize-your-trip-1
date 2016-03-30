@@ -11,3 +11,7 @@ export function selectHotel(id) {
 export function setHotelsSort(field, asc) {
     return { type: types.SET_HOTELS_SORT, field, asc };
 }
+
+export function setHotelDays(days) {
+    return { type: types.SET_HOTEL_DAYS, days };
+}

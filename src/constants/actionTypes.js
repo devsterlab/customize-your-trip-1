@@ -8,5 +8,6 @@ export const SET_FLIGHTS_SORT = 'SET_FLIGHTS_SORT';
 export const SET_HOTELS = 'SET_HOTELS';
 export const SELECT_HOTEL = 'SELECT_HOTEL';
 export const SET_HOTELS_SORT = 'SET_HOTELS_SORT';
+export const SET_HOTEL_DAYS = 'SET_HOTEL_DAYS';
 
 export const SET_CARS = 'SET_CARS';

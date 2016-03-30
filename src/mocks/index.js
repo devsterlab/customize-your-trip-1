@@ -122,7 +122,8 @@ const mocks = {
                 popularity: '{{integer(6, 10)}}',
                 images: function (tags) {
                     var arr = Array(tags.integer(5, 7))
-                        .join('http://placeimg.com/200/200/arch$').split('$');
+                        .join('http://placeimg.com/128/128/arch?' + tags.floating() +
+                        '$').split('$');
                     arr.pop();
                     return arr;
                 },
@@ -154,6 +155,7 @@ const mocks = {
                 },
                 brand: '{{random("Chevrolet", "Cadillac", "Buick", "Ford", "Chrysler", "Dodge", "Jeep", "Toyota", "Lexus", "Suzuki", "Mazda", "Honda", "Audi")}}',
                 model: '{{lorem(1, "words")}}',
+                image: 'http://loremflickr.com/200/200/car?{{floating()}}',
                 carType: '{{random("Two-seaters", "Minicompact", "Subcompact", "Compact", "Mid-size", "Large")}}',
                 price: '{{Math.max(50, Math.abs(Math.round(this.gauss(0, 0.1) * 100) * 10))}}',
                 transmission: '{{random("manual", "automatic")}}',
