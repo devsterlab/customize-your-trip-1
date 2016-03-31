@@ -1,4 +1,4 @@
-reacdux-foundpack
+Customize your trip
 =====================
 
 Webpack, React, Redux, ES6, Foundation
