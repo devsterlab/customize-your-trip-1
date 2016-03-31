@@ -7,6 +7,8 @@ import TripMap from './TripMap';
 import HotelCard from './HotelCard';
 import Sort from './Sort';
 import Button from './Button';
+import Modal from './Modal';
+import HotelInfo from './HotelInfo';
 
 class Hotel extends Component {
     static propTypes = {
@@ -41,6 +43,9 @@ class Hotel extends Component {
     };
 
     static defaultProps = {
+        city: {
+            bounds: {}
+        },
         sorting: {
             field: 'popularity',
             asc: false
@@ -53,10 +58,12 @@ class Hotel extends Component {
 
         this.selectedHotel = props.hotels.find(el => el.id == props.selectedHotel);
         this.state = {
-            hotels: this.sort(props.hotels, props.sorting.field, props.sorting.asc)
+            hotels: this.sort(props.hotels, props.sorting.field, props.sorting.asc),
+            hotelInfo: null
         };
         
         this.selectHotel = this._selectHotel.bind(this);
+        this.handleHotelInfoClick = this._handleHotelInfoClick.bind(this);
     }
     
     sort(hotels, field = this.props.sorting.field, asc = this.props.sorting.asc) {
@@ -71,14 +78,19 @@ class Hotel extends Component {
         this.props.actions.setHotelsSort(field, asc);
     }
 
-    _selectHotel(hotel) {
+    _selectHotel(hotel, closeDialog) {
         this.selectedHotel = hotel;
+        if (closeDialog) this.setState({hotelInfo: null});
         this.props.actions.selectHotel(hotel.id);
     }
 
     onDaysBlur(days) {
         if (days > this.props.maxDays) this.props.actions.setHotelDays(this.props.maxDays);
         else if (days < 1) this.props.actions.setHotelDays(1);
+    }
+
+    _handleHotelInfoClick(hotelInfo) {
+        this.setState({hotelInfo});
     }
 
     render() {
@@ -117,7 +129,8 @@ class Hotel extends Component {
                                 </div>
                             </div>
                             <HotelCard hotel={this.selectedHotel} className="selected"
-                                       price={this.props.days * this.selectedHotel.price}/>
+                                       price={this.props.days * this.selectedHotel.price}
+                                       onInfoClick={this.handleHotelInfoClick}/>
                             <hr className="selection-hr"/>
                         </div>}
                         <h4>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
@@ -133,11 +146,15 @@ class Hotel extends Component {
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>
                             <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}`}
-                                       key={hotel.id} hotel={hotel} onClick={this.selectHotel}/>
+                                       key={hotel.id} hotel={hotel} onClick={this.selectHotel}
+                                       onInfoClick={this.handleHotelInfoClick}/>
                         )}
                         </ul>
                     </div>
                 </div>
+                <Modal closeButton className="large" show={!!this.state.hotelInfo}>
+                    <HotelInfo hotel={this.state.hotelInfo} onSelect={hotel => this.selectHotel(hotel, true)}/>
+                </Modal>
             </div>
         );
     }

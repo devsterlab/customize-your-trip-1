@@ -120,11 +120,11 @@ const mocks = {
                 },
                 name: '{{company()}} {{company()}}',
                 popularity: '{{integer(6, 10)}}',
-                images: function (tags) {
-                    var arr = Array(tags.integer(5, 7))
-                        .join('http://placeimg.com/128/128/arch?' + tags.floating() +
-                        '$').split('$');
-                    arr.pop();
+                images: function(tags) {
+                    var arrLength = tags.integer(5, 7);
+                    var arr = [];
+                    for (var i = 0; i < arrLength; i++)
+                        arr.push('http://placeimg.com/128/128/arch?' + tags.floating());
                     return arr;
                 },
                 stars: '{{integer(3, 5)}}',

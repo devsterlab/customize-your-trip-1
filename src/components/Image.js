@@ -16,6 +16,7 @@ class Image extends Component {
     }
 
     _handleImageLoaded() {
+        console.log('loaded', this.props.src);
         this.setState({imageStatus: true});
     }
 

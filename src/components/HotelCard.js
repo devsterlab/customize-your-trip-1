@@ -8,18 +8,14 @@ class HotelCard extends Component {
         children: PropTypes.node,
         hotel: PropTypes.object,
         onClick: PropTypes.func,
+        onInfoClick: PropTypes.func,
         className: PropTypes.string,
         price: PropTypes.number
     };
 
-    constructor(props) {
-        super(props);
-    }
-
-    componentWillReceiveProps(props) {
-    }
-
-    convertDates(props) {
+    handleInfoClick(e) {
+        e.stopPropagation();
+        this.props.onInfoClick(this.props.hotel);
     }
 
     render() {
@@ -35,7 +31,7 @@ class HotelCard extends Component {
                         <h5 className="name">{hotel.name}</h5>
                         <Stars count={hotel.stars}/>
                         <div className="description">{hotel.description}</div>
-                        <div>
+                        <div onClick={e => this.handleInfoClick(e)}>
                             <i className="mdi mdi-information"></i>
                             <span className="info">Hotel information</span>
                         </div>

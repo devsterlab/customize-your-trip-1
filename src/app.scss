@@ -18,6 +18,18 @@ $pagination-item-padding: rem-calc(6 15);
 
 $navtabs-height: 85px;
 
+button {
+  outline: none;
+}
+
+.reveal-overlay {
+  overflow: auto;
+}
+
+.reveal {
+  margin-bottom: 100px;
+}
+
 .pagination li {
   border: 1px solid $medium-gray;
   border-radius: 50%;
@@ -264,5 +276,34 @@ $navtabs-height: 85px;
     bottom: 0;
     padding: 4px 0 4px 0;
     overflow: hidden;
+  }
+}
+
+.hotel-info {
+  min-height: 440px;
+  .name {
+    margin-bottom: 0;
+  }
+  .stars {
+    margin-top: 24px;
+    margin-left: 20px;
+    //+hr { clear: both; }
+  }
+  .orbit {
+    img {
+      width: 100%;
+      background-color: #ddd;
+      min-height: 350px;
+      height: calc(100vh - 280px);
+    }
+    .sk-circle {
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+    }
+  }
+  .button {
+    margin-top: calc(100vh - 620px);
+    margin-bottom: 0;
   }
 }
