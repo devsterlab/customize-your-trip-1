@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectCity } from '../../actions/city';
 import { selectFlight, setFlightsSort } from '../../actions/flight';
-import DateHelper from '../../util/dateHelper';
+import Sorting from '../../util/sorting';
 import Select from '../../components/Select';
 import Progress from '../../components/Progress/Progress';
 import FlightCard from '../../components/FlightCard';
@@ -46,7 +46,7 @@ class Flight extends Component {
     static defaultProps = {
         sorting: {
             field: 'departTime',
-            asc: false
+            asc: true
         }
     };
 
@@ -107,19 +107,18 @@ class Flight extends Component {
 
     sort(flights, field = this.props.sorting.field, asc = this.props.sorting.asc) {
         switch (field) {
-            case 'price': return flights.sort((f1, f2) => {
-                return asc ? f1.price - f2.price : f2.price - f1.price;
-            });
-            case 'duration': return flights.sort((f1, f2) => {
-                let d1 = DateHelper.timeStrToInt(f1.duration);
-                let d2 = DateHelper.timeStrToInt(f2.duration);
-                return asc ? d1 - d2 : d2 - d1;
-            });
-            case 'departTime': return flights.sort((f1, f2) => {
-                let d1 = DateHelper.timeStrToInt(f1.departTime);
-                let d2 = DateHelper.timeStrToInt(f2.departTime);
-                return asc ? d1 - d2 : d2 - d1;
-            });
+            case 'price':
+                return flights.sort(Sorting.byObjectFields(
+                    [{field, asc}, {field: 'departTime', type: 'timeStr'}, {field: 'duration', type: 'timeStr'}]
+                ));
+            case 'duration':
+                return flights.sort(Sorting.byObjectFields(
+                    [{field, asc}, {field: 'price'}, {field: 'departTime', type: 'timeStr'}]
+                ));
+            case 'departTime':
+                return flights.sort(Sorting.byObjectFields(
+                    [{field, asc},  {field: 'price'}, {field: 'duration', type: 'timeStr'}]
+                ));
         }
     }
 
@@ -165,11 +164,11 @@ class Flight extends Component {
                         <div className="medium-8 columns flights-results">
                             <div>
                                 <h4 className="inline">Sort by:</h4>
-                                <Sort selected={this.props.sorting.field == 'price'}
+                                <Sort selected={this.props.sorting.field == 'price'} asc={this.props.sorting.asc}
                                       onClick={asc => this.setFlightsSort('price', asc)}>price</Sort>
-                                <Sort selected={this.props.sorting.field == 'duration'}
+                                <Sort selected={this.props.sorting.field == 'duration'} asc={this.props.sorting.asc}
                                       onClick={asc => this.setFlightsSort('duration', asc)}>duration</Sort>
-                                <Sort selected={this.props.sorting.field == 'departTime'}
+                                <Sort selected={this.props.sorting.field == 'departTime'} asc={this.props.sorting.asc}
                                       onClick={asc => this.setFlightsSort('departTime', asc)}>depart time</Sort>
                             </div>
                             <h2 className={`subheader ${this.state.flights.length && 'hide' || ''}`}>

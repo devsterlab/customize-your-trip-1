@@ -5,14 +5,15 @@ class Sort extends Component {
         children: PropTypes.node,
         className: PropTypes.string,
         onClick: PropTypes.func,
-        selected: PropTypes.bool
+        selected: PropTypes.bool,
+        asc: PropTypes.bool
     };
 
     constructor(props) {
         super(props);
 
         this.handleClick = this._handleClick.bind(this);
-        this.state = {asc: false};
+        this.state = {asc: props.asc || false};
     }
 
     _handleClick() {

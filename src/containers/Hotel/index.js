@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { selectHotel, setHotelsSort, setHotelDays } from '../../actions/hotel';
 import { flightCity } from '../../reducers';
 import DateHelper from '../../util/dateHelper';
+import Sorting from '../../util/sorting';
 import TripMap from '../../components/TripMap';
 import HotelCard from '../../components/HotelCard';
 import Sort from '../../components/Sort';
@@ -68,9 +69,20 @@ class Hotel extends Component {
     }
     
     sort(hotels, field = this.props.sorting.field, asc = this.props.sorting.asc) {
-        return hotels.sort((h1, h2) => {
-            return asc ? h1[field] - h2[field] : h2[field] - h1[field];
-        });
+        switch (field) {
+            case 'price':
+                return hotels.sort(Sorting.byObjectFields(
+                    [{field, asc}, {field: 'stars', asc: false}, {field: 'popularity', asc: false}]
+                ));
+            case 'stars':
+                return hotels.sort(Sorting.byObjectFields(
+                    [{field, asc}, {field: 'popularity', asc: false}, {field: 'price'}]
+                ));
+            case 'popularity':
+                return hotels.sort(Sorting.byObjectFields(
+                    [{field, asc}, {field: 'stars', asc: false}, {field: 'price'}]
+                ));
+        }
     }
 
     setHotelsSort(field, asc) {
@@ -141,11 +153,11 @@ class Hotel extends Component {
                         <h4>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
                         <div>
                             <h5 className="inline">Sort by:</h5>
-                            <Sort selected={this.props.sorting.field == 'price'}
+                            <Sort selected={this.props.sorting.field == 'price'} asc={this.props.sorting.asc}
                                   onClick={asc => this.setHotelsSort('price', asc)}>price</Sort>
-                            <Sort selected={this.props.sorting.field == 'stars'}
+                            <Sort selected={this.props.sorting.field == 'stars'} asc={this.props.sorting.asc}
                                   onClick={asc => this.setHotelsSort('stars', asc)}>stars</Sort>
-                            <Sort selected={this.props.sorting.field == 'popularity'}
+                            <Sort selected={this.props.sorting.field == 'popularity'} asc={this.props.sorting.asc}
                                   onClick={asc => this.setHotelsSort('popularity', asc)}>popularity</Sort>
                         </div>
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
