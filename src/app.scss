@@ -56,10 +56,15 @@ button {
   width: 100%;
 }
 
+.continue-button {
+  width: 125px;
+}
+
 @import './components/Card/card';
 @import './components/Sort/sort';
 @import './components/FlightCard/flight-card';
 @import './components/HotelCard/hotel-card';
+@import './components/CarCard/car-card';
 @import './components/HotelInfo/hotel-info';
 @import './components/Progress/progress';
 @import './components/Select/select';

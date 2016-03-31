@@ -3,7 +3,8 @@ import * as types from '../constants/actionTypes';
 const initialState = {
     cars: [],
     carsLoaded: false,
-    selectedCar: ''
+    selectedCar: '',
+    days: 1
 };
 
 export default function car(state = initialState, action) {

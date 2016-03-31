@@ -37,6 +37,8 @@ class Hotel extends Component {
             description: PropTypes.string,
             price: PropTypes.number
         })),
+        selectedHotel: PropTypes.string,
+        selectedFlight: PropTypes.string,
         sorting: PropTypes.shape({
             field: PropTypes.string,
             asc: PropTypes.bool
@@ -113,6 +115,7 @@ class Hotel extends Component {
     render() {
         let date = new Date();
         return (
+            this.props.selectedFlight &&
             <div className="height-100">
                 <div className="hotel-header">
                     <div className="inline">
@@ -122,7 +125,7 @@ class Hotel extends Component {
                             ({DateHelper.format(date)} - {DateHelper.format(DateHelper.addDays(date, this.props.days))})
                         </span>
                     </div>
-                    <Button className="success float-right large" disabled={!this.selectedHotel} link="/car">
+                    <Button className="success float-right large continue-button" disabled={!this.selectedHotel} link="/car">
                         Continue
                     </Button>
                 </div>
@@ -173,6 +176,8 @@ class Hotel extends Component {
                     <HotelInfo hotel={this.state.hotelInfo} onSelect={hotel => this.selectHotel(hotel, true)}/>
                 </Modal>
             </div>
+            ||
+            <div className="height-100"><h2 className="subheader text-center">Flight not selected</h2></div>
         );
     }
 }
@@ -183,6 +188,7 @@ function mapStateToProps(state) {
         city,
         hotels: city && state.hotel.hotels.filter(el => el.city == city.id) || [],
         selectedHotel: state.hotel.selectedHotel,
+        selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,
         days: state.hotel.days
     };
