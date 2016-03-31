@@ -81,7 +81,7 @@ class Hotel extends Component {
 
     _selectHotel(hotel, closeDialog) {
         this.selectedHotel = hotel;
-        if (closeDialog) this.setState({hotelInfo: null});
+        if (closeDialog) this.closeDialog();
         this.props.actions.selectHotel(hotel.id);
     }
 
@@ -92,6 +92,10 @@ class Hotel extends Component {
 
     _handleHotelInfoClick(hotelInfo) {
         this.setState({hotelInfo});
+    }
+
+    closeDialog() {
+        this.setState({hotelInfo: null});
     }
 
     render() {
@@ -153,7 +157,7 @@ class Hotel extends Component {
                         </ul>
                     </div>
                 </div>
-                <Modal closeButton className="large" show={!!this.state.hotelInfo}>
+                <Modal closeButton className="large" show={!!this.state.hotelInfo} onClose={() => this.closeDialog()}>
                     <HotelInfo hotel={this.state.hotelInfo} onSelect={hotel => this.selectHotel(hotel, true)}/>
                 </Modal>
             </div>

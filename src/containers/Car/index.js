@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { flightCity } from '../../reducers';
+import { selectCar, setCarsSort, setCarDays } from '../../actions/car';
 
 class Car extends Component {
     static propTypes = {
@@ -41,7 +42,10 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        cars: state.car.cars.filter(el => el.id == city.id)
+        cars: state.car.cars.filter(el => el.id == city.id),
+        selectedCar: state.car.selectedCar,
+        sorting: state.car.sorting,
+        days: state.car.days
     };
 }
 
