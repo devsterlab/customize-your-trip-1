@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import DateHelper from '../../util/dateHelper';
+import Card from '../Card';
 
 class FlightCard extends Component {
     static propTypes = {
@@ -31,7 +32,7 @@ class FlightCard extends Component {
     render() {
         let {flight, small} = this.props;
         return (
-            <div className={`callout row flight-card ${this.props.className || ''} ${small && 'small' || ''}`}
+            <Card className={`flight-card ${this.props.className || ''} ${small && 'small' || ''}`}
                  onClick={() => this.props.onClick && this.props.onClick(flight)}>
                 <div className="medium-4 columns text-center side">
                     <div>Company</div>
@@ -57,7 +58,7 @@ class FlightCard extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Card>
         );
     }
 }

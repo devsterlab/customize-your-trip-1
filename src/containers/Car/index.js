@@ -42,7 +42,7 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        cars: state.car.cars.filter(el => el.id == city.id),
+        cars: city && state.car.cars.filter(el => el.id == city.id) || [],
         selectedCar: state.car.selectedCar,
         sorting: state.car.sorting,
         days: state.car.days
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({ }, dispatch)
+        actions: bindActionCreators({ selectCar, setCarsSort, setCarDays }, dispatch)
     };
 }
 

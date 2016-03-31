@@ -56,6 +56,8 @@ button {
   width: 100%;
 }
 
+@import './components/Card/card';
+@import './components/Sort/sort';
 @import './components/FlightCard/flight-card';
 @import './components/HotelCard/hotel-card';
 @import './components/HotelInfo/hotel-info';

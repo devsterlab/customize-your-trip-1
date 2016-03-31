@@ -169,7 +169,7 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        hotels: state.hotel.hotels.filter(el => el.city == city.id),
+        hotels: city && state.hotel.hotels.filter(el => el.city == city.id) || [],
         selectedHotel: state.hotel.selectedHotel,
         sorting: state.hotel.sorting,
         days: state.hotel.days
