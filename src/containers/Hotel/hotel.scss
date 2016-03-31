@@ -1,0 +1,41 @@
+
+.hotel-header {
+  h3, button {
+    margin-bottom: 0;
+  }
+  +hr {
+    margin-top: 10px;
+  }
+}
+
+.hotels-search {
+  .sort {
+    h5 { font-size: 16px; }
+  }
+
+  .map-wrap {
+    height: calc(100vh - 130px - #{$navtabs-height});
+    padding-right: 0;
+  }
+
+  .hotels-list {
+    margin-left: 0;
+    height: calc(100vh - 210px - #{$navtabs-height});
+    overflow-y: auto;
+    padding-left: 0;
+    padding-right: 15px;
+    &.selected { height: calc(100vh - 440px - #{$navtabs-height}); }
+  }
+
+  .selection-hr {
+    margin-bottom: 10px;
+  }
+
+  .days {
+    float: right;
+    input {
+      width: 80px;
+      margin-left: 16px;
+    }
+  }
+}

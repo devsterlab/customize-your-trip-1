@@ -1,0 +1,51 @@
+
+.flight-card {
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+
+  &.small {
+    .side {
+      padding-left: 0;
+    }
+    .company-name {
+      font-size: 24px;
+    }
+    .price {
+      margin-bottom: 0;
+    }
+    .left {
+      padding-right: 0;
+    }
+    .right {
+      padding-left: 0;
+    }
+    .middle {
+      display: none;
+    }
+  }
+
+  &.selected {
+    border: 2px solid $success-color;
+  }
+
+  &:hover {
+    border-color: $success-color;
+    cursor: pointer;
+  }
+
+  .middle {
+    padding: 0;
+  }
+}
+
+.sort {
+  margin-left: 20px;
+  cursor: pointer;
+
+  .disabled {
+    color: rgba(0, 0, 0, .54);
+  }
+}

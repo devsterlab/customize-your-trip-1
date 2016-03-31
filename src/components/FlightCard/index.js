@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import DateHelper from '../util/dateHelper';
+import DateHelper from '../../util/dateHelper';
 
 class FlightCard extends Component {
     static propTypes = {

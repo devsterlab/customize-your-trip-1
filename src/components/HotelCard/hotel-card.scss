@@ -1,0 +1,77 @@
+
+.hotel-card {
+  position: relative;
+  border: 1px dashed #bbb;
+  height: 156px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  &.last {
+    margin-bottom: 0;
+  }
+
+  &.selected {
+    border: 2px solid $success-color !important;
+    img {
+      max-height: 120px;
+    }
+    .price {
+      content: 'Selected';
+      background-color: $success-color;
+    }
+  }
+
+  &:hover {
+    border: 1px solid $success-color;
+    cursor: pointer;
+    .price {
+      background-color: $success-color;
+    }
+  }
+
+  img {
+    min-width: 119px;
+    min-height: 119px;
+    background-color: #ddd;
+  }
+
+  .sk-circle {
+    margin-top: -80px;
+    margin-left: 40px;
+  }
+
+  .image-wrap {
+    min-width: 132px;
+    padding-left: 0;
+  }
+
+  .content {
+    padding-left: 0;
+    .name {
+      margin-bottom: 0;
+    }
+    .description {
+      font-size: 14px;
+      max-height: 45px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .info {
+      margin-left: 4px;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+  }
+
+  .price {
+    max-width: 77px;
+    min-width: 77px;
+    color: white;
+    background-color: #ddd;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 4px 0 4px 0;
+    overflow: hidden;
+  }
+}

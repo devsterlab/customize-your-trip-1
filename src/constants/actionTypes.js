@@ -11,3 +11,5 @@ export const SET_HOTELS_SORT = 'SET_HOTELS_SORT';
 export const SET_HOTEL_DAYS = 'SET_HOTEL_DAYS';
 
 export const SET_CARS = 'SET_CARS';
+export const SELECT_CAR = 'SELECT_CAR';
+export const SET_CARS_SORT = 'SET_CARS_SORT';

@@ -3,8 +3,6 @@
 
 @include foundation-everything;
 
-@import './components/Spinner/spinner';
-
 // Color used for medium gray UI items within Foundation.
 $medium-gray: #cacaca;
 
@@ -48,11 +46,6 @@ button {
   overflow: hidden;
 }
 
-.load-progress {
-  margin-top: -16px;
-  margin-bottom: 0;
-}
-
 .inline {
   display: inline-block;
 }
@@ -63,247 +56,15 @@ button {
   width: 100%;
 }
 
-.select {
-  position: relative;
+@import './components/FlightCard/flight-card';
+@import './components/HotelCard/hotel-card';
+@import './components/HotelInfo/hotel-info';
+@import './components/Progress/progress';
+@import './components/Select/select';
+@import './components/Spinner/spinner';
 
-  .form-error {
-    position: absolute;
-  }
-
-  .options {
-    z-index: 9999;
-    color: #000 !important;
-    border: 1px solid rgba(10, 10, 10, 0.25);
-    border-top: none;
-    background-color: #FFF;
-    margin-top: -16px;
-    width: calc(100% - 30px);
-    position: absolute;
-
-    .item {
-      padding-left: 8px;
-      &:hover {
-        background-color: #BBB;
-        cursor: pointer;
-      }
-      &.search {
-        background-color: #E3F2FD;
-      }
-    }
-  }
-}
-
-.flights-search {
-  .flights-results {
-    padding: 0;
-  }
-
-  .flights-list {
-    margin-left: 0;
-    height: calc(100vh - 183px - #{$navtabs-height});
-    overflow-y: auto;
-    padding-left: 0;
-    padding-right: 15px;
-  }
-
-  .selected-flight {
-  }
-}
-
-.flight-card {
-  padding-right: 0;
-  padding-left: 0;
-  padding-bottom: 0;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
-
-  &.small {
-    .side {
-      padding-left: 0;
-    }
-    .company-name {
-      font-size: 24px;
-    }
-    .price {
-      margin-bottom: 0;
-    }
-    .left {
-      padding-right: 0;
-    }
-    .right {
-      padding-left: 0;
-    }
-    .middle {
-      display: none;
-    }
-  }
-
-  &.selected {
-    border: 2px solid $success-color;
-  }
-
-  &:hover {
-    border-color: $success-color;
-    cursor: pointer;
-  }
-
-  .middle {
-    padding: 0;
-  }
-}
-
-.sort {
-  margin-left: 20px;
-  cursor: pointer;
-
-  .disabled {
-    color: rgba(0, 0, 0, .54);
-  }
-}
-
-.hotel-header {
-  h3, button {
-    margin-bottom: 0;
-  }
-  +hr {
-    margin-top: 10px;
-  }
-}
-
-.hotels-search {
-  .sort {
-    h5 { font-size: 16px; }
-  }
-
-  .map-wrap {
-    height: calc(100vh - 130px - #{$navtabs-height});
-    padding-right: 0;
-  }
-
-  .hotels-list {
-    margin-left: 0;
-    height: calc(100vh - 210px - #{$navtabs-height});
-    overflow-y: auto;
-    padding-left: 0;
-    padding-right: 15px;
-    &.selected { height: calc(100vh - 440px - #{$navtabs-height}); }
-  }
-
-  .selection-hr {
-    margin-bottom: 10px;
-  }
-
-  .days {
-    float: right;
-    input {
-      width: 80px;
-      margin-left: 16px;
-    }
-  }
-}
-
-.hotel-card {
-  position: relative;
-  border: 1px dashed #bbb;
-  height: 156px;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-
-  &.last {
-    margin-bottom: 0;
-  }
-
-  &.selected {
-    border: 2px solid $success-color !important;
-    img {
-      max-height: 120px;
-    }
-    .price {
-      content: 'Selected';
-      background-color: $success-color;
-    }
-  }
-
-  &:hover {
-    border: 1px solid $success-color;
-    cursor: pointer;
-    .price {
-      background-color: $success-color;
-    }
-  }
-
-  img {
-    min-width: 119px;
-    min-height: 119px;
-    background-color: #ddd;
-  }
-
-  .sk-circle {
-    margin-top: -80px;
-    margin-left: 40px;
-  }
-
-  .image-wrap {
-    min-width: 132px;
-    padding-left: 0;
-  }
-
-  .content {
-    padding-left: 0;
-    .name {
-      margin-bottom: 0;
-    }
-    .description {
-      font-size: 14px;
-      max-height: 45px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .info {
-      margin-left: 4px;
-      font-size: 14px;
-      text-decoration: underline;
-    }
-  }
-
-  .price {
-    max-width: 77px;
-    min-width: 77px;
-    color: white;
-    background-color: #ddd;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 4px 0 4px 0;
-    overflow: hidden;
-  }
-}
-
-.hotel-info {
-  min-height: 440px;
-  .name {
-    margin-bottom: 0;
-  }
-  .stars {
-    margin-top: 24px;
-    margin-left: 20px;
-    //+hr { clear: both; }
-  }
-  .orbit {
-    img {
-      width: 100%;
-      background-color: #ddd;
-      min-height: 350px;
-      height: calc(100vh - 280px);
-    }
-    .sk-circle {
-      position: absolute;
-      top: calc(50% - 20px);
-      left: calc(50% - 20px);
-    }
-  }
-  .button {
-    margin-top: calc(100vh - 620px);
-    margin-bottom: 0;
-  }
-}
+@import './containers/Flight/flight';
+@import './containers/Hotel/hotel';
+@import './containers/Car/car';
+@import './containers/Phase4/phase4';
+@import './containers/Summary/summary';

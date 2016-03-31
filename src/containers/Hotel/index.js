@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectHotel, setHotelsSort, setHotelDays } from '../actions/hotel';
-import DateHelper from '../util/dateHelper';
-import TripMap from './TripMap';
-import HotelCard from './HotelCard';
-import Sort from './Sort';
-import Button from './Button';
-import Modal from './Modal';
-import HotelInfo from './HotelInfo';
+import { selectHotel, setHotelsSort, setHotelDays } from '../../actions/hotel';
+import { flightCity } from '../../reducers';
+import DateHelper from '../../util/dateHelper';
+import TripMap from '../../components/TripMap';
+import HotelCard from '../../components/HotelCard';
+import Sort from '../../components/Sort';
+import Button from '../../components/Button';
+import Modal from '../../components/Modal';
+import HotelInfo from '../../components/HotelInfo';
 
 class Hotel extends Component {
     static propTypes = {
@@ -161,11 +162,10 @@ class Hotel extends Component {
 }
 
 function mapStateToProps(state) {
-    let selectedFlight = state.flight.flights.find(el => el.id == state.flight.selectedFlight);
-    let flightCityId = selectedFlight && selectedFlight.toCity;
+    let city = flightCity(state);
     return {
-        city: state.city.cities.find(el => el.id == flightCityId),
-        hotels: state.hotel.hotels.filter(el => el.city == flightCityId),
+        city,
+        hotels: state.hotel.hotels.filter(el => el.city == city.id),
         selectedHotel: state.hotel.selectedHotel,
         sorting: state.hotel.sorting,
         days: state.hotel.days

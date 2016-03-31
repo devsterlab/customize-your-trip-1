@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import DateHelper from '../util/dateHelper';
-import Stars from './Stars';
-import Image from './Image';
+import DateHelper from '../../util/dateHelper';
+import Stars from '../Stars';
+import Image from '../Image';
 
 class HotelCard extends Component {
     static propTypes = {

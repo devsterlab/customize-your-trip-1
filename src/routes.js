@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import App from './components/App';
-import Flight from './components/Flight';
-import Hotel from './components/Hotel';
-import Car from './components/Car';
-import Phase4 from './components/Phase4';
-import Summary from './components/Summary';
+import Flight from './containers/Flight';
+import Hotel from './containers/Hotel';
+import Car from './containers/Car';
+import Phase4 from './containers/Phase4';
+import Summary from './containers/Summary';
 
 export default (
     <Route path="/" component={App}>

@@ -1,0 +1,29 @@
+
+.hotel-info {
+  min-height: 440px;
+  .name {
+    margin-bottom: 0;
+  }
+  .stars {
+    margin-top: 24px;
+    margin-left: 20px;
+    //+hr { clear: both; }
+  }
+  .orbit {
+    img {
+      width: 100%;
+      background-color: #ddd;
+      min-height: 350px;
+      height: calc(100vh - 280px);
+    }
+    .sk-circle {
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+    }
+  }
+  .button {
+    margin-top: calc(100vh - 620px);
+    margin-bottom: 0;
+  }
+}

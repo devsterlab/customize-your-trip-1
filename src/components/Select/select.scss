@@ -1,0 +1,30 @@
+
+.select {
+  position: relative;
+
+  .form-error {
+    position: absolute;
+  }
+
+  .options {
+    z-index: 9999;
+    color: #000 !important;
+    border: 1px solid rgba(10, 10, 10, 0.25);
+    border-top: none;
+    background-color: #FFF;
+    margin-top: -16px;
+    width: calc(100% - 30px);
+    position: absolute;
+
+    .item {
+      padding-left: 8px;
+      &:hover {
+        background-color: #BBB;
+        cursor: pointer;
+      }
+      &.search {
+        background-color: #E3F2FD;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import Orbit from './Orbit';
-import Stars from './Stars';
-import Button from './Button';
+import Orbit from '../Orbit';
+import Stars from '../Stars';
+import Button from '../Button';
 
 class HotelInfo extends Component {
     static propTypes = {

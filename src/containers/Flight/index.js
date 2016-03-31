@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectCity } from '../actions/city';
-import { selectFlight, setFlightsSort } from '../actions/flight';
-import DateHelper from '../util/dateHelper';
-import Select from './Select';
-import Progress from './Progress';
-import FlightCard from './FlightCard';
-import Sort from './Sort';
-import Button from './Button';
+import { selectCity } from '../../actions/city';
+import { selectFlight, setFlightsSort } from '../../actions/flight';
+import DateHelper from '../../util/dateHelper';
+import Select from '../../components/Select';
+import Progress from '../../components/Progress/Progress';
+import FlightCard from '../../components/FlightCard';
+import Sort from '../../components/Sort';
+import Button from '../../components/Button';
 
 class Flight extends Component {
     static propTypes = {
@@ -187,7 +187,8 @@ class Flight extends Component {
                             [<FlightCard key="0" flight={this.selectedFlight} small className="selected" />,
                              <Button key="1" className="expanded success large" link="/hotel">
                                  Continue
-                             </Button>]}
+                             </Button>] ||
+                            <h5 className="subheader">None selected</h5>}
                         </div>
                     </div>
                 </div>
