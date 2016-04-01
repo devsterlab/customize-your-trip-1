@@ -13,7 +13,7 @@ class Sort extends Component {
         super(props);
 
         this.handleClick = this._handleClick.bind(this);
-        this.state = {asc: props.asc || false};
+        this.state = {asc: props.asc == null || props.asc};
     }
 
     _handleClick() {

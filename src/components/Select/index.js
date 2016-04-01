@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import IconButton from '../IconButton';
 
 class Select extends Component {
     static propTypes = {
@@ -10,7 +11,8 @@ class Select extends Component {
         nameField: PropTypes.string,
         placeholder: PropTypes.string,
         error: PropTypes.string,
-        onChange: PropTypes.func
+        onChange: PropTypes.func,
+        clearButton: PropTypes.bool
     };
 
     constructor(props) {
@@ -30,6 +32,7 @@ class Select extends Component {
 
         this.handleItemNameChange = this._handleItemNameChange.bind(this);
         this.onBlur = this._onBlur.bind(this);
+        this.onClear = this._onClear.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -41,14 +44,14 @@ class Select extends Component {
         }
     }
 
-    _handleItemNameChange(e) {
+    _handleItemNameChange(e, hideOptions = false) {
         let item = this.props.collection.find(el => el[this.props.nameField] == e.target.value);
         this.props.onChange(item);
         let [searchCollection, restCollection] = this.searchFilter(
             this.props.collection, item, this.props.nameField, e.target.value);
         this.setState({
             item, itemName: item && item[this.props.nameField] || e.target.value,
-            hideOptions: false,
+            hideOptions,
             searchCollection,
             restCollection
         });
@@ -70,7 +73,8 @@ class Select extends Component {
     }
 
     showHideOptions(hideOptions) {
-        this.setState({hideOptions});
+        if (!hideOptions && this.cleared) this.cleared = false;
+        else this.setState({hideOptions});
     }
 
     setItem(item) {
@@ -89,6 +93,11 @@ class Select extends Component {
         else this.itemSet = false;
     }
 
+    _onClear(e) {
+        this.cleared = true;
+        this.handleItemNameChange({target: {value: ''}}, true);
+    }
+
     render () {
         return (
             <div className={`select ${this.props.className}`}>
@@ -98,6 +107,9 @@ class Select extends Component {
                            onClick={() => this.showHideOptions(false)} onBlur={this.onBlur}
                            type="text" placeholder={this.props.placeholder}
                            value={this.state.itemName} onChange={this.handleItemNameChange} />
+                    {this.props.clearButton && this.state.itemName.length &&
+                        <IconButton className="mdi-close-circle clear-button" title="Clear" onClick={this.onClear}/>
+                    || ''}
                     <span className={'form-error ' + (!this.isValid() ? 'is-visible' : '')}>
                         {this.props.error}
                     </span>

@@ -1,0 +1,9 @@
+
+.icon-button {
+  cursor: pointer;
+  color: rgba(0, 0, 0, .38);
+
+  &:hover {
+    color: rgba(0, 0, 0, .87);
+  }
+}
