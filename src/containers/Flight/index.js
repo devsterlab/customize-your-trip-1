@@ -65,18 +65,20 @@ class Flight extends Component {
         this.selectFlight = this._selectFlight.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        this.setState(this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
+    handleCityChange(city, from, to) {
+        let state = Object.assign({}, this.handleCityNotFound(city, from));
+        let otherCity = this.props['selectedCity' + to];
+        if (city && otherCity) Object.assign(state, this.handleCitiesEqual(city.id, otherCity));
+        this.setState(state);
+        this.props.actions.selectCity(city && city.id, from);
     }
 
     _handleCityFromChange(city) {
-        this.setState(this.handleCityNotFound(city, 'From'));
-        this.props.actions.selectCity(city && city.id, 'From');
+        this.handleCityChange(city, 'From', 'To');
     }
 
     _handleCityToChange(city) {
-        this.setState(this.handleCityNotFound(city, 'To'));
-        this.props.actions.selectCity(city && city.id, 'To');
+        this.handleCityChange(city, 'To', 'From');
     }
 
     handleCityNotFound(city, fromTo) {
@@ -85,7 +87,7 @@ class Flight extends Component {
     }
 
     handleCitiesEqual(cityFromId, cityToId) {
-        if (cityFromId && cityToId && (cityFromId == cityToId)) {
+        if (cityFromId == cityToId) {
             return {errorCityTo: 'Select another city'};
         }
         return {errorCityTo: null};

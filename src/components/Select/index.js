@@ -6,6 +6,7 @@ class Select extends Component {
         children: PropTypes.node,
         collection: PropTypes.array,
         itemId: PropTypes.string,
+        itemName: PropTypes.string,
         nameField: PropTypes.string,
         placeholder: PropTypes.string,
         error: PropTypes.string,
@@ -15,10 +16,13 @@ class Select extends Component {
     constructor(props) {
         super(props);
 
-        let item = props.collection.find(el => el.id == props.itemId);
+        let item;
+        if (props.itemId) item = props.collection.find(el => el.id == props.itemId);
+        else if (props.itemName) item = props.collection.find(el => el.name == props.itemName);
+
         this.state = {
             item: item || {},
-            itemName: item && item[props.nameField] || '',
+            itemName: item && item[props.nameField] || props.itemName || '',
             hideOptions: true,
             searchCollection: [],
             restCollection: props.collection
@@ -62,7 +66,7 @@ class Select extends Component {
     }
     
     isValid() {
-        return !!(this.state.item && !this.props.error);
+        return !!(this.state.item && !this.props.error || !this.state.itemName.length);
     }
 
     showHideOptions(hideOptions) {
@@ -94,18 +98,18 @@ class Select extends Component {
                            onClick={() => this.showHideOptions(false)} onBlur={this.onBlur}
                            type="text" placeholder={this.props.placeholder}
                            value={this.state.itemName} onChange={this.handleItemNameChange} />
-                    <span className={'form-error ' + (this.props.error ? 'is-visible' : '')}>
+                    <span className={'form-error ' + (!this.isValid() ? 'is-visible' : '')}>
                         {this.props.error}
                     </span>
                 </label>
                 <div className={`options ${this.state.hideOptions && 'hide' || ''}`}>
-                    {this.state.searchCollection.map(item =>
-                        <div className={`item search `} key={item.id} onMouseDown={() => this.setItem(item)}>
+                    {this.state.searchCollection.map((item, index) =>
+                        <div className={`item search `} key={index} onMouseDown={() => this.setItem(item)}>
                             {item[this.props.nameField]}
                         </div>
                     )}
-                    {this.state.restCollection.map(item =>
-                        <div className={`item rest `} key={item.id} onMouseDown={() => this.setItem(item)}>
+                    {this.state.restCollection.map((item, index) =>
+                        <div className={`item rest `} key={index} onMouseDown={() => this.setItem(item)}>
                             {item[this.props.nameField]}
                         </div>
                     )}
