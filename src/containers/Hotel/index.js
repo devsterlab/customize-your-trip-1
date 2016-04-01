@@ -11,6 +11,7 @@ import Sort from '../../components/Sort';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import HotelInfo from '../../components/HotelInfo';
+import InputNumber from '../../components/InputNumber';
 
 class Hotel extends Component {
     static propTypes = {
@@ -99,11 +100,6 @@ class Hotel extends Component {
         this.props.actions.selectHotel(hotel.id);
     }
 
-    onDaysBlur(days) {
-        if (days > this.props.maxDays) this.props.actions.setHotelDays(this.props.maxDays);
-        else if (days < 1) this.props.actions.setHotelDays(1);
-    }
-
     _handleHotelInfoClick(hotelInfo) {
         this.setState({hotelInfo});
     }
@@ -142,10 +138,9 @@ class Hotel extends Component {
                                 <h4 className="inline">Current selection</h4>
                                 <div className="inline days">
                                     <span>Days to stay:</span>
-                                    <input className="inline" type="number" min="1" max={this.props.maxDays}
+                                    <InputNumber className="inline" min={1} max={this.props.maxDays}
                                            value={this.props.days}
-                                           onChange={(e) => this.props.actions.setHotelDays(+e.target.value)}
-                                           onBlur={(e) => this.onDaysBlur(e.target.value)}/>
+                                           onChange={num => this.props.actions.setHotelDays(num)} />
                                 </div>
                             </div>
                             <HotelCard hotel={this.selectedHotel} className="selected"

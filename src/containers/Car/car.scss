@@ -7,3 +7,39 @@
     margin-top: 10px;
   }
 }
+
+.cars-search {
+  .filtering {
+    padding-left: 0;
+  }
+  .cars-list {
+    padding-right: 0;
+
+    ul {
+      margin-left: 0;
+      height: calc(100vh - 160px - #{$navtabs-height});
+      overflow-y: auto;
+      padding-right: 16px;
+    }
+  }
+
+  .days {
+    input {
+      width: 77px;
+      margin-left: 16px;
+    }
+  }
+
+  .clear-selection {
+    margin-top: 5px;
+  }
+
+  .select {
+    .form-error {
+      top: 70px;
+    }
+    .options {
+      width: 100%;
+    }
+  }
+}

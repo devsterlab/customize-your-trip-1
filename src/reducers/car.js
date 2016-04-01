@@ -15,6 +15,10 @@ export default function car(state = initialState, action) {
             return Object.assign({}, state, {selectedCar: action.id});
         case types.SET_CARS_SORT:
             return Object.assign({}, state, {sorting: {field: action.field, asc: action.asc}});
+        case types.SET_CARS_FILTERS:
+            return Object.assign({}, state, {filters: action.filters});
+        case types.SET_CAR_DAYS:
+            return Object.assign({}, state, {days: action.days});
         default:
             return state;
     }

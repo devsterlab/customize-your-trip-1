@@ -1,6 +1,14 @@
 
 .car-card {
   height: 156px;
+  min-width: 432px;
+
+  &.selected {
+    min-width: 370px;
+    .content {
+      width: 200px;
+    }
+  }
 
   img {
     max-height: 120px;
