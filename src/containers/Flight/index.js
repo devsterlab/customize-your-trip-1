@@ -137,9 +137,9 @@ class Flight extends Component {
 
     render() {
         return (
-            <div className="height-100">
+            <div className="height-100 flight-page">
+                <Progress loaded={!!this.props.cities.length} />
                 <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
-                    <Progress loaded={!!this.props.cities.length} />
                     <Select className="medium-5 columns" error={this.state.errorCityFrom}
                         id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
                         nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>

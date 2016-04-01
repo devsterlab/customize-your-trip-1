@@ -11,7 +11,7 @@ class InputNumber extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {value: props.value};
+        this.state = {value: props.value || props.max};
         this.handleChange = this._handleChange.bind(this);
     }
 

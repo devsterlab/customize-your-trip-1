@@ -59,10 +59,10 @@ class Car extends Component {
         this.selectedCar = props.cars.find(el => el.id == props.selectedCar);
         let filteredCars = this.filter(props.cars, props.filters);
         this.state = {
-            cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc),
             brands: this.readAvailableTypes(props.cars, 'brand'),
             models: this.readAvailableTypes(props.cars, 'model'),
-            carTypes: this.readAvailableTypes(props.cars, 'carType')
+            carTypes: this.readAvailableTypes(props.cars, 'carType'),
+            cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc)
         };
 
         this.selectCar = this._selectCar.bind(this);
@@ -93,7 +93,13 @@ class Car extends Component {
         if (!(filters && Object.keys(filters).length)) return cars;
         return cars.filter(car => {
             for (let field in filters) {
-                if (car[field] != filters[field]) return false;
+                if (field == 'maxPassengers') {
+                    if (car[field] > filters[field]) return false;
+                }
+                else if (field == 'transmission') {
+                    if (!filters[field][car[field]]) return false;
+                }
+                else if (car[field] != filters[field]) return false;
             }
             return true;
         });
@@ -126,17 +132,26 @@ class Car extends Component {
             if (!value) this.setState({['error' + type]: 'Not found'});
             return;
         }
+        let filters = Object.assign({}, this.props.filters), state;
         if (!value) {
-            let filters = Object.assign({}, this.props.filters);
             delete filters[type];
-            this.setState({['error' + type]: 'Not found', cars: this.sort(this.filter(this.props.cars, filters))});
-            this.props.actions.setCarsFilters(filters);
+            state = {['error' + type]: 'Not found'};
         }
         else {
-            let filters = Object.assign({}, this.props.filters, {[type]: value.name});
-            this.setState({['error' + type]: null, cars: this.sort(this.filter(this.props.cars, filters))});
-            this.props.actions.setCarsFilters(filters);
+            Object.assign(filters, {[type]: value.name});
+            state = {['error' + type]: null};
         }
+        state.cars = this.sort(this.filter(this.props.cars, filters));
+        this.setState(state);
+        this.props.actions.setCarsFilters(filters);
+    }
+
+    onTransmissionChange(type, checked) {
+        let otherType = type == 'manual' ? 'automatic' : 'manual';
+        let transmissionFilter;
+        if (checked  || this.props.filters.transmission[otherType])
+            transmissionFilter = Object.assign({}, this.props.filters.transmission, {[type]: checked});
+        this.setFilter('transmission', transmissionFilter && {name: transmissionFilter});
     }
 
     render() {
@@ -176,6 +191,21 @@ class Car extends Component {
                                 onChange={carType => this.setFilter('carType', carType)}>
                             Car Type
                         </Select>
+                        <fieldset>
+                            <legend>Transmission</legend>
+                            <input type="checkbox" value="manual" id="trManual"
+                                   checked={this.props.filters.transmission && this.props.filters.transmission.manual}
+                                   onChange={e => this.onTransmissionChange('manual', e.target.checked)}/>
+                            <label htmlFor="trManual">Manual</label>
+                            <input type="checkbox" value="automatic" id="trAuto"
+                                   checked={this.props.filters.transmission && this.props.filters.transmission.automatic}
+                                   onChange={e => this.onTransmissionChange('automatic', e.target.checked)}/>
+                            <label htmlFor="trAuto">Automatic</label>
+                        </fieldset>
+                        <label>Max passengers
+                        <InputNumber min={2} max={10} value={this.props.filters.maxPassengers}
+                                     onChange={num => this.setFilter('maxPassengers', {name: num})} />
+                        </label>
                     </div>
                     <div className="medium-5 columns cars-list">
                         <div>
@@ -197,10 +227,10 @@ class Car extends Component {
                         ||
                         <h3 className="subheader">Cars not found</h3>}
                     </div>
-                    <div className="medium-4 columns">
+                    <div className="medium-4 columns selection">
                         <h4 className="inline">Current selection</h4>
                         {this.selectedCar &&
-                        <IconButton className="mdi-close-circle float-right clear-selection" title="Clear selection"
+                        <IconButton className="mdi-close-circle float-right clear" title="Clear selection"
                                     onClick={() => this.selectCar(null)}/>}
                         {this.selectedCar &&
                         <div>
@@ -214,7 +244,7 @@ class Car extends Component {
                             </div>
                         </div>
                         ||
-                        <h5 className="subheader">None selected</h5>}
+                        <h3 className="subheader">None selected</h3>}
                     </div>
                 </div>
             </div>

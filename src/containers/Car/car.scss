@@ -30,8 +30,11 @@
     }
   }
 
-  .clear-selection {
-    margin-top: 5px;
+  .selection {
+    padding-right: 0;
+    .clear {
+      margin-top: 5px;
+    }
   }
 
   .select {
