@@ -14,6 +14,21 @@
       margin-top: 20px;
     }
 
+    &.last {
+      .item.last {
+        .line.bottom {
+          display: none;
+        }
+      }
+
+      &.no-items {
+        padding-bottom: 30px;
+        .line {
+          display: none;
+        }
+      }
+    }
+
     .title {
       width: 100%;
       position: relative;
@@ -119,14 +134,6 @@
 
         > .price {
           background-color: $timeline-back-color;
-        }
-      }
-    }
-
-    &.last {
-      .item.last {
-        .line.bottom {
-          display: none;
         }
       }
     }

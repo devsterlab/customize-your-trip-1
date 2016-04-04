@@ -37,8 +37,12 @@ class DateHelper {
     }
 
 
-    static format(date) {
+    static formatDateMonth(date) {
         return DateHelper.zerofy(date.getDate()) + '/' + DateHelper.zerofy(date.getMonth());
+    }
+
+    static formatDays(days) {
+        return `${days} ${days > 1 ? 'days' : 'day'}`;
     }
 
     static shortMonth(date) {

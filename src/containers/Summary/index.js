@@ -13,6 +13,7 @@ import Actions from '../../components/Timeline/Actions';
 import FlightCard from '../../components/FlightCard';
 import HotelCard from '../../components/HotelCard';
 import CarCard from '../../components/CarCard';
+import Button from '../../components/Button';
 
 class Summary extends Component {
     static propTypes = {
@@ -61,44 +62,62 @@ class Summary extends Component {
 
     render() {
         let { flight, hotel, car, hotelDays, carDays } = this.props;
-        let date = new Date(), days = Math.max(hotelDays, carDays);
-        let arriveDate = DateHelper.addTimeStr(date, flight.duration);
-        let tripDate = DateHelper.addDays(arriveDate, days);
+        const summaryAvailable = flight && hotel;
+        if (summaryAvailable) {
+            var date = new Date(), days = Math.max(hotelDays, carDays);
+            var arriveDate = DateHelper.addTimeStr(date, flight.duration);
+            var tripDate = DateHelper.addDays(arriveDate, days);
+        }
 
         return (
-            <div className="summary">
+            summaryAvailable &&
+            <div className="summary row height-100">
                 <h3 className="header">Your <strong>trip summary</strong> looks great!</h3>
+                <Button className="success float-right large continue-button" link="/flight">
+                    Continue
+                </Button>
                 <hr className="divider"/>
                 <Timeline>
                     <Category className="first">
                         <Title date={date} icon="mdi-home">{flight.fromCityName}</Title>
-                        <Item icon="mdi-airplane">
+                        <Item icon="mdi-airplane" className="last">
                             <Content>
                                 <FlightCard flight={flight}/>
                             </Content>
                             <Actions></Actions>
                         </Item>
                     </Category>
-                    <Category className="last">
+                    <Category>
                         <Title date={arriveDate} icon="mdi-city"
-                               secondary={`${DateHelper.format(arriveDate)} - ${DateHelper.format(tripDate)}`
-                               + ` | ${days} ${days > 1 ? 'days' : 'day'}`}>
+                               secondary={`${DateHelper.formatDateMonth(arriveDate)} - ${DateHelper.formatDateMonth(tripDate)}`
+                               + ` | ${DateHelper.formatDays(days)}`}>
                             {flight.toCityName}
                         </Title>
                         <Item icon="mdi-hotel" className={`${!car && 'last'}`}>
                             <Content>
-                                <HotelCard hotel={hotel}/>
+                                <HotelCard hotel={hotel} price={hotel.price} days={hotelDays}/>
                             </Content>
                             <Actions></Actions>
                         </Item>
                         {car && <Item icon="mdi-car" className="last">
                             <Content>
-                                <CarCard car={car}/>
+                                <CarCard car={car} price={car.price} days={carDays}/>
                             </Content>
                             <Actions></Actions>
                         </Item>}
                     </Category>
+                    <Category className="last">
+                        <Title date={tripDate} icon="mdi-flag-checkered"
+                               secondary={`${DateHelper.formatDateMonth(arriveDate)} - ${DateHelper.formatDateMonth(tripDate)}`
+                               + ` | ${DateHelper.formatDays(days)}`}>
+                            Trip end:&nbsp;
+                            <strong>${flight.price + (hotel.price * hotelDays) + (car && (car.price * carDays) || 0)}</strong>
+                        </Title>
+                    </Category>
                 </Timeline>
+            </div> ||
+            <div className="height-100">
+                <h2 className="subheader text-center">{flight ? 'Hotel' : 'Flight'} not selected</h2>
             </div>
         );
     }

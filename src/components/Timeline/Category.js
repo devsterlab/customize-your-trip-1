@@ -9,7 +9,7 @@ class Category extends Component {
     render() {
         let { className, children, ...other } = this.props;
         return (
-            <div className={`category ${className || ''}`} {...other}>
+            <div className={`category ${className || ''} ${children.type && 'no-items'}`} {...other}>
                 {children}
             </div>
         );

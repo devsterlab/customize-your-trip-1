@@ -23,10 +23,10 @@ class FlightCard extends Component {
     convertDates(props) {
         this.departDate = DateHelper.timeZStrToDate(props.flight.departTime, 2);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);
-        this.departDateStr = DateHelper.format(this.departDate);
+        this.departDateStr = DateHelper.formatDateMonth(this.departDate);
         this.arriveDate = DateHelper.addTimeStr(this.departDate, props.flight.duration);
         this.arriveTimeStr = DateHelper.toTimeStr(this.arriveDate);
-        this.arriveDateStr = DateHelper.format(this.arriveDate);
+        this.arriveDateStr = DateHelper.formatDateMonth(this.arriveDate);
     }
 
     render() {

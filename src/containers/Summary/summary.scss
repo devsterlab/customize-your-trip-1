@@ -1,6 +1,10 @@
 .summary {
   .header {
+    float: left;
+    margin-top: 5px;
+    margin-bottom: 0;
     color: $timeline-text-color;
+    margin-left: calc(16.67% - 118px);
   }
 
   .divider {
@@ -10,5 +14,9 @@
   .timeline {
     height: calc(100vh - 80px - #{$navtabs-height});
     overflow-y: auto;
+  }
+
+  .continue-button {
+    margin-right: 20px;
   }
 }

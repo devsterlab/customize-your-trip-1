@@ -19,16 +19,16 @@ class HotelCard extends Component {
     }
 
     render() {
-        let {hotel} = this.props;
+        let { children, hotel, onClick, onInfoClick, className, price, ...other } = this.props;
         return (
-            <Card className={`hotel-card ${this.props.className || ''}`} image={hotel.images[0]}
-                  price={`$ ${this.props.price > 0 && this.props.price || hotel.price}`}
-                  onClick={() => this.props.onClick && this.props.onClick(hotel)}>
+            <Card className={`hotel-card ${className || ''}`} image={hotel.images[0]} {...other}
+                  price={price > 0 && price || hotel.price}
+                  onClick={() => onClick && onClick(hotel)}>
                 <h5 className="name">{hotel.name}</h5>
                 <Stars count={hotel.stars}/>
 
                 <div className="description">{hotel.description}</div>
-                {this.props.onInfoClick && <div onClick={e => this.handleInfoClick(e)}>
+                {onInfoClick && <div onClick={e => this.handleInfoClick(e)}>
                     <i className="mdi mdi-information"></i>
                     <span className="info">Hotel information</span>
                 </div>}

@@ -58,5 +58,14 @@
     bottom: 0;
     padding: 4px 0 4px 0;
     overflow: hidden;
+
+    &.days {
+      max-width: 100%;
+      min-width: 180px;
+    }
+
+    .calc {
+      font-size: 12px;
+    }
   }
 }

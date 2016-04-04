@@ -13,11 +13,11 @@ class CarCard extends Component {
     };
 
     render() {
-        let {car} = this.props;
+        let { children, car, onClick, className, price, ...other } = this.props;
         return (
-            <Card className={`car-card ${this.props.className || ''}`} image={car.image}
-                  price={`$ ${this.props.price > 0 && this.props.price || car.price}`}
-                  onClick={() => this.props.onClick && this.props.onClick(car)}>
+            <Card className={`car-card ${className || ''}`} image={car.image} {...other}
+                  price={price > 0 && price || car.price}
+                  onClick={() => onClick && onClick(car)}>
                 <h5>{`${car.brand} ${car.model}`}</h5>
                 <div>Type: {car.carType}</div>
                 <div>Transmission: {car.transmission}</div>

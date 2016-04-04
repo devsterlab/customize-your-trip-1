@@ -118,7 +118,7 @@ class Hotel extends Component {
                         <h3>{this.props.city.name}</h3>
                         <span>
                             Day 1-{this.props.days}&nbsp;
-                            ({DateHelper.format(date)} - {DateHelper.format(DateHelper.addDays(date, this.props.days))})
+                            ({DateHelper.formatDateMonth(date)} - {DateHelper.formatDateMonth(DateHelper.addDays(date, this.props.days))})
                         </span>
                     </div>
                     <Button className="success float-right large continue-button" disabled={!this.selectedHotel} link="/car">

@@ -164,8 +164,8 @@ class Car extends Component {
                         <h3>{this.props.city.name}</h3>
                         <span>
                             Day 1-{this.props.hotelDays}&nbsp;
-                            ({DateHelper.format(date)} -&nbsp;
-                            {DateHelper.format(DateHelper.addDays(date, Math.max(this.props.hotelDays, this.props.carDays)))})
+                            ({DateHelper.formatDateMonth(date)} -&nbsp;
+                            {DateHelper.formatDateMonth(DateHelper.addDays(date, Math.max(this.props.hotelDays, this.props.carDays)))})
                         </span>
                     </div>
                     <Button className="success float-right large continue-button" link="/summary">

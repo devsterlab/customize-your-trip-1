@@ -13,6 +13,8 @@ export default function hotel(state = initialState, action) {
             return Object.assign({}, state, {hotels: action.hotels, hotelsLoaded: true});
         case types.SELECT_HOTEL:
             return Object.assign({}, state, {selectedHotel: action.id});
+        case types.SELECT_FLIGHT:
+            return Object.assign({}, state, {selectedHotel: ''});
         case types.SET_HOTELS_SORT:
             return Object.assign({}, state, {sorting: {field: action.field, asc: action.asc}});
         case types.SET_HOTEL_DAYS:
