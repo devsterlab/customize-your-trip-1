@@ -16,6 +16,9 @@ $pagination-item-padding: rem-calc(6 15);
 
 $navtabs-height: 85px;
 
+$timeline-back-color: #4A148C;
+$timeline-text-color: darken($timeline-back-color, 13%);
+
 button {
   outline: none;
 }

@@ -1,8 +1,6 @@
 
 .timeline {
   $side-min-width: 120px;
-  $timeline-back-color: #4A148C;
-  $timeline-text-color: darken($timeline-back-color, 13%);
 
   .line {
     position: absolute;
@@ -12,7 +10,12 @@
   }
 
   .category {
+    &.first {
+      margin-top: 20px;
+    }
+
     .title {
+      width: 100%;
       position: relative;
 
       .side {
@@ -67,6 +70,7 @@
 
     .item {
       $icon-margin-top: 14px;
+      width: 100%;
       position: relative;
       padding-bottom: 10px;
 
@@ -108,6 +112,14 @@
       .line.bottom {
         height: calc(100% - #{$icon-margin-top} - 27px);
         bottom: 0;
+      }
+
+      .card {
+        border: 1px solid $timeline-back-color;
+
+        > .price {
+          background-color: $timeline-back-color;
+        }
       }
     }
 

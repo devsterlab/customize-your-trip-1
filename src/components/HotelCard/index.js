@@ -28,10 +28,10 @@ class HotelCard extends Component {
                 <Stars count={hotel.stars}/>
 
                 <div className="description">{hotel.description}</div>
-                <div onClick={e => this.handleInfoClick(e)}>
+                {this.props.onInfoClick && <div onClick={e => this.handleInfoClick(e)}>
                     <i className="mdi mdi-information"></i>
                     <span className="info">Hotel information</span>
-                </div>
+                </div>}
             </Card>
         );
     }

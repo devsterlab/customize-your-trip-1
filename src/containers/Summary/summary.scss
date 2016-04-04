@@ -1,0 +1,14 @@
+.summary {
+  .header {
+    color: $timeline-text-color;
+  }
+
+  .divider {
+    margin-bottom: 0;
+  }
+
+  .timeline {
+    height: calc(100vh - 80px - #{$navtabs-height});
+    overflow-y: auto;
+  }
+}

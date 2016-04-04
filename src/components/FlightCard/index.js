@@ -24,7 +24,7 @@ class FlightCard extends Component {
         this.departDate = DateHelper.timeZStrToDate(props.flight.departTime, 2);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);
         this.departDateStr = DateHelper.format(this.departDate);
-        this.arriveDate = DateHelper.addTime(this.departDate, props.flight.duration);
+        this.arriveDate = DateHelper.addTimeStr(this.departDate, props.flight.duration);
         this.arriveTimeStr = DateHelper.toTimeStr(this.arriveDate);
         this.arriveDateStr = DateHelper.format(this.arriveDate);
     }

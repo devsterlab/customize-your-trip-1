@@ -17,7 +17,7 @@ class DateHelper {
         return date;
     }
 
-    static addTime(date, time) {
+    static addTimeStr(date, time) {
         let [hours, minutes] = time.split(':');
         return new Date(date.getTime() + hours * hour + minutes * minute);
     }
