@@ -40,6 +40,10 @@ class DateHelper {
     static format(date) {
         return DateHelper.zerofy(date.getDate()) + '/' + DateHelper.zerofy(date.getMonth());
     }
+
+    static shortMonth(date) {
+        return date.toString().split(' ')[1].toLowerCase();
+    }
 }
 
 export default DateHelper;
