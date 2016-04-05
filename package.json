@@ -4,7 +4,8 @@
   "description": "Webpack, React, Redux, ES6, Foundation",
   "scripts": {
     "start": "webpack-dev-server",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "startApp": "node server/app.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,13 @@
+{
+  "port": 8080,
+  "mongoose": {
+    "uri": "mongodb://127.0.0.1:27017/trip",
+    "options": {
+      "server": {
+        "socketOptions": {
+          "keepAlive": 1
+        }
+      }
+    }
+  }
+}
