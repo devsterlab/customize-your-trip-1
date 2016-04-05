@@ -8,7 +8,8 @@ class FlightCard extends Component {
         flight: PropTypes.object,
         onClick: PropTypes.func,
         small: PropTypes.bool,
-        className: PropTypes.string
+        className: PropTypes.string,
+        date: PropTypes.object
     };
 
     constructor(props) {
@@ -21,7 +22,7 @@ class FlightCard extends Component {
     }
 
     convertDates(props) {
-        this.departDate = DateHelper.timeZStrToDate(props.flight.departTime, 2);
+        this.departDate = DateHelper.timeZStrToDate(props.date, props.flight.departTime, 2);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);
         this.departDateStr = DateHelper.formatDateMonth(this.departDate);
         this.arriveDate = DateHelper.addTimeStr(this.departDate, props.flight.duration);

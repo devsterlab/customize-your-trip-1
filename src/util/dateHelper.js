@@ -8,8 +8,7 @@ class DateHelper {
         return new Date(hours * hour + minutes * minute).getTime();
     }
 
-    static timeZStrToDate (timeStr, timezone) {
-        let dateNow = new Date();
+    static timeZStrToDate (dateNow, timeStr, timezone) {
         let date = new Date(timeStr + ' ' + timezone);
         date.setFullYear(dateNow.getFullYear());
         date.setMonth(dateNow.getMonth());

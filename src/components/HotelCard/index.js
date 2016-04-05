@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import DateHelper from '../../util/dateHelper';
 import Card from '../Card';
 import Stars from '../Stars';
 

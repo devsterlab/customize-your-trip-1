@@ -4,6 +4,7 @@ export const SELECT_CITY = 'SELECT_CITY';
 export const SET_FLIGHTS = 'SET_FLIGHTS';
 export const SELECT_FLIGHT = 'SELECT_FLIGHT';
 export const SET_FLIGHTS_SORT = 'SET_FLIGHTS_SORT';
+export const SET_FLIGHTS_SEARCHED = 'SET_FLIGHTS_SEARCHED';
 
 export const SET_HOTELS = 'SET_HOTELS';
 export const SELECT_HOTEL = 'SELECT_HOTEL';
@@ -15,3 +16,5 @@ export const SELECT_CAR = 'SELECT_CAR';
 export const SET_CARS_SORT = 'SET_CARS_SORT';
 export const SET_CARS_FILTERS = 'SET_CARS_FILTERS';
 export const SET_CAR_DAYS = 'SET_CAR_DAYS';
+
+export const CONTINUE_TRIP = 'CONTINUE_TRIP';

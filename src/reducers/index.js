@@ -3,12 +3,17 @@ import city from './city';
 import flight from './flight';
 import hotel from './hotel';
 import car from './car';
+import summary from './summary';
 
-const rootReducer = combineReducers({
-    city, flight, hotel, car
+const main = combineReducers({
+    city, flight, hotel, car, summary //summary here is needed because of combineReducers registering
 });
 
-export default rootReducer;
+export default function rootReducer(state, action) {
+    return Object.assign({}, main(state, action), {
+        summary: summary(state, action)
+    });
+}
 
 export function flightCity(state) {
     if (!state.flight.selectedFlight) return;

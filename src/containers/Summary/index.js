@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { continueTrip } from '../../actions/summary';
 import DateHelper from '../../util/dateHelper';
 
 import Timeline from '../../components/Timeline';
@@ -18,124 +19,153 @@ import Button from '../../components/Button';
 class Summary extends Component {
     static propTypes = {
         children: PropTypes.node,
-        flight: PropTypes.shape({
-            id: PropTypes.string,
-            fromCity: PropTypes.string,
-            toCity: PropTypes.string,
-            fromCityName: PropTypes.string,
-            toCityName: PropTypes.string,
-            companyName: PropTypes.string,
-            available: PropTypes.number,
-            price: PropTypes.number,
-            departTime: PropTypes.string,
-            duration: PropTypes.string
-        }),
-        hotel: PropTypes.shape({
-            id: PropTypes.string,
-            city: PropTypes.string,
-            cityName: PropTypes.string,
-            name: PropTypes.string,
-            popularity: PropTypes.number,
-            images: PropTypes.arrayOf(PropTypes.string),
-            stars: PropTypes.number,
-            latitude: PropTypes.number,
-            longitude: PropTypes.number,
-            address: PropTypes.string,
-            description: PropTypes.string,
+        steps: PropTypes.arrayOf(PropTypes.shape({
+            flight: PropTypes.shape({
+                id: PropTypes.string,
+                fromCity: PropTypes.string,
+                toCity: PropTypes.string,
+                fromCityName: PropTypes.string,
+                toCityName: PropTypes.string,
+                companyName: PropTypes.string,
+                available: PropTypes.number,
+                price: PropTypes.number,
+                departTime: PropTypes.string,
+                duration: PropTypes.string
+            }),
+            hotel: PropTypes.shape({
+                id: PropTypes.string,
+                city: PropTypes.string,
+                cityName: PropTypes.string,
+                name: PropTypes.string,
+                popularity: PropTypes.number,
+                images: PropTypes.arrayOf(PropTypes.string),
+                stars: PropTypes.number,
+                latitude: PropTypes.number,
+                longitude: PropTypes.number,
+                address: PropTypes.string,
+                description: PropTypes.string,
+                price: PropTypes.number
+            }),
+            car: PropTypes.shape({
+                id: PropTypes.string,
+                city: PropTypes.string,
+                cityName: PropTypes.string,
+                brand: PropTypes.string,
+                model: PropTypes.string,
+                image: PropTypes.string,
+                carType: PropTypes.string,
+                price: PropTypes.number,
+                transmission: PropTypes.oneOf(['manual', 'automatic']),
+                maxPassengers: PropTypes.number
+            }),
+            hotelDays: PropTypes.number,
+            carDays: PropTypes.number,
+            date: PropTypes.object,
+            dateFrom: PropTypes.object,
+            dateTo: PropTypes.object,
+            days: PropTypes.number,
             price: PropTypes.number
-        }),
-        car: PropTypes.shape({
-            id: PropTypes.string,
-            city: PropTypes.string,
-            cityName: PropTypes.string,
-            brand: PropTypes.string,
-            model: PropTypes.string,
-            image: PropTypes.string,
-            carType: PropTypes.string,
-            price: PropTypes.number,
-            transmission: PropTypes.oneOf(['manual', 'automatic']),
-            maxPassengers: PropTypes.number
-        }),
-        hotelDays: PropTypes.number,
-        carDays: PropTypes.number
+        })),
+        homeCity: PropTypes.string,
+        days: PropTypes.number,
+        price: PropTypes.number,
+        continued: PropTypes.bool
     };
 
+    constructor(props) {
+        super(props);
+
+        if (!props.steps.length) this.props.actions.continueTrip(false);
+        else this.props.actions.continueTrip(false, true);
+    }
+
+    handleContinueClick() {
+        if (!this.props.continued) this.props.actions.continueTrip(true, true, true);
+        else this.props.actions.continueTrip(true, false);
+    }
+
     render() {
-        let { flight, hotel, car, hotelDays, carDays } = this.props;
-        const summaryAvailable = flight && hotel;
-        if (summaryAvailable) {
-            var date = new Date(), days = Math.max(hotelDays, carDays);
-            var arriveDate = DateHelper.addTimeStr(date, flight.duration);
-            var tripDate = DateHelper.addDays(arriveDate, days);
-        }
+        let { steps, homeCity, days, price } = this.props;
+        const summaryAvailable = steps.length;
+        if (summaryAvailable) var firstStep = steps[0], lastStep = steps[steps.length - 1];
 
         return (
             summaryAvailable &&
             <div className="summary row height-100">
                 <h3 className="header">Your <strong>trip summary</strong> looks great!</h3>
-                <Button className="success float-right large continue-button" link="/flight">
+                <Button className="success float-right large continue-button" link="/flight"
+                        onClick={() => this.handleContinueClick()}>
                     Continue
                 </Button>
                 <hr className="divider"/>
                 <Timeline>
-                    <Category className="first">
-                        <Title date={date} icon="mdi-home">{flight.fromCityName}</Title>
-                        <Item icon="mdi-airplane" className="last">
-                            <Content>
-                                <FlightCard flight={flight}/>
-                            </Content>
-                            <Actions></Actions>
-                        </Item>
-                    </Category>
-                    <Category>
-                        <Title date={arriveDate} icon="mdi-city"
-                               secondary={`${DateHelper.formatDateMonth(arriveDate)} - ${DateHelper.formatDateMonth(tripDate)}`
-                               + ` | ${DateHelper.formatDays(days)}`}>
-                            {flight.toCityName}
-                        </Title>
-                        <Item icon="mdi-hotel" className={`${!car && 'last'}`}>
-                            <Content>
-                                <HotelCard hotel={hotel} price={hotel.price} days={hotelDays}/>
-                            </Content>
-                            <Actions></Actions>
-                        </Item>
-                        {car && <Item icon="mdi-car" className="last">
-                            <Content>
-                                <CarCard car={car} price={car.price} days={carDays}/>
-                            </Content>
-                            <Actions></Actions>
-                        </Item>}
-                    </Category>
+                    {steps.map((step, index) => {
+                        const isFirstStep = index == 0, isLastStep = index == steps.length - 1,
+                            secondary = `${DateHelper.formatDateMonth(step.dateFrom)} - `
+                                + `${DateHelper.formatDateMonth(step.dateTo)} | ${DateHelper.formatDays(step.days)}`;
+                        if (!isLastStep) var nextStep = steps[index + 1];
+                        return (
+                            <div key={index}>
+                                {isFirstStep && <Category>
+                                    <Title date={step.date} icon="mdi-home">{step.flight.fromCityName}</Title>
+                                    <Item icon="mdi-airplane" className="last">
+                                        <Content>
+                                            <FlightCard flight={step.flight} date={step.date}/>
+                                        </Content>
+                                        <Actions></Actions>
+                                    </Item>
+                                </Category>}
+                                <Category>
+                                    <Title date={step.dateFrom} icon="mdi-city" secondary={secondary}>
+                                        {step.flight.toCityName}
+                                    </Title>
+                                    <Item icon="mdi-hotel" className={(!step.car && isLastStep) && 'last' || ''}>
+                                        <Content>
+                                            <HotelCard hotel={step.hotel} price={step.hotel.price} days={step.hotelDays}/>
+                                        </Content>
+                                        <Actions></Actions>
+                                    </Item>
+                                    {step.car && <Item icon="mdi-car" className={isLastStep && 'last' || ''}>
+                                        <Content>
+                                            <CarCard car={step.car} price={step.car.price} days={step.carDays}/>
+                                        </Content>
+                                        <Actions></Actions>
+                                    </Item>}
+                                    {!isLastStep && <Item icon="mdi-airplane" className="last">
+                                        <Content>
+                                            <FlightCard flight={nextStep.flight} date={nextStep.date}/>
+                                        </Content>
+                                        <Actions></Actions>
+                                    </Item>}
+                                </Category>
+                            </div>
+                        );
+                    })}
                     <Category className="last">
-                        <Title date={tripDate} icon="mdi-flag-checkered"
-                               secondary={`${DateHelper.formatDateMonth(arriveDate)} - ${DateHelper.formatDateMonth(tripDate)}`
+                        <Title date={lastStep.dateTo} icon="mdi-flag-checkered"
+                               secondary={`${DateHelper.formatDateMonth(firstStep.date)} - `
+                               + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
                                + ` | ${DateHelper.formatDays(days)}`}>
                             Trip end:&nbsp;
-                            <strong>${flight.price + (hotel.price * hotelDays) + (car && (car.price * carDays) || 0)}</strong>
+                            <strong>${price || 0}</strong>
                         </Title>
                     </Category>
                 </Timeline>
             </div> ||
             <div className="height-100">
-                <h2 className="subheader text-center">{flight ? 'Hotel' : 'Flight'} not selected</h2>
+                <h2 className="subheader text-center">Flight or hotel not selected</h2>
             </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    return {
-        hotel: state.hotel.hotels.find(el => el.id == state.hotel.selectedHotel),
-        flight: state.flight.flights.find(el => el.id == state.flight.selectedFlight),
-        car: state.car.cars.find(el => el.id == state.car.selectedCar),
-        hotelDays: state.hotel.days,
-        carDays: state.car.days
-    };
+    return state.summary;
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({}, dispatch)
+        actions: bindActionCreators({ continueTrip }, dispatch)
     };
 }
 

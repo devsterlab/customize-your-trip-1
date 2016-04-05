@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectCity } from '../../actions/city';
-import { selectFlight, setFlightsSort } from '../../actions/flight';
+import { selectFlight, setFlightsSort, setFlightsSearched } from '../../actions/flight';
 import Sorting from '../../util/sorting';
 import Select from '../../components/Select';
 import Progress from '../../components/Progress/Progress';
@@ -40,7 +40,8 @@ class Flight extends Component {
             asc: PropTypes.bool
         }),
         selectedFlight: PropTypes.string,
-        actions: PropTypes.object
+        actions: PropTypes.object,
+        date: PropTypes.object
     };
 
     static defaultProps = {
@@ -105,6 +106,7 @@ class Flight extends Component {
 
     _searchFlights() {
         this.setState({flights: this.sort(this.filterFlights())});
+        this.props.actions.setFlightsSearched();
     }
 
     sort(flights, field = this.props.sorting.field, asc = this.props.sorting.asc) {
@@ -135,19 +137,23 @@ class Flight extends Component {
         this.props.actions.selectFlight(flight.id);
     }
 
+    selectCitiesHeaderHide() {
+        return this.canSearch() || this.state.flights.length || this.props.selectedFlight;
+    }
+
     render() {
         return (
             <div className="height-100 flight-page">
                 <Progress loaded={!!this.props.cities.length} />
                 <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
                     <Select className="medium-5 columns" error={this.state.errorCityFrom}
-                        id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
-                        nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
+                            id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
+                            nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
                         From city
                     </Select>
                     <Select className="medium-5 columns" error={this.state.errorCityTo}
-                        id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
-                        nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
+                            id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
+                            nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
                         To city
                     </Select>
                     <div className="medium-2 columns">
@@ -158,11 +164,10 @@ class Flight extends Component {
                 </form>
                 <hr/>
                 <div className="flights-search">
-                    <h3 className={'text-center subheader ' +
-                        (this.canSearch() || this.state.flights.length || this.props.selectedFlight ? 'hide' : '')}>
+                    <h3 className={`text-center subheader ${this.selectCitiesHeaderHide() && 'hide' || ''}`}>
                         Select cities to start
                     </h3>
-                    <div className="row" className={!this.state.flights.length && !this.props.selectedFlight && 'hide'}>
+                    <div className={(!this.selectCitiesHeaderHide() || this.props.notSearched) && 'hide' || ''}>
                         <div className="medium-8 columns flights-results">
                             <div>
                                 <h4 className="inline">Sort by:</h4>
@@ -173,22 +178,25 @@ class Flight extends Component {
                                 <Sort selected={this.props.sorting.field == 'departTime'} asc={this.props.sorting.asc}
                                       onClick={asc => this.setFlightsSort('departTime', asc)}>depart time</Sort>
                             </div>
-                            <h2 className={`subheader ${this.state.flights.length && 'hide' || ''}`}>
-                                Flights not found
-                            </h2>
+                            {this.state.flights.length &&
                             <ul className="flights-list">
                                 {this.state.flights.map(flight =>
-                                    <FlightCard key={flight.id} flight={flight} onClick={this.selectFlight} />
+                                        <FlightCard key={flight.id} flight={flight} date={this.props.date}
+                                                    onClick={this.selectFlight} />
                                 )}
-                            </ul>
+                            </ul> ||
+                            <h2 className="subheader">
+                                Flights not found
+                            </h2>}
                         </div>
                         <div className="medium-4 columns selected-flight">
                             <h4>Current selection</h4>
                             {this.selectedFlight &&
-                            [<FlightCard key="0" flight={this.selectedFlight} small className="selected" />,
-                             <Button key="1" className="expanded success large" link="/hotel">
-                                 Continue
-                             </Button>] ||
+                            [<FlightCard key="0" flight={this.selectedFlight} small className="selected"
+                                         date={this.props.date}/>,
+                                <Button key="1" className="expanded success large" link="/hotel">
+                                    Continue
+                                </Button>] ||
                             <h5 className="subheader">None selected</h5>}
                         </div>
                     </div>
@@ -205,13 +213,15 @@ function mapStateToProps(state) {
         selectedCityFrom: state.city.selectedCityFrom,
         selectedCityTo: state.city.selectedCityTo,
         sorting: state.flight.sorting,
-        selectedFlight: state.flight.selectedFlight
+        selectedFlight: state.flight.selectedFlight,
+        notSearched: state.flight.notSearched,
+        date: state.summary.date
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({selectCity, selectFlight, setFlightsSort}, dispatch)
+        actions: bindActionCreators({selectCity, selectFlight, setFlightsSort, setFlightsSearched}, dispatch)
     };
 }
 

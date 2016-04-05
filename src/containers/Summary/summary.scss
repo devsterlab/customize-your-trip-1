@@ -12,8 +12,10 @@
   }
 
   .timeline {
-    height: calc(100vh - 80px - #{$navtabs-height});
+    height: calc(100vh - 90px - #{$navtabs-height});
     overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 30px;
   }
 
   .continue-button {
