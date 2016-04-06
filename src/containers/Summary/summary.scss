@@ -5,11 +5,6 @@
     margin-bottom: 0;
     color: $timeline-text-color;
     margin-left: calc(16.67% - 118px);
-
-    &.finish {
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
   }
 
   .divider {
@@ -25,5 +20,16 @@
 
   .continue-button {
     margin-right: 20px;
+  }
+
+  &.finish {
+    .header {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    .timeline {
+      height: calc(100vh - 76px - #{$navtabs-height});
+    }
   }
 }

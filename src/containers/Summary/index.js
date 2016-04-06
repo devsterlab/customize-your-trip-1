@@ -115,8 +115,8 @@ class Summary extends Component {
 
         return (
             summaryAvailable &&
-            <div className="summary row height-100">
-                <h3 className={`header ${tripFinished && 'finish' || ''}`}>
+            <div className={`summary row height-100 ${tripFinished && 'finish' || ''}`}>
+                <h3 className="header">
                     Your <strong>trip summary</strong> looks great!
                 </h3>
                 {!tripFinished && <Button className="success float-right large continue-button" link="/flight"
