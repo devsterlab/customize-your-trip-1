@@ -11,6 +11,17 @@
 .cars-search {
   .filtering {
     padding-left: 0;
+
+    fieldset {
+      position: relative;
+    }
+
+    .max-pass-check {
+      position: absolute;
+      top: 6px;
+      margin: 0;
+      left: 112px;
+    }
   }
   .cars-list {
     padding-right: 0;

@@ -65,7 +65,9 @@ class Car extends Component {
             brands: this.readAvailableTypes(props.cars, 'brand'),
             models: this.readAvailableTypes(filteredCars, 'model'),
             carTypes: this.readAvailableTypes(props.cars, 'carType'),
-            cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc)
+            cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc),
+            maxPassChecked: !!props.filters.maxPassengers,
+            maxPassengers: props.filters.maxPassengers
         };
 
         this.selectCar = this._selectCar.bind(this);
@@ -96,10 +98,7 @@ class Car extends Component {
         if (!(filters && Object.keys(filters).length)) return cars;
         return cars.filter(car => {
             for (let field in filters) {
-                if (field == 'maxPassengers') {
-                    if (car[field] > filters[field]) return false;
-                }
-                else if (field == 'transmission') {
+                if (field == 'transmission') {
                     if (!filters[field][car[field]]) return false;
                 }
                 else if (car[field] != filters[field]) return false;
@@ -158,6 +157,17 @@ class Car extends Component {
         this.setFilter('transmission', transmissionFilter && {name: transmissionFilter});
     }
 
+    onMaxPassCheckChange() {
+        let checked = !this.state.maxPassChecked;
+        this.setFilter('maxPassengers', checked && {name: this.state.maxPassengers});
+        this.setState({maxPassChecked: checked});
+    }
+
+    onMaxPassengersChange(num) {
+        this.setFilter('maxPassengers', {name: num});
+        this.setState({maxPassengers: num});
+    }
+
     render() {
         return (
             this.props.selectedHotel &&
@@ -205,10 +215,15 @@ class Car extends Component {
                                    onChange={e => this.onTransmissionChange('automatic', e.target.checked)}/>
                             <label htmlFor="trAuto">Automatic</label>
                         </fieldset>
-                        <label>Max passengers
-                        <InputNumber min={2} max={10} value={this.props.filters.maxPassengers}
-                                     onChange={num => this.setFilter('maxPassengers', {name: num})} />
-                        </label>
+                        <fieldset>
+                            <label>Max passengers
+                                <input type="checkbox" checked={this.state.maxPassChecked} className="max-pass-check"
+                                       onChange={e => this.onMaxPassCheckChange()}/>
+                                <InputNumber min={2} max={10} value={this.state.maxPassengers}
+                                             readOnly={!this.state.maxPassChecked}
+                                             onChange={num => this.onMaxPassengersChange(num)} />
+                            </label>
+                        </fieldset>
                     </div>
                     <div className="medium-5 columns cars-list">
                         <div>
