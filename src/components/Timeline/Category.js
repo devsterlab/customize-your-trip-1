@@ -8,8 +8,9 @@ class Category extends Component {
 
     render() {
         let { className, children, ...other } = this.props;
+        let noItems = (children.type || (children.length == 2 && children[1] == false)) && 'no-items' || '';
         return (
-            <div className={`category ${className || ''} ${children.type && 'no-items'}`} {...other}>
+            <div className={`category ${className || ''} ${noItems}`} {...other}>
                 {children}
             </div>
         );

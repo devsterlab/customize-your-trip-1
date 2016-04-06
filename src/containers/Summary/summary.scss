@@ -5,6 +5,11 @@
     margin-bottom: 0;
     color: $timeline-text-color;
     margin-left: calc(16.67% - 118px);
+
+    &.finish {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
   }
 
   .divider {

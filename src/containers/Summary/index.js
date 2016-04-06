@@ -105,22 +105,32 @@ class Summary extends Component {
         let { homeCity, days, price, currentStep } = this.props;
         let steps = this.state.steps;
         const summaryAvailable = steps.length;
-        if (summaryAvailable) var firstStep = steps[0], lastStep = steps[steps.length - 1];
+        if (summaryAvailable) {
+            var firstStep = steps[0], lastStep = steps[steps.length - 1];
+            var tripFinished = lastStep.flight.toCity.id == homeCity && !lastStep.hotel;
+            var finishSecondary = `${DateHelper.formatDateMonth(firstStep.date)} - `
+                + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
+                + ` | ${DateHelper.formatDays(days + (currentStep && currentStep.days || 0))}`;
+        }
 
         return (
             summaryAvailable &&
             <div className="summary row height-100">
-                <h3 className="header">Your <strong>trip summary</strong> looks great!</h3>
-                <Button className="success float-right large continue-button" link="/flight"
+                <h3 className={`header ${tripFinished && 'finish' || ''}`}>
+                    Your <strong>trip summary</strong> looks great!
+                </h3>
+                {!tripFinished && <Button className="success float-right large continue-button" link="/flight"
                         onClick={() => this.handleContinueClick()}>
                     Continue
-                </Button>
+                </Button>}
                 <hr className="divider"/>
                 <Timeline>
                     {steps.map((step, index) => {
                         const isFirstStep = index == 0, isLastStep = index == steps.length - 1,
                             secondary = `${DateHelper.formatDateMonth(step.dateFrom)} - `
-                                + `${DateHelper.formatDateMonth(step.dateTo)} | ${DateHelper.formatDays(step.days)}`;
+                                + `${DateHelper.formatDateMonth(step.dateTo)} | ${DateHelper.formatDays(step.days)}`,
+                            isHome = step.flight.toCity.id == homeCity;
+                        const isFinish = isHome && !step.hotel;
                         if (!isLastStep) var nextStep = steps[index + 1];
                         return (
                             <div key={index}>
@@ -133,41 +143,45 @@ class Summary extends Component {
                                         <Actions></Actions>
                                     </Item>
                                 </Category>}
-                                <Category>
-                                    <Title date={step.dateFrom} icon="mdi-city" secondary={secondary}>
-                                        {step.flight.toCity.name}
+                                <Category className={isFinish && 'last' || ''}>
+                                    <Title date={isFinish && step.dateTo || step.dateFrom} icon={isHome && 'mdi-home' || 'mdi-city'}
+                                           secondary={isFinish && finishSecondary || secondary}>
+                                        {isFinish &&
+                                        <span>Trip end:&nbsp;
+                                            <strong>${price + (currentStep && currentStep.price || 0)}</strong>
+                                        </span> ||
+                                        step.flight.toCity.name}
                                     </Title>
-                                    <Item icon="mdi-hotel" className={(!step.car && isLastStep) && 'last' || ''}>
-                                        <Content>
-                                            <HotelCard hotel={step.hotel} price={step.hotel.price} days={step.hotelDays}/>
-                                        </Content>
-                                        <Actions></Actions>
-                                    </Item>
-                                    {step.car && <Item icon="mdi-car" className={isLastStep && 'last' || ''}>
-                                        <Content>
-                                            <CarCard car={step.car} price={step.car.price} days={step.carDays}/>
-                                        </Content>
-                                        <Actions></Actions>
-                                    </Item>}
-                                    {!isLastStep && <Item icon="mdi-airplane" className="last">
-                                        <Content>
-                                            <FlightCard flight={nextStep.flight} date={nextStep.date}/>
-                                        </Content>
-                                        <Actions></Actions>
-                                    </Item>}
+                                    {!isFinish && <div>
+                                        <Item icon="mdi-hotel" className={(!step.car && isLastStep) && 'last' || ''}>
+                                            <Content>
+                                                <HotelCard hotel={step.hotel} price={step.hotel.price} days={step.hotelDays}/>
+                                            </Content>
+                                            <Actions></Actions>
+                                        </Item>
+                                        {step.car && <Item icon="mdi-car" className={isLastStep && 'last' || ''}>
+                                            <Content>
+                                                <CarCard car={step.car} price={step.car.price} days={step.carDays}/>
+                                            </Content>
+                                            <Actions></Actions>
+                                        </Item>}
+                                        {!isLastStep && <Item icon="mdi-airplane" className="last">
+                                            <Content>
+                                                <FlightCard flight={nextStep.flight} date={nextStep.date}/>
+                                            </Content>
+                                            <Actions></Actions>
+                                        </Item> || ''}
+                                    </div>}
                                 </Category>
                             </div>
                         );
                     })}
-                    <Category className="last">
-                        <Title date={lastStep.dateTo} icon="mdi-flag-checkered"
-                               secondary={`${DateHelper.formatDateMonth(firstStep.date)} - `
-                               + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
-                               + ` | ${DateHelper.formatDays(days + (currentStep && currentStep.days || 0))}`}>
+                    {!tripFinished && <Category className="last">
+                        <Title date={lastStep.dateTo} icon="mdi-flag-checkered" secondary={finishSecondary}>
                             Trip end:&nbsp;
                             <strong>${price + (currentStep && currentStep.price || 0)}</strong>
                         </Title>
-                    </Category>
+                    </Category>}
                 </Timeline>
             </div> ||
             <div className="height-100">

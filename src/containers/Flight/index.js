@@ -48,6 +48,7 @@ class Flight extends Component {
         selectedFlight: PropTypes.string,
         actions: PropTypes.object,
         date: PropTypes.object,
+        homeCity: PropTypes.string,
         lastCity: PropTypes.string
     };
 
@@ -148,6 +149,10 @@ class Flight extends Component {
         return this.canSearch() || this.state.flights.length || this.props.selectedFlight;
     }
 
+    canFinish() {
+        return this.selectedFlight && this.selectedFlight.toCity.id == this.props.homeCity;
+    }
+
     render() {
         return (
             <div className="height-100 flight-page">
@@ -199,11 +204,17 @@ class Flight extends Component {
                         <div className="medium-4 columns selected-flight">
                             <h4>Current selection</h4>
                             {this.selectedFlight &&
-                            [<FlightCard key="0" flight={this.selectedFlight} small className="selected"
-                                         date={this.props.date}/>,
-                                <Button key="1" className="expanded success large" link="/hotel">
+                            <div>
+                                <FlightCard flight={this.selectedFlight} small className="selected"
+                                             date={this.props.date}/>
+                                <Button className="expanded success large" link="/hotel">
                                     Continue
-                                </Button>] ||
+                                </Button>
+                                {this.canFinish() &&
+                                <Button className="expanded large" link="/summary">
+                                    Finish
+                                </Button>}
+                            </div>||
                             <h5 className="subheader">None selected</h5>}
                         </div>
                     </div>
@@ -223,6 +234,7 @@ function mapStateToProps(state) {
         selectedFlight: state.flight.selectedFlight,
         notSearched: state.flight.notSearched,
         date: state.summary.date,
+        homeCity: state.summary.homeCity,
         lastCity: state.summary.lastCity
     };
 }

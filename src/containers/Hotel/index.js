@@ -46,7 +46,8 @@ class Hotel extends Component {
             field: PropTypes.string,
             asc: PropTypes.bool
         }),
-        days: PropTypes.number
+        days: PropTypes.number,
+        date: PropTypes.object
     };
 
     static defaultProps = {
@@ -111,7 +112,7 @@ class Hotel extends Component {
     }
 
     render() {
-        let date = new Date();
+        let { date } = this.props;
         return (
             this.props.selectedFlight &&
             <div className="height-100">
@@ -187,7 +188,8 @@ function mapStateToProps(state) {
         selectedHotel: state.hotel.selectedHotel,
         selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,
-        days: state.hotel.days
+        days: state.hotel.days,
+        date: state.summary.date
     };
 }
 

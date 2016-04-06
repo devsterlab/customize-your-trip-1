@@ -67,7 +67,7 @@ class Car extends Component {
             carTypes: this.readAvailableTypes(props.cars, 'carType'),
             cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc),
             maxPassChecked: !!props.filters.maxPassengers,
-            maxPassengers: props.filters.maxPassengers
+            maxPassengers: props.filters.maxPassengers || 10
         };
 
         this.selectCar = this._selectCar.bind(this);
@@ -149,7 +149,7 @@ class Car extends Component {
         this.props.actions.setCarsFilters(filters);
     }
 
-    onTransmissionChange(type, checked) {
+    handleTransmissionChange(type, checked) {
         let otherType = type == 'manual' ? 'automatic' : 'manual';
         let transmissionFilter;
         if (checked  || this.props.filters.transmission[otherType])
@@ -157,13 +157,13 @@ class Car extends Component {
         this.setFilter('transmission', transmissionFilter && {name: transmissionFilter});
     }
 
-    onMaxPassCheckChange() {
+    handleMaxPassCheckChange() {
         let checked = !this.state.maxPassChecked;
         this.setFilter('maxPassengers', checked && {name: this.state.maxPassengers});
         this.setState({maxPassChecked: checked});
     }
 
-    onMaxPassengersChange(num) {
+    handleMaxPassengersChange(num) {
         this.setFilter('maxPassengers', {name: num});
         this.setState({maxPassengers: num});
     }
@@ -208,20 +208,20 @@ class Car extends Component {
                             <legend>Transmission</legend>
                             <input type="checkbox" value="manual" id="trManual"
                                    checked={this.props.filters.transmission && this.props.filters.transmission.manual}
-                                   onChange={e => this.onTransmissionChange('manual', e.target.checked)}/>
+                                   onChange={e => this.handleTransmissionChange('manual', e.target.checked)}/>
                             <label htmlFor="trManual">Manual</label>
                             <input type="checkbox" value="automatic" id="trAuto"
                                    checked={this.props.filters.transmission && this.props.filters.transmission.automatic}
-                                   onChange={e => this.onTransmissionChange('automatic', e.target.checked)}/>
+                                   onChange={e => this.handleTransmissionChange('automatic', e.target.checked)}/>
                             <label htmlFor="trAuto">Automatic</label>
                         </fieldset>
                         <fieldset>
                             <label>Max passengers
                                 <input type="checkbox" checked={this.state.maxPassChecked} className="max-pass-check"
-                                       onChange={e => this.onMaxPassCheckChange()}/>
+                                       onChange={e => this.handleMaxPassCheckChange()}/>
                                 <InputNumber min={2} max={10} value={this.state.maxPassengers}
                                              readOnly={!this.state.maxPassChecked}
-                                             onChange={num => this.onMaxPassengersChange(num)} />
+                                             onChange={num => this.handleMaxPassengersChange(num)} />
                             </label>
                         </fieldset>
                     </div>
