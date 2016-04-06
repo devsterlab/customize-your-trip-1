@@ -38,7 +38,7 @@ class Select extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (!this.props.collection.length && props.collection.length) {
+        if (this.props.collection.length != props.collection.length) {
             this.setState({
                 searchCollection: [],
                 restCollection: props.collection

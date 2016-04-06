@@ -63,7 +63,7 @@ class Car extends Component {
         let filteredCars = this.filter(props.cars, props.filters);
         this.state = {
             brands: this.readAvailableTypes(props.cars, 'brand'),
-            models: this.readAvailableTypes(props.cars, 'model'),
+            models: this.readAvailableTypes(filteredCars, 'model'),
             carTypes: this.readAvailableTypes(props.cars, 'carType'),
             cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc)
         };
@@ -145,6 +145,7 @@ class Car extends Component {
             state = {['error' + type]: null};
         }
         state.cars = this.sort(this.filter(this.props.cars, filters));
+        state.models = this.readAvailableTypes(state.cars, 'model');
         this.setState(state);
         this.props.actions.setCarsFilters(filters);
     }
@@ -183,7 +184,7 @@ class Car extends Component {
                                 onChange={brand => this.setFilter('brand', brand)}>
                             Brand
                         </Select>
-                        <Select nameField="name" error={this.state.errormodel} clearButton
+                        <Select nameField="name" error={this.state.errormodel} clearButton readOnly={!this.props.filters.brand}
                                 itemName={this.props.filters.model} collection={this.state.models}
                                 onChange={model => this.setFilter('model', model)}>
                             Model
