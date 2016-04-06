@@ -1,6 +1,11 @@
 var mongoose = require('./lib/mongoose');
 var async = require('async');
 
+var cities = require('models/cities.json').cities;
+var cars = require('models/cars.json').cars;
+var flights = require('models/flights.json').flights;
+var hotels = require('models/hotels.json').hotels;
+
 mongoose.set('debug', true);
 
 async.series([
@@ -8,13 +13,17 @@ async.series([
 	dropDatabase,
 	requireModels,
 	createUsers,
-	createCities
+	createCities,
+	createCars,
+	createFlights,
+	createHotels
 ], function (err) {
 	mongoose.disconnect();
 	process.exit(err ? 255 : 0);
 });
 
 function open(callback) {
+	console.log();
 	mongoose.connection.on('open', callback);
 }
 
@@ -26,6 +35,9 @@ function dropDatabase(callback) {
 function requireModels(callback) {
 	require('models/user');
 	require('models/city');
+	require('models/car');
+	require('models/flight');
+	require('models/hotel');
 
 	async.each(Object.keys(mongoose.models), function (modelName, callback) {
 		mongoose.models[modelName].ensureIndexes(callback)
@@ -47,51 +59,66 @@ function createUsers(callback) {
 }
 
 function createCities(callback) {
-	var cities = [
-		{
-			"name": "Kyiv",
-			"bounds": {"south": 50.213273, "west": 30.239440100000024, "north": 50.590798, "east": 30.825941000000057},
-			"timezone": 2
-		},
-		{
-			"name": "London",
-			"bounds": {
-				"south": 51.38494009999999,
-				"west": -0.351468299999965,
-				"north": 51.6723432,
-				"east": 0.14827100000002247
-			},
-			"timezone": 0
-		},
-		{
-			"name": "New York",
-			"bounds": {"south": 40.4960439, "west": -74.2557349, "north": 40.91525559999999, "east": -73.7002721},
-			"timezone": -4
-		},
-		{
-			"name": "Toronto",
-			"bounds": {"south": 43.5810245, "west": -79.63921900000003, "north": 43.8554579, "east": -79.116897},
-			"timezone": -4
-		},
-		{
-			"name": "Sydney",
-			"bounds": {"south": -34.1692489, "west": 150.50222899999994, "north": -33.4245981, "east": 151.34263609999994},
-			"timezone": 11
-		},
-		{
-			"name": "Madrid",
-			"bounds": {"south": 40.3120639, "west": -3.834161799999947, "north": 40.5638447, "east": -3.52491150000003},
-			"timezone": 1
-		},
-		{
-			"name": "Paris",
-			"bounds": {"south": 48.815573, "west": 2.22519299999999, "north": 48.9021449, "east": 2.4699207999999544},
-			"timezone": 1
-		}
-	];
-
 	async.each(cities, function (cityData, callback) {
 		var city = new mongoose.models.City(cityData);
 		city.save(callback)
 	}, callback);
+}
+
+function createCars(callback) {
+
+	mongoose.models.City.find({}, function (err, cities) {
+
+		for (var i = 0, len = cars.length; i < len; i++) {
+			var randomCitiesIndex = Math.floor(Math.random() * (cities.length))
+			cars[i].city = cities[randomCitiesIndex].id
+		}
+
+		async.each(cars, function (carData, callback) {
+			var car = new mongoose.models.Car(carData);
+			car.save(callback)
+		}, callback);
+	});
+
+}
+
+function createFlights(callback) {
+
+	mongoose.models.City.find({}, function (err, cities) {
+
+		for (var i = 0, len = flights.length; i < len; i++) {
+			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
+			flights[i].fromCity = cities[randomCitiesIndex].id;
+
+			if(randomCitiesIndex === 0){
+				flights[i].toCity = cities[randomCitiesIndex + 1].id
+			} else {
+				flights[i].toCity = cities[randomCitiesIndex - 1].id
+			}
+		}
+
+		async.each(flights, function (flightData, callback) {
+			var flight = new mongoose.models.Flight(flightData);
+			flight.save(callback)
+		}, callback);
+	});
+
+}
+
+function createHotels(callback) {
+
+	mongoose.models.City.find({}, function (err, cities) {
+
+		for (var i = 0, len = hotels.length; i < len; i++) {
+			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
+			hotels[i].fromCity = cities[randomCitiesIndex].id;
+		}
+
+		async.each(hotels, function (hotelData, callback) {
+			var hotel = new mongoose.models.Hotel(hotelData);
+			hotel.save(callback)
+		}, callback);
+	});
+
+
 }

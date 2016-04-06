@@ -1,0 +1,704 @@
+{
+  "flights": [
+    {
+      "duration": "12:30",
+      "departTime": "01:01",
+      "price": 1830,
+      "available": 43,
+      "companyName": "Biospan"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "13:44",
+      "price": 1390,
+      "available": 13,
+      "companyName": "Keeg"
+    },
+    {
+      "duration": "12:30",
+      "departTime": "16:32",
+      "price": 1670,
+      "available": 30,
+      "companyName": "Wrapture"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "14:20",
+      "price": 1640,
+      "available": 48,
+      "companyName": "Zerology"
+    },
+    {
+      "duration": "10:00",
+      "departTime": "09:11",
+      "price": 1440,
+      "available": 99,
+      "companyName": "Lotron"
+    },
+    {
+      "duration": "5:00",
+      "departTime": "02:59",
+      "price": 1780,
+      "available": 48,
+      "companyName": "Entroflex"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "02:11",
+      "price": 960,
+      "available": 96,
+      "companyName": "Daisu"
+    },
+    {
+      "duration": "5:00",
+      "departTime": "10:12",
+      "price": 720,
+      "available": 58,
+      "companyName": "Pyramia"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "14:52",
+      "price": 550,
+      "available": 29,
+      "companyName": "Biolive"
+    },
+    {
+      "duration": "6:00",
+      "departTime": "02:49",
+      "price": 1540,
+      "available": 93,
+      "companyName": "Comtext"
+    },
+    {
+      "duration": "5:00",
+      "departTime": "12:07",
+      "price": 1970,
+      "available": 80,
+      "companyName": "Updat"
+    },
+    {
+      "duration": "11:30",
+      "departTime": "05:19",
+      "price": 1160,
+      "available": 60,
+      "companyName": "Ronbert"
+    },
+    {
+      "duration": "6:00",
+      "departTime": "05:45",
+      "price": 1420,
+      "available": 12,
+      "companyName": "Netplax"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "01:22",
+      "price": 1310,
+      "available": 54,
+      "companyName": "Zentia"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "14:53",
+      "price": 530,
+      "available": 44,
+      "companyName": "Nexgene"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "21:01",
+      "price": 770,
+      "available": 67,
+      "companyName": "Panzent"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "04:14",
+      "price": 360,
+      "available": 28,
+      "companyName": "Enersol"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "04:30",
+      "price": 1050,
+      "available": 72,
+      "companyName": "Marketoid"
+    },
+    {
+      "duration": "8:30",
+      "departTime": "21:51",
+      "price": 1840,
+      "available": 16,
+      "companyName": "Kongle"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "09:42",
+      "price": 1440,
+      "available": 85,
+      "companyName": "Isotronic"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "01:52",
+      "price": 650,
+      "available": 96,
+      "companyName": "Exiand"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "08:23",
+      "price": 720,
+      "available": 74,
+      "companyName": "Comverges"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "15:39",
+      "price": 1780,
+      "available": 19,
+      "companyName": "Knowlysis"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "22:18",
+      "price": 240,
+      "available": 48,
+      "companyName": "Zensus"
+    },
+    {
+      "duration": "11:30",
+      "departTime": "16:34",
+      "price": 1870,
+      "available": 14,
+      "companyName": "Circum"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "07:36",
+      "price": 2000,
+      "available": 97,
+      "companyName": "Primordia"
+    },
+    {
+      "duration": "7:00",
+      "departTime": "05:39",
+      "price": 1490,
+      "available": 92,
+      "companyName": "Artiq"
+    },
+    {
+      "duration": "8:00",
+      "departTime": "09:01",
+      "price": 1100,
+      "available": 14,
+      "companyName": "Automon"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "19:41",
+      "price": 1110,
+      "available": 15,
+      "companyName": "Scentric"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "03:56",
+      "price": 950,
+      "available": 76,
+      "companyName": "Fitcore"
+    },
+    {
+      "duration": "12:30",
+      "departTime": "02:12",
+      "price": 450,
+      "available": 44,
+      "companyName": "Talae"
+    },
+    {
+      "duration": "5:30",
+      "departTime": "12:37",
+      "price": 1830,
+      "available": 38,
+      "companyName": "Insectus"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "11:54",
+      "price": 1070,
+      "available": 52,
+      "companyName": "Billmed"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "21:41",
+      "price": 2000,
+      "available": 42,
+      "companyName": "Bleendot"
+    },
+    {
+      "duration": "8:30",
+      "departTime": "05:24",
+      "price": 710,
+      "available": 71,
+      "companyName": "Realysis"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "23:12",
+      "price": 1580,
+      "available": 22,
+      "companyName": "Accusage"
+    },
+    {
+      "duration": "6:00",
+      "departTime": "17:19",
+      "price": 1340,
+      "available": 73,
+      "companyName": "Isbol"
+    },
+    {
+      "duration": "3:00",
+      "departTime": "12:29",
+      "price": 1430,
+      "available": 37,
+      "companyName": "Adornica"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "10:06",
+      "price": 650,
+      "available": 16,
+      "companyName": "Kiosk"
+    },
+    {
+      "duration": "2:30",
+      "departTime": "05:39",
+      "price": 250,
+      "available": 64,
+      "companyName": "Intradisk"
+    },
+    {
+      "duration": "6:30",
+      "departTime": "05:09",
+      "price": 580,
+      "available": 52,
+      "companyName": "Telepark"
+    },
+    {
+      "duration": "12:00",
+      "departTime": "04:52",
+      "price": 920,
+      "available": 21,
+      "companyName": "Bristo"
+    },
+    {
+      "duration": "3:00",
+      "departTime": "08:54",
+      "price": 950,
+      "available": 62,
+      "companyName": "Combogene"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "23:20",
+      "price": 1380,
+      "available": 68,
+      "companyName": "Sustenza"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "13:31",
+      "price": 1840,
+      "available": 64,
+      "companyName": "Egypto"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "23:07",
+      "price": 950,
+      "available": 58,
+      "companyName": "Essensia"
+    },
+    {
+      "duration": "2:00",
+      "departTime": "22:50",
+      "price": 300,
+      "available": 59,
+      "companyName": "Uneeq"
+    },
+    {
+      "duration": "6:30",
+      "departTime": "16:14",
+      "price": 1600,
+      "available": 26,
+      "companyName": "Interfind"
+    },
+    {
+      "duration": "8:30",
+      "departTime": "12:36",
+      "price": 1340,
+      "available": 71,
+      "companyName": "Fortean"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "03:09",
+      "price": 530,
+      "available": 29,
+      "companyName": "Fangold"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "12:56",
+      "price": 530,
+      "available": 83,
+      "companyName": "Injoy"
+    },
+    {
+      "duration": "8:30",
+      "departTime": "07:27",
+      "price": 1840,
+      "available": 54,
+      "companyName": "Eventix"
+    },
+    {
+      "duration": "7:30",
+      "departTime": "06:42",
+      "price": 1570,
+      "available": 52,
+      "companyName": "Sloganaut"
+    },
+    {
+      "duration": "12:00",
+      "departTime": "11:19",
+      "price": 600,
+      "available": 79,
+      "companyName": "Homelux"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "04:49",
+      "price": 1560,
+      "available": 46,
+      "companyName": "Cormoran"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "06:45",
+      "price": 900,
+      "available": 83,
+      "companyName": "Musix"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "04:44",
+      "price": 1590,
+      "available": 66,
+      "companyName": "Nitracyr"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "22:19",
+      "price": 1260,
+      "available": 54,
+      "companyName": "Medesign"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "21:53",
+      "price": 1690,
+      "available": 61,
+      "companyName": "Asimiline"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "11:28",
+      "price": 960,
+      "available": 84,
+      "companyName": "Prosure"
+    },
+    {
+      "duration": "3:00",
+      "departTime": "01:44",
+      "price": 1230,
+      "available": 79,
+      "companyName": "Mantrix"
+    },
+    {
+      "duration": "3:00",
+      "departTime": "08:14",
+      "price": 1270,
+      "available": 66,
+      "companyName": "Aquamate"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "03:40",
+      "price": 950,
+      "available": 85,
+      "companyName": "Proxsoft"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "15:43",
+      "price": 850,
+      "available": 61,
+      "companyName": "Codact"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "00:58",
+      "price": 420,
+      "available": 33,
+      "companyName": "Splinx"
+    },
+    {
+      "duration": "3:00",
+      "departTime": "18:37",
+      "price": 1860,
+      "available": 44,
+      "companyName": "Ewaves"
+    },
+    {
+      "duration": "5:30",
+      "departTime": "22:12",
+      "price": 500,
+      "available": 78,
+      "companyName": "Geekola"
+    },
+    {
+      "duration": "5:30",
+      "departTime": "09:46",
+      "price": 600,
+      "available": 93,
+      "companyName": "Pharmex"
+    },
+    {
+      "duration": "4:30",
+      "departTime": "10:30",
+      "price": 520,
+      "available": 82,
+      "companyName": "Visualix"
+    },
+    {
+      "duration": "6:00",
+      "departTime": "11:17",
+      "price": 1390,
+      "available": 41,
+      "companyName": "Viagreat"
+    },
+    {
+      "duration": "7:30",
+      "departTime": "03:57",
+      "price": 1930,
+      "available": 99,
+      "companyName": "Zilidium"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "00:05",
+      "price": 2000,
+      "available": 51,
+      "companyName": "Vertide"
+    },
+    {
+      "duration": "11:30",
+      "departTime": "21:04",
+      "price": 800,
+      "available": 41,
+      "companyName": "Portaline"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "20:35",
+      "price": 710,
+      "available": 60,
+      "companyName": "Peticular"
+    },
+    {
+      "duration": "9:00",
+      "departTime": "12:33",
+      "price": 1940,
+      "available": 52,
+      "companyName": "Tellifly"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "06:29",
+      "price": 380,
+      "available": 76,
+      "companyName": "Omatom"
+    },
+    {
+      "duration": "7:30",
+      "departTime": "19:11",
+      "price": 1310,
+      "available": 54,
+      "companyName": "Trasola"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "11:48",
+      "price": 1360,
+      "available": 100,
+      "companyName": "Maxemia"
+    },
+    {
+      "duration": "10:30",
+      "departTime": "08:19",
+      "price": 1730,
+      "available": 31,
+      "companyName": "Enomen"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "09:59",
+      "price": 230,
+      "available": 35,
+      "companyName": "Omnigog"
+    },
+    {
+      "duration": "8:30",
+      "departTime": "09:44",
+      "price": 1000,
+      "available": 94,
+      "companyName": "Fuelworks"
+    },
+    {
+      "duration": "5:00",
+      "departTime": "16:03",
+      "price": 1020,
+      "available": 89,
+      "companyName": "Zillan"
+    },
+    {
+      "duration": "11:00",
+      "departTime": "22:14",
+      "price": 1590,
+      "available": 89,
+      "companyName": "Lingoage"
+    },
+    {
+      "duration": "7:30",
+      "departTime": "10:31",
+      "price": 1990,
+      "available": 65,
+      "companyName": "Kyagoro"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "11:37",
+      "price": 2000,
+      "available": 78,
+      "companyName": "Tourmania"
+    },
+    {
+      "duration": "12:00",
+      "departTime": "09:46",
+      "price": 1550,
+      "available": 55,
+      "companyName": "Xymonk"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "01:06",
+      "price": 590,
+      "available": 66,
+      "companyName": "Quintity"
+    },
+    {
+      "duration": "2:30",
+      "departTime": "02:21",
+      "price": 320,
+      "available": 96,
+      "companyName": "Zillar"
+    },
+    {
+      "duration": "11:30",
+      "departTime": "23:23",
+      "price": 1690,
+      "available": 17,
+      "companyName": "Ezent"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "01:37",
+      "price": 1450,
+      "available": 36,
+      "companyName": "Dancity"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "05:46",
+      "price": 1700,
+      "available": 63,
+      "companyName": "Opticom"
+    },
+    {
+      "duration": "6:30",
+      "departTime": "14:54",
+      "price": 1380,
+      "available": 64,
+      "companyName": "Terascape"
+    },
+    {
+      "duration": "4:00",
+      "departTime": "20:56",
+      "price": 1510,
+      "available": 19,
+      "companyName": "Repetwire"
+    },
+    {
+      "duration": "9:30",
+      "departTime": "21:09",
+      "price": 420,
+      "available": 52,
+      "companyName": "Callflex"
+    },
+    {
+      "duration": "10:00",
+      "departTime": "08:13",
+      "price": 870,
+      "available": 29,
+      "companyName": "Beadzza"
+    },
+    {
+      "duration": "7:30",
+      "departTime": "23:26",
+      "price": 1960,
+      "available": 25,
+      "companyName": "Quantasis"
+    },
+    {
+      "duration": "12:00",
+      "departTime": "13:23",
+      "price": 910,
+      "available": 47,
+      "companyName": "Applidec"
+    },
+    {
+      "duration": "12:30",
+      "departTime": "17:36",
+      "price": 1190,
+      "available": 93,
+      "companyName": "Zosis"
+    },
+    {
+      "duration": "2:00",
+      "departTime": "23:02",
+      "price": 1750,
+      "available": 88,
+      "companyName": "Amril"
+    },
+    {
+      "duration": "3:30",
+      "departTime": "06:05",
+      "price": 1840,
+      "available": 54,
+      "companyName": "Kidgrease"
+    }
+  ]
+}
