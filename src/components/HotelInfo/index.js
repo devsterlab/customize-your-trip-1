@@ -25,7 +25,7 @@ class HotelInfo extends Component {
                         <h4>Description</h4>
                         <p>{hotel.description}</p>
                         <h4>Address</h4>
-                        <p>{hotel.cityName}, {hotel.address}</p>
+                        <p>{hotel.city.name}, {hotel.address}</p>
                         <hr/>
                         <h4 className="inline">Price per night:</h4>
                         <h3 className="inline float-right">${hotel.price}</h3>

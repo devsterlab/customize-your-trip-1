@@ -17,4 +17,5 @@ export const SET_CARS_SORT = 'SET_CARS_SORT';
 export const SET_CARS_FILTERS = 'SET_CARS_FILTERS';
 export const SET_CAR_DAYS = 'SET_CAR_DAYS';
 
+export const SET_CURRENT_STEP = 'SET_CURRENT_STEP';
 export const CONTINUE_TRIP = 'CONTINUE_TRIP';

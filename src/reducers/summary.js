@@ -8,24 +8,23 @@ const initialState = {
     date: new Date(),
     days: 0,
     price: 0,
-    continued: false
+    continued: false,
+    currentStep: null
 };
 
-function continueTrip(state, update, continued) {
-    if (!(state.flight.selectedFlight && state.hotel.selectedHotel)) {
-        if (!state.summary.continued) return Object.assign({}, state.summary, {steps: []});
-        return state.summary;
-    }
+function getCurrentStep(state) {
+    if (!(state.flight.selectedFlight && state.hotel.selectedHotel)) return null;
 
     const flight = state.flight.flights.find(el => el.id == state.flight.selectedFlight);
     const hotel = state.hotel.hotels.find(el => el.id == state.hotel.selectedHotel);
     const car = state.car.cars.find(el => el.id == state.car.selectedCar);
     const days = Math.max(state.hotel.days, state.car.days);
-    const date = new Date(state.summary.date.getTime());
-    const dateFrom = DateHelper.addTimeStr(DateHelper.addTimeStr(date, flight.departTime), flight.duration);
+    const date = DateHelper.timeZStrToDate(state.summary.date, flight.departTime, flight.fromCity.timezone);
+    const dateFrom = DateHelper.addTimeStr(date, flight.duration);
     const dateTo = DateHelper.addDays(dateFrom, days);
     const price = flight.price + state.hotel.days * hotel.price + (car && (state.car.days * car.price) || 0);
-    const item = {
+
+    return {
         flight,
         hotel,
         hotelDays: state.hotel.days,
@@ -37,23 +36,23 @@ function continueTrip(state, update, continued) {
         days,
         price
     };
+}
 
-    if (update) {
-        var sliced = state.summary.steps.slice(state.summary.steps.length - 1);
-        var concated = sliced.concat([item]);
-    }
+function setCurrentStep(state) {
+    return Object.assign({}, state.summary, {currentStep: getCurrentStep(state)});
+}
+
+function continueTrip(state) {
+    let step = getCurrentStep(state);
+    if (!step) return state.summary;
+
     let summaryState = Object.assign({}, state.summary, {
-        steps: update &&
-            (state.summary.steps.length == 1 && [item]
-                || state.summary.steps.slice(state.summary.steps.length - 1).concat([item])
-            )
-            || state.summary.steps.concat([item]),
-        continued: state.summary.continued || continued
+        steps: state.summary.steps.concat([step])
     });
 
-    if (summaryState.steps.length == 1) summaryState.homeCity = flight.fromCity;
-    summaryState.lastCity = flight.toCity;
-    summaryState.date = dateTo;
+    if (summaryState.steps.length == 1) summaryState.homeCity = step.flight.fromCity.id;
+    summaryState.lastCity = step.flight.toCity.id;
+    summaryState.date = step.dateTo;
     summaryState.days = summaryState.steps.reduce((prev, next) => prev + next.days, 0);
     summaryState.price = summaryState.steps.reduce((prev, next) => prev + next.price, 0);
 
@@ -65,7 +64,9 @@ export default function summary(state = initialState, action = '') {
     if (state.steps) return initialState;
     switch (action.type) {
         case types.CONTINUE_TRIP:
-            return continueTrip(state, action.update, action.continued);
+            return continueTrip(state);
+        case types.SET_CURRENT_STEP:
+            return setCurrentStep(state);
         default:
             return state.summary;
     }

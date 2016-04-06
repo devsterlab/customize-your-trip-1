@@ -23,7 +23,7 @@ export default function flight(state = initialState, action = '') {
             return Object.assign({}, state, {notSearched: false});
 
         case types.CONTINUE_TRIP:
-            return action.clearSelections && setFlight(state) || state;
+            return Object.assign({}, setFlight(state), {notSearched: true});
         default:
             return state;
     }

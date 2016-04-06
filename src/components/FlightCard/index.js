@@ -43,7 +43,7 @@ class FlightCard extends Component {
                 <div className="medium-8 columns">
                     <div className="row">
                         <div className={'columns text-left left ' + (small ? 'medium-6' : 'medium-4')}>
-                            <div>{flight.fromCityName}</div>
+                            <div>{flight.fromCity.name}</div>
                             <h3>{this.departTimeStr}</h3>
                             <div>{this.departDateStr}</div>
                         </div>
@@ -53,7 +53,7 @@ class FlightCard extends Component {
                             <div className="text-center">{this.props.flight.available} places available</div>
                         </div>
                         <div className={'columns text-right right ' + (small ? 'medium-6' : 'medium-4')}>
-                            <div>{flight.toCityName}</div>
+                            <div>{flight.toCity.name}</div>
                             <h3>{this.arriveTimeStr}</h3>
                             <div>{this.arriveDateStr}</div>
                         </div>

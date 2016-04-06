@@ -20,16 +20,38 @@ export default function loadMocks(store) {
                 let city = cities[i];
                 for (let j = 0; j < flights.length; j++) {
                     let flight = flights[j];
-                    if (flight.fromCity == city.id) flight.fromCityName = city.name;
-                    if (flight.toCity == city.id) flight.toCityName = city.name;
+                    if (flight.fromCity == city.id) {
+                        flight.fromCity = {
+                            id: city.id,
+                            name: city.name,
+                            timezone: city.timezone
+                        };
+                    }
+                    if (flight.toCity == city.id) {
+                        flight.toCity = {
+                            id: city.id,
+                            name: city.name,
+                            timezone: city.timezone
+                        };
+                    }
                 }
                 for (let j = 0; j < hotels.length; j++) {
                     let hotel = hotels[j];
-                    if (hotel.city == city.id) hotel.cityName = city.name;
+                    if (hotel.city == city.id) {
+                        hotel.city = {
+                            id: city.id,
+                            name: city.name
+                        };
+                    }
                 }
                 for (let j = 0; j < cars.length; j++) {
                     let car = cars[j];
-                    if (car.city == city.id) car.cityName = city.name;
+                    if (car.city == city.id) {
+                        car.city = {
+                            id: city.id,
+                            name: city.name
+                        };
+                    }
                 }
             }
             return mocks;

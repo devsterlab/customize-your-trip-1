@@ -25,8 +25,10 @@ class Car extends Component {
         }),
         cars: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
-            city: PropTypes.string,
-            cityName: PropTypes.string,
+            city: PropTypes.shape({
+                id: PropTypes.string,
+                name: PropTypes.string
+            }),
             brand: PropTypes.string,
             model: PropTypes.string,
             image: PropTypes.string,
@@ -39,7 +41,8 @@ class Car extends Component {
         selectedCar: PropTypes.string,
         hotelDays: PropTypes.number,
         carDays: PropTypes.number,
-        filters: PropTypes.object
+        filters: PropTypes.object,
+        date: PropTypes.object
     };
 
     static defaultProps = {
@@ -155,7 +158,6 @@ class Car extends Component {
     }
 
     render() {
-        let date = new Date();
         return (
             this.props.selectedHotel &&
             <div className="height-100">
@@ -164,8 +166,8 @@ class Car extends Component {
                         <h3>{this.props.city.name}</h3>
                         <span>
                             Day 1-{this.props.hotelDays}&nbsp;
-                            ({DateHelper.formatDateMonth(date)} -&nbsp;
-                            {DateHelper.formatDateMonth(DateHelper.addDays(date, Math.max(this.props.hotelDays, this.props.carDays)))})
+                            ({DateHelper.formatDateMonth(this.props.date)} -&nbsp;
+                            {DateHelper.formatDateMonth(DateHelper.addDays(this.props.date, Math.max(this.props.hotelDays, this.props.carDays)))})
                         </span>
                     </div>
                     <Button className="success float-right large continue-button" link="/summary">
@@ -258,13 +260,14 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        cars: city && state.car.cars.filter(el => el.city == city.id) || [],
+        cars: city && state.car.cars.filter(el => el.city.id == city.id) || [],
         selectedHotel: state.hotel.selectedHotel,
         selectedCar: state.car.selectedCar,
         sorting: state.car.sorting,
         hotelDays: state.hotel.days,
         carDays: state.car.days,
-        filters: state.car.filters
+        filters: state.car.filters,
+        date: state.summary.date
     };
 }
 

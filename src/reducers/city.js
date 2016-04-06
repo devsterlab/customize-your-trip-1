@@ -15,8 +15,7 @@ export default function city(state = initialState, action = '') {
             return Object.assign({}, state, {['selectedCity' + action.toFrom]: action.id});
 
         case types.CONTINUE_TRIP:
-            return action.clearSelections && Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''})
-                || state;
+            return Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''});
         default:
             return state;
     }

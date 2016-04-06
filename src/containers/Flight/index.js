@@ -23,10 +23,16 @@ class Flight extends Component {
         })),
         flights: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
-            fromCity: PropTypes.string,
-            toCity: PropTypes.string,
-            fromCityName: PropTypes.string,
-            toCityName: PropTypes.string,
+            fromCity: PropTypes.shape({
+                id: PropTypes.string,
+                name: PropTypes.string,
+                timezone: PropTypes.number
+            }),
+            toCity: PropTypes.shape({
+                id: PropTypes.string,
+                name: PropTypes.string,
+                timezone: PropTypes.number
+            }),
             companyName: PropTypes.string,
             available: PropTypes.number,
             price: PropTypes.number,
@@ -41,7 +47,8 @@ class Flight extends Component {
         }),
         selectedFlight: PropTypes.string,
         actions: PropTypes.object,
-        date: PropTypes.object
+        date: PropTypes.object,
+        lastCity: PropTypes.string
     };
 
     static defaultProps = {
@@ -96,7 +103,7 @@ class Flight extends Component {
 
     filterFlights(flights = this.props.flights) {
         if (flights) return flights
-            .filter(el => el.fromCity == this.props.selectedCityFrom && el.toCity == this.props.selectedCityTo);
+            .filter(el => el.fromCity.id == this.props.selectedCityFrom && el.toCity.id == this.props.selectedCityTo);
         return [];
     }
 
@@ -146,7 +153,7 @@ class Flight extends Component {
             <div className="height-100 flight-page">
                 <Progress loaded={!!this.props.cities.length} />
                 <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
-                    <Select className="medium-5 columns" error={this.state.errorCityFrom}
+                    <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCity}
                             id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
                             nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
                         From city
@@ -210,12 +217,13 @@ function mapStateToProps(state) {
     return {
         cities: state.city.cities,
         flights: state.flight.flights,
-        selectedCityFrom: state.city.selectedCityFrom,
+        selectedCityFrom: state.summary.lastCity || state.city.selectedCityFrom,
         selectedCityTo: state.city.selectedCityTo,
         sorting: state.flight.sorting,
         selectedFlight: state.flight.selectedFlight,
         notSearched: state.flight.notSearched,
-        date: state.summary.date
+        date: state.summary.date,
+        lastCity: state.summary.lastCity
     };
 }
 

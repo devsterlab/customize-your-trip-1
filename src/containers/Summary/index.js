@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { continueTrip } from '../../actions/summary';
+import { continueTrip, setCurrentStep } from '../../actions/summary';
 import DateHelper from '../../util/dateHelper';
 
 import Timeline from '../../components/Timeline';
@@ -22,10 +22,16 @@ class Summary extends Component {
         steps: PropTypes.arrayOf(PropTypes.shape({
             flight: PropTypes.shape({
                 id: PropTypes.string,
-                fromCity: PropTypes.string,
-                toCity: PropTypes.string,
-                fromCityName: PropTypes.string,
-                toCityName: PropTypes.string,
+                fromCity: PropTypes.shape({
+                    id: PropTypes.string,
+                    name: PropTypes.string,
+                    timezone: PropTypes.number
+                }),
+                toCity: PropTypes.shape({
+                    id: PropTypes.string,
+                    name: PropTypes.string,
+                    timezone: PropTypes.number
+                }),
                 companyName: PropTypes.string,
                 available: PropTypes.number,
                 price: PropTypes.number,
@@ -34,8 +40,10 @@ class Summary extends Component {
             }),
             hotel: PropTypes.shape({
                 id: PropTypes.string,
-                city: PropTypes.string,
-                cityName: PropTypes.string,
+                city: PropTypes.shape({
+                    id: PropTypes.string,
+                    name: PropTypes.string
+                }),
                 name: PropTypes.string,
                 popularity: PropTypes.number,
                 images: PropTypes.arrayOf(PropTypes.string),
@@ -48,8 +56,10 @@ class Summary extends Component {
             }),
             car: PropTypes.shape({
                 id: PropTypes.string,
-                city: PropTypes.string,
-                cityName: PropTypes.string,
+                city: PropTypes.shape({
+                    id: PropTypes.string,
+                    name: PropTypes.string
+                }),
                 brand: PropTypes.string,
                 model: PropTypes.string,
                 image: PropTypes.string,
@@ -69,23 +79,31 @@ class Summary extends Component {
         homeCity: PropTypes.string,
         days: PropTypes.number,
         price: PropTypes.number,
-        continued: PropTypes.bool
+        currentStep: PropTypes.object
     };
 
     constructor(props) {
         super(props);
 
-        if (!props.steps.length) this.props.actions.continueTrip(false);
-        else this.props.actions.continueTrip(false, true);
+        this.currentStepConcated = false;
+        this.state = { steps: props.steps };
+        props.actions.setCurrentStep();
+    }
+
+    componentWillReceiveProps(props) {
+        if (!this.currentStepConcated && props.currentStep) {
+            this.currentStepConcated = true;
+            this.setState({steps: this.state.steps.concat([props.currentStep])});
+        }
     }
 
     handleContinueClick() {
-        if (!this.props.continued) this.props.actions.continueTrip(true, true, true);
-        else this.props.actions.continueTrip(true, false);
+        this.props.actions.continueTrip();
     }
 
     render() {
-        let { steps, homeCity, days, price } = this.props;
+        let { homeCity, days, price, currentStep } = this.props;
+        let steps = this.state.steps;
         const summaryAvailable = steps.length;
         if (summaryAvailable) var firstStep = steps[0], lastStep = steps[steps.length - 1];
 
@@ -107,7 +125,7 @@ class Summary extends Component {
                         return (
                             <div key={index}>
                                 {isFirstStep && <Category>
-                                    <Title date={step.date} icon="mdi-home">{step.flight.fromCityName}</Title>
+                                    <Title date={step.date} icon="mdi-home">{step.flight.fromCity.name}</Title>
                                     <Item icon="mdi-airplane" className="last">
                                         <Content>
                                             <FlightCard flight={step.flight} date={step.date}/>
@@ -117,7 +135,7 @@ class Summary extends Component {
                                 </Category>}
                                 <Category>
                                     <Title date={step.dateFrom} icon="mdi-city" secondary={secondary}>
-                                        {step.flight.toCityName}
+                                        {step.flight.toCity.name}
                                     </Title>
                                     <Item icon="mdi-hotel" className={(!step.car && isLastStep) && 'last' || ''}>
                                         <Content>
@@ -145,9 +163,9 @@ class Summary extends Component {
                         <Title date={lastStep.dateTo} icon="mdi-flag-checkered"
                                secondary={`${DateHelper.formatDateMonth(firstStep.date)} - `
                                + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
-                               + ` | ${DateHelper.formatDays(days)}`}>
+                               + ` | ${DateHelper.formatDays(days + (currentStep && currentStep.days || 0))}`}>
                             Trip end:&nbsp;
-                            <strong>${price || 0}</strong>
+                            <strong>${price + (currentStep && currentStep.price || 0)}</strong>
                         </Title>
                     </Category>
                 </Timeline>
@@ -165,7 +183,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({ continueTrip }, dispatch)
+        actions: bindActionCreators({ continueTrip, setCurrentStep }, dispatch)
     };
 }
 

@@ -25,7 +25,7 @@ export default function hotel(state = initialState, action = '') {
         case types.SELECT_FLIGHT:
             return setHotel(state);
         case types.CONTINUE_TRIP:
-            return action.clearSelections && setHotel(state) || state;
+            return setHotel(state);
         default:
             return state;
     }

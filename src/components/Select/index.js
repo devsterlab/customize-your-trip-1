@@ -12,7 +12,8 @@ class Select extends Component {
         placeholder: PropTypes.string,
         error: PropTypes.string,
         onChange: PropTypes.func,
-        clearButton: PropTypes.bool
+        clearButton: PropTypes.bool,
+        readOnly: PropTypes.bool
     };
 
     constructor(props) {
@@ -31,6 +32,7 @@ class Select extends Component {
         };
 
         this.handleItemNameChange = this._handleItemNameChange.bind(this);
+        this.onClick = this._onClick.bind(this);
         this.onBlur = this._onBlur.bind(this);
         this.onClear = this._onClear.bind(this);
     }
@@ -88,12 +90,19 @@ class Select extends Component {
         });
     }
 
+    _onClick() {
+        if (this.props.readOnly) return;
+        this.showHideOptions(false);
+    }
+
     _onBlur() {
+        if (this.props.readOnly) return;
         if (!this.itemSet) this.showHideOptions(true);
         else this.itemSet = false;
     }
 
     _onClear(e) {
+        if (this.props.readOnly) return;
         this.cleared = true;
         this.handleItemNameChange({target: {value: ''}}, true);
     }
@@ -103,8 +112,8 @@ class Select extends Component {
             <div className={`select ${this.props.className}`}>
                 <label className={this.isValid() ? '': 'is-invalid-label'}>
                     {this.props.children}
-                    <input className={!this.isValid() && 'is-invalid-input'}
-                           onClick={() => this.showHideOptions(false)} onBlur={this.onBlur}
+                    <input className={!this.isValid() && 'is-invalid-input'} readOnly={this.props.readOnly}
+                           onClick={this.onClick} onBlur={this.onBlur}
                            type="text" placeholder={this.props.placeholder}
                            value={this.state.itemName} onChange={this.handleItemNameChange} />
                     {this.props.clearButton && this.state.itemName.length &&

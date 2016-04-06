@@ -26,8 +26,10 @@ class Hotel extends Component {
         }),
         hotels: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
-            city: PropTypes.string,
-            cityName: PropTypes.string,
+            city: PropTypes.shape({
+                id: PropTypes.string,
+                name: PropTypes.string
+            }),
             name: PropTypes.string,
             popularity: PropTypes.number,
             images: PropTypes.arrayOf(PropTypes.string),
@@ -181,7 +183,7 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        hotels: city && state.hotel.hotels.filter(el => el.city == city.id) || [],
+        hotels: city && state.hotel.hotels.filter(el => el.city.id == city.id) || [],
         selectedHotel: state.hotel.selectedHotel,
         selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,

@@ -37,7 +37,7 @@ class DateHelper {
 
 
     static formatDateMonth(date) {
-        return DateHelper.zerofy(date.getDate()) + '/' + DateHelper.zerofy(date.getMonth());
+        return DateHelper.zerofy(date.getDate()) + '/' + DateHelper.zerofy(date.getMonth() + 1);
     }
 
     static formatDays(days) {
