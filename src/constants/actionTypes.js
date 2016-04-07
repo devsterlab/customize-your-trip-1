@@ -19,3 +19,5 @@ export const SET_CAR_DAYS = 'SET_CAR_DAYS';
 
 export const SET_CURRENT_STEP = 'SET_CURRENT_STEP';
 export const CONTINUE_TRIP = 'CONTINUE_TRIP';
+export const EDIT_ITEM = 'EDIT_ITEM';
+export const REMOVE_ITEM = 'REMOVE_ITEM';

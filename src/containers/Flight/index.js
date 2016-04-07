@@ -49,7 +49,8 @@ class Flight extends Component {
         actions: PropTypes.object,
         date: PropTypes.object,
         homeCity: PropTypes.string,
-        lastCity: PropTypes.string
+        lastCityFrom: PropTypes.string,
+        lastCityTo: PropTypes.string
     };
 
     static defaultProps = {
@@ -140,9 +141,13 @@ class Flight extends Component {
         this.props.actions.setFlightsSort(field, asc);
     }
 
+    clearSelections(current, prev) {
+        return !(current && prev && (current.fromCity.id == prev.fromCity.id) && (current.toCity.id == prev.toCity.id));
+    }
+
     _selectFlight(flight) {
+        this.props.actions.selectFlight(flight.id, this.clearSelections(flight, this.selectedFlight));
         this.selectedFlight = flight;
-        this.props.actions.selectFlight(flight.id);
     }
 
     selectCitiesHeaderHide() {
@@ -158,12 +163,12 @@ class Flight extends Component {
             <div className="height-100 flight-page">
                 <Progress loaded={!!this.props.cities.length} />
                 <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
-                    <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCity}
+                    <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCityFrom}
                             id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
                             nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
                         From city
                     </Select>
-                    <Select className="medium-5 columns" error={this.state.errorCityTo}
+                    <Select className="medium-5 columns" error={this.state.errorCityTo} readOnly={!!this.props.lastCityTo}
                             id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
                             nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
                         To city
@@ -228,14 +233,16 @@ function mapStateToProps(state) {
     return {
         cities: state.city.cities,
         flights: state.flight.flights,
-        selectedCityFrom: state.summary.lastCity || state.city.selectedCityFrom,
-        selectedCityTo: state.city.selectedCityTo,
+        selectedCityFrom: state.summary.lastCityFrom || state.city.selectedCityFrom,
+        selectedCityTo: state.summary.lastCityTo || state.city.selectedCityTo,
         sorting: state.flight.sorting,
         selectedFlight: state.flight.selectedFlight,
         notSearched: state.flight.notSearched,
-        date: state.summary.date,
+        date: state.summary.currentStep && state.summary.currentStep.date ||
+            (state.summary.steps.length && state.summary.steps[0].dateTo) || state.summary.date,
         homeCity: state.summary.homeCity,
-        lastCity: state.summary.lastCity
+        lastCityFrom: state.summary.lastCityFrom,
+        lastCityTo: state.summary.lastCityTo
     };
 }
 

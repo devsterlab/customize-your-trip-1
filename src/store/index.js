@@ -16,7 +16,7 @@ function deserialize(stateString) {
 
 const createPersistentStore = compose(
     applyMiddleware(thunk),
-    persistState(null, {key: 'customizeTrip', deserialize}),
+    //persistState(null, {key: 'customizeTrip', deserialize}),
     window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 

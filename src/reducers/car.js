@@ -11,6 +11,13 @@ function setCar(state, id) {
     return Object.assign({}, state, {selectedCar: id || ''});
 }
 
+function editItem(state, step) {
+    return Object.assign({}, state, {
+        selectedCar: step.car && step.car.id || '',
+        days: step.carDays || 0
+    });
+}
+
 export default function car(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_CARS:
@@ -25,9 +32,11 @@ export default function car(state = initialState, action = '') {
             return Object.assign({}, state, {days: action.days});
 
         case types.SELECT_FLIGHT:
-            return setCar(state);
+            return action.clearSelections && setCar(state) || state;
         case types.CONTINUE_TRIP:
             return setCar(state);
+        case types.EDIT_ITEM:
+            return editItem(state, action.step);
         default:
             return state;
     }

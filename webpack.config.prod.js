@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var CleanPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -11,6 +12,7 @@ module.exports = {
         publicPath: '/dist/'
     },
     plugins: [
+        new CleanPlugin(['./dist']),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
         }),
@@ -19,6 +21,7 @@ module.exports = {
             jQuery: "jquery",
             "window.jQuery": "jquery"
         }),
+        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false }

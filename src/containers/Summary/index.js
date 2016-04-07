@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { continueTrip, setCurrentStep } from '../../actions/summary';
+import { hashHistory } from 'react-router';
+import * as actions from '../../actions/summary';
 import DateHelper from '../../util/dateHelper';
 
 import Timeline from '../../components/Timeline';
@@ -79,7 +80,8 @@ class Summary extends Component {
         homeCity: PropTypes.string,
         days: PropTypes.number,
         price: PropTypes.number,
-        currentStep: PropTypes.object
+        currentStep: PropTypes.object,
+        index: PropTypes.number
     };
 
     constructor(props) {
@@ -93,12 +95,26 @@ class Summary extends Component {
     componentWillReceiveProps(props) {
         if (!this.currentStepConcated && props.currentStep) {
             this.currentStepConcated = true;
-            this.setState({steps: this.state.steps.concat([props.currentStep])});
+            this.setState({
+                steps: props.steps
+                    .slice(0, props.index)
+                    .concat([props.currentStep])
+                    .concat(props.steps.slice(props.index, props.steps.length))
+            });
         }
     }
 
     handleContinueClick() {
         this.props.actions.continueTrip();
+    }
+
+    editItem(step, index, itemType) {
+        this.props.actions.editItem(step, index, itemType);
+        hashHistory.push(`/${itemType}`);
+    }
+
+    removeItem(step, index, itemType) {
+
     }
 
     render() {
@@ -110,7 +126,7 @@ class Summary extends Component {
             var tripFinished = lastStep.flight.toCity.id == homeCity && !lastStep.hotel;
             var finishSecondary = `${DateHelper.formatDateMonth(firstStep.date)} - `
                 + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
-                + ` | ${DateHelper.formatDays(days + (currentStep && currentStep.days || 0))}`;
+                + ` | ${DateHelper.formatDays(days || 0)}`;
         }
 
         return (
@@ -140,7 +156,8 @@ class Summary extends Component {
                                         <Content>
                                             <FlightCard flight={step.flight} date={step.date}/>
                                         </Content>
-                                        <Actions></Actions>
+                                        <Actions onEdit={() => this.editItem(step, index, 'flight')}
+                                                 onRemove={() => this.removeItem(step, index, 'flight')}/>
                                     </Item>
                                 </Category>}
                                 <Category className={isFinish && 'last' || ''}>
@@ -157,19 +174,22 @@ class Summary extends Component {
                                             <Content>
                                                 <HotelCard hotel={step.hotel} price={step.hotel.price} days={step.hotelDays}/>
                                             </Content>
-                                            <Actions></Actions>
+                                            <Actions onEdit={() => this.editItem(step, index, 'hotel')}
+                                                     onRemove={() => this.removeItem(step, index, 'hotel')}/>
                                         </Item>
                                         {step.car && <Item icon="mdi-car" className={isLastStep && 'last' || ''}>
                                             <Content>
                                                 <CarCard car={step.car} price={step.car.price} days={step.carDays}/>
                                             </Content>
-                                            <Actions></Actions>
+                                            <Actions onEdit={() => this.editItem(step, index, 'car')}
+                                                     onRemove={() => this.removeItem(step, index, 'car')}/>
                                         </Item>}
                                         {!isLastStep && <Item icon="mdi-airplane" className="last">
                                             <Content>
                                                 <FlightCard flight={nextStep.flight} date={nextStep.date}/>
                                             </Content>
-                                            <Actions></Actions>
+                                            <Actions onEdit={() => this.editItem(nextStep, index + 1, 'flight')}
+                                                     onRemove={() => this.removeItem(nextStep, index + 1, 'flight')}/>
                                         </Item> || ''}
                                     </div>}
                                 </Category>
@@ -179,7 +199,7 @@ class Summary extends Component {
                     {!tripFinished && <Category className="last">
                         <Title date={lastStep.dateTo} icon="mdi-flag-checkered" secondary={finishSecondary}>
                             Trip end:&nbsp;
-                            <strong>${price + (currentStep && currentStep.price || 0)}</strong>
+                            <strong>${price || 0}</strong>
                         </Title>
                     </Category>}
                 </Timeline>
@@ -197,7 +217,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({ continueTrip, setCurrentStep }, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     };
 }
 

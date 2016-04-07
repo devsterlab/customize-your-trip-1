@@ -11,6 +11,13 @@ function setHotel(state, id) {
     return Object.assign({}, state, {selectedHotel: id || ''});
 }
 
+function editItem(state, step) {
+    return Object.assign({}, state, {
+        selectedHotel: step.hotel && step.hotel.id || '',
+        days: step.hotelDays || 0
+    });
+}
+
 export default function hotel(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_HOTELS:
@@ -23,9 +30,11 @@ export default function hotel(state = initialState, action = '') {
             return Object.assign({}, state, {days: action.days});
 
         case types.SELECT_FLIGHT:
-            return setHotel(state);
+            return action.clearSelections && setHotel(state) || state;
         case types.CONTINUE_TRIP:
             return setHotel(state);
+        case types.EDIT_ITEM:
+            return editItem(state, action.step);
         default:
             return state;
     }

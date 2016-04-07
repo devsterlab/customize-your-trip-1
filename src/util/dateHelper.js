@@ -35,7 +35,6 @@ class DateHelper {
         return DateHelper.zerofy(hours) + ':' + DateHelper.zerofy(minutes);
     }
 
-
     static formatDateMonth(date) {
         return DateHelper.zerofy(date.getDate()) + '/' + DateHelper.zerofy(date.getMonth() + 1);
     }
@@ -46,6 +45,10 @@ class DateHelper {
 
     static shortMonth(date) {
         return date.toString().split(' ')[1].toLowerCase();
+    }
+
+    static subDays(d1, d2) {
+        return Math.round(Math.abs((d2 - d1) / (day)));
     }
 }
 

@@ -7,3 +7,11 @@ export function setCurrentStep() {
 export function continueTrip() {
     return { type: types.CONTINUE_TRIP };
 }
+
+export function editItem(step, index, itemType) {
+    return { type: types.EDIT_ITEM, step, index, itemType };
+}
+
+export function removeItem(step, index, itemType) {
+    return { type: types.REMOVE_ITEM, step, index, itemType };
+}

@@ -24,6 +24,8 @@ export default function flight(state = initialState, action = '') {
 
         case types.CONTINUE_TRIP:
             return Object.assign({}, setFlight(state), {notSearched: true});
+        case types.EDIT_ITEM:
+            return setFlight(state, action.step.flight.id);
         default:
             return state;
     }
