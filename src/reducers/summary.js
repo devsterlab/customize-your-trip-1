@@ -58,7 +58,7 @@ function setCurrentStep(state) {
         var steps = concatCurrentStep(summaryState.steps, summaryState.currentStep, summaryState.index);
 
     if (steps && steps.length) {
-        summaryState.steps = recalcSteps(summaryState.date, steps);
+        recalcSteps(summaryState.date, steps);
         summaryState.days = calcTotalDays(summaryState.date, steps);
         summaryState.price = calcTotalPrice(steps);
     }
@@ -90,7 +90,7 @@ function continueTrip(state) {
     let summaryState = Object.assign({}, state.summary, {
         steps: concatCurrentStep(state.summary.steps, step, state.summary.index)
     });
-    summaryState.steps = recalcSteps(summaryState.date, summaryState.steps);
+    recalcSteps(summaryState.date, summaryState.steps);
     summaryState.homeCity = summaryState.steps[0].flight.fromCity._id;
     summaryState.lastCityFrom = summaryState.steps[summaryState.steps.length - 1].flight.toCity._id;
     summaryState.lastCityTo = '';
@@ -111,11 +111,10 @@ function calcTotalPrice(steps) {
 }
 
 function recalcSteps(initDate, steps) {
-    let res = [calcStep(initDate, steps[0])];
+    steps[0] = calcStep(initDate, steps[0]);
     for (let i = 1; i < steps.length; i++) {
-        res.push(calcStep(steps[i - 1].dateTo, steps[i]));
+        Object.assign(steps[i], calcStep(steps[i - 1].dateTo, steps[i]));
     }
-    return res;
 }
 
 //Caution: we are receiving the whole state but must return its summary part

@@ -89,7 +89,7 @@ class Summary extends Component {
 
         this.currentStepConcated = false;
         this.state = { steps: props.steps };
-        props.actions.setCurrentStep();
+        setTimeout(() => props.actions.setCurrentStep(), 0);
     }
 
     componentWillReceiveProps(props) {
