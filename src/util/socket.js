@@ -37,6 +37,8 @@ class Socket {
                 this.socket.on('error', err => this._onConnectError(err, reject));
                 this.socket.on('connect_timeout', err => this._onConnectError(err, reject));
                 this.socket.on('connect_error', err => this._onConnectError(err, reject));
+                this.socket.on('reconnect_error', err => this._onConnectError(err, reject));
+                this.socket.on('reconnect_failed', err => this._onConnectError(err, reject));
             }
             catch(err) { this._onConnectError(err, reject); }
         });
