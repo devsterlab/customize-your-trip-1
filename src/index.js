@@ -6,9 +6,21 @@ import routes from './routes';
 import createStore from './store';
 import './app.scss';
 import loadMocks from './mocks';
+import Socket from './util/socket';
 
 const store = createStore();
-loadMocks(store);
+
+Socket.connect(store)
+    .then(() => Socket.loadCities())
+    .then(() => {
+        Socket.loadFlights();
+        Socket.loadHotels();
+        Socket.loadCars();
+    })
+    .then(() => console.log('Real data loaded!'))
+    .catch(err => {
+        loadMocks(store).then(() => console.log('Mocks loaded!'));
+    });
 
 render(
     <Provider store={store}>

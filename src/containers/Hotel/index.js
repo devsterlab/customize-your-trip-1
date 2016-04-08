@@ -17,7 +17,7 @@ class Hotel extends Component {
     static propTypes = {
         children: PropTypes.node,
         city: PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             name: PropTypes.string,
             bounds: PropTypes.shape({
                 south: PropTypes.number, west: PropTypes.number,
@@ -25,9 +25,9 @@ class Hotel extends Component {
             timezone: PropTypes.number
         }),
         hotels: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             city: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 name: PropTypes.string
             }),
             name: PropTypes.string,
@@ -64,7 +64,7 @@ class Hotel extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedHotel = props.hotels.find(el => el.id == props.selectedHotel);
+        this.selectedHotel = props.hotels.find(el => el._id == props.selectedHotel);
         this.state = {
             hotels: this.sort(props.hotels, props.sorting.field, props.sorting.asc),
             hotelInfo: null
@@ -100,7 +100,7 @@ class Hotel extends Component {
     _selectHotel(hotel, closeDialog) {
         this.selectedHotel = hotel;
         if (closeDialog) this.closeDialog();
-        this.props.actions.selectHotel(hotel.id);
+        this.props.actions.selectHotel(hotel._id);
     }
 
     _handleHotelInfoClick(hotelInfo) {
@@ -164,7 +164,7 @@ class Hotel extends Component {
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>
                             <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}`}
-                                       key={hotel.id} hotel={hotel} onClick={this.selectHotel}
+                                       key={hotel._id} hotel={hotel} onClick={this.selectHotel}
                                        onInfoClick={this.handleHotelInfoClick}/>
                         )}
                         </ul>
@@ -184,7 +184,7 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        hotels: city && state.hotel.hotels.filter(el => el.city.id == city.id) || [],
+        hotels: city && state.hotel.hotels.filter(el => el.city._id == city._id) || [],
         selectedHotel: state.hotel.selectedHotel,
         selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,

@@ -16,17 +16,17 @@ class TripMap extends Component {
         this.state = {
             zoom: props.selectedHotel && 15 || 11,
             center: props.selectedHotel && this.hotelPosition(props.selectedHotel) || this.calcCenter(props.city.bounds),
-            markers: this.createMarkers(props.hotels, props.selectedHotel && props.selectedHotel.id, props.onMarkerClick)
+            markers: this.createMarkers(props.hotels, props.selectedHotel && props.selectedHotel._id, props.onMarkerClick)
         };
     }
 
     componentWillReceiveProps(props) {
         if (props.selectedHotel &&
-            (!this.props.selectedHotel || props.selectedHotel.id != this.props.selectedHotel.id)) {
+            (!this.props.selectedHotel || props.selectedHotel._id != this.props.selectedHotel._id)) {
             this.setState({
                 zoom: 15,
                 center: this.hotelPosition(props.selectedHotel),
-                markers: this.createMarkers(props.hotels, props.selectedHotel.id, props.onMarkerClick)
+                markers: this.createMarkers(props.hotels, props.selectedHotel._id, props.onMarkerClick)
             });
         }
     }
@@ -40,9 +40,9 @@ class TripMap extends Component {
             return {
                 label: {
                     text: hotel.name,
-                    fontSize: hotel.id == selectedId && '20px' || '14px',
+                    fontSize: hotel._id == selectedId && '20px' || '14px',
                     fontWeight: '700',
-                    color: hotel.id == selectedId && 'green' || 'black'
+                    color: hotel._id == selectedId && 'green' || 'black'
                 },
                 title: hotel.name,
                 position: {

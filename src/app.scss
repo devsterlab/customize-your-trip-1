@@ -67,6 +67,11 @@ button {
   width: 125px;
 }
 
+.progress {
+  width: calc(100% + 32px);
+  margin-left: -16px;
+}
+
 @import './components/IconButton/icon-button';
 @import './components/Card/card';
 @import './components/Sort/sort';

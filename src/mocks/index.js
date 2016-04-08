@@ -20,16 +20,16 @@ export default function loadMocks(store) {
                 let city = cities[i];
                 for (let j = 0; j < flights.length; j++) {
                     let flight = flights[j];
-                    if (flight.fromCity == city.id) {
+                    if (flight.fromCity == city._id) {
                         flight.fromCity = {
-                            id: city.id,
+                            _id: city._id,
                             name: city.name,
                             timezone: city.timezone
                         };
                     }
-                    if (flight.toCity == city.id) {
+                    if (flight.toCity == city._id) {
                         flight.toCity = {
-                            id: city.id,
+                            _id: city._id,
                             name: city.name,
                             timezone: city.timezone
                         };
@@ -37,18 +37,18 @@ export default function loadMocks(store) {
                 }
                 for (let j = 0; j < hotels.length; j++) {
                     let hotel = hotels[j];
-                    if (hotel.city == city.id) {
+                    if (hotel.city == city._id) {
                         hotel.city = {
-                            id: city.id,
+                            _id: city._id,
                             name: city.name
                         };
                     }
                 }
                 for (let j = 0; j < cars.length; j++) {
                     let car = cars[j];
-                    if (car.city == city.id) {
+                    if (car.city == city._id) {
                         car.city = {
-                            id: city.id,
+                            _id: city._id,
                             name: city.name
                         };
                     }
@@ -68,43 +68,43 @@ const mocks = {
 
     cities: [
         {
-            "id": "56f3e8a1373e84f9dc234780",
+            "_id": "56f3e8a1373e84f9dc234780",
             "name": "Kyiv",
             "bounds": {"south": 50.213273, "west": 30.239440100000024, "north": 50.590798, "east": 30.825941000000057},
             "timezone": 2
         },
         {
-            "id": "56f3e8a172a967f8f2d00e31",
+            "_id": "56f3e8a172a967f8f2d00e31",
             "name": "London",
             "bounds": {"south": 51.38494009999999, "west": -0.351468299999965, "north": 51.6723432, "east": 0.14827100000002247},
             "timezone": 0
         },
         {
-            "id": "56f3e8a13268e77a5c38a225",
+            "_id": "56f3e8a13268e77a5c38a225",
             "name": "New York",
             "bounds": {"south": 40.4960439, "west": -74.2557349, "north": 40.91525559999999, "east": -73.7002721},
             "timezone": -4
         },
         {
-            "id": "56f3e8a1cf164ee2dbc85372",
+            "_id": "56f3e8a1cf164ee2dbc85372",
             "name": "Toronto",
             "bounds": {"south": 43.5810245, "west": -79.63921900000003, "north": 43.8554579, "east": -79.116897},
             "timezone": -4
         },
         {
-            "id": "56f3e8a12e711621a7db29a2",
+            "_id": "56f3e8a12e711621a7db29a2",
             "name": "Sydney",
             "bounds": {"south": -34.1692489, "west": 150.50222899999994, "north": -33.4245981, "east": 151.34263609999994},
             "timezone": 11
         },
         {
-            "id": "56f3e8a11973fb60f402e64e",
+            "_id": "56f3e8a11973fb60f402e64e",
             "name": "Madrid",
             "bounds": {"south": 40.3120639, "west": -3.834161799999947, "north": 40.5638447, "east": -3.52491150000003},
             "timezone": 1
         },
         {
-            "id": "56f3e8a19bd6937df3cfe793",
+            "_id": "56f3e8a19bd6937df3cfe793",
             "name": "Paris",
             "bounds": {"south": 48.815573, "west": 2.22519299999999, "north": 48.9021449, "east": 2.4699207999999544},
             "timezone": 1
@@ -114,15 +114,15 @@ const mocks = {
     flights: [
         {
             'repeat:100': {
-                id: '{{objectId()}}',
+                _id: '{{objectId()}}',
                 fromCity: function (tags, parent, index) {
-                    return parent.cities[Math.floor(index / 14.4)].id;
+                    return parent.cities[Math.floor(index / 14.4)]._id;
                 },
                 toCity: function (tags, parent, index) {
                     var cityIndex = Math.floor(index / 14.4);
                     var range = tags.range(0, parent.cities.length, 1);
                     range.splice(cityIndex, 1);
-                    return parent.cities[tags.random.apply(tags, range)].id;
+                    return parent.cities[tags.random.apply(tags, range)]._id;
                 },
                 companyName: '{{company()}}',
                 available: '{{integer(10, 100)}}',
@@ -136,9 +136,9 @@ const mocks = {
     hotels: [
         {
             'repeat:100': {
-                id: '{{objectId()}}',
+                _id: '{{objectId()}}',
                 city: function (tags, parent, index) {
-                    return parent.cities[Math.floor(index / 14.4)].id;
+                    return parent.cities[Math.floor(index / 14.4)]._id;
                 },
                 name: '{{company()}} {{company()}}',
                 popularity: '{{integer(6, 10)}}',
@@ -171,9 +171,9 @@ const mocks = {
     cars: [
         {
             'repeat:100': {
-                id: '{{objectId()}}',
+                _id: '{{objectId()}}',
                 city: function (tags, parent, index) {
-                    return parent.cities[Math.floor(index / 14.4)].id;
+                    return parent.cities[Math.floor(index / 14.4)]._id;
                 },
                 brand: '{{random("Chevrolet", "Cadillac", "Buick", "Ford", "Chrysler", "Dodge", "Jeep", "Toyota", "Lexus", "Suzuki", "Mazda", "Honda", "Audi")}}',
                 model: '{{lorem(1, "words")}}',

@@ -5,7 +5,6 @@ import { selectCity } from '../../actions/city';
 import { selectFlight, setFlightsSort, setFlightsSearched } from '../../actions/flight';
 import Sorting from '../../util/sorting';
 import Select from '../../components/Select';
-import Progress from '../../components/Progress/Progress';
 import FlightCard from '../../components/FlightCard';
 import Sort from '../../components/Sort';
 import Button from '../../components/Button';
@@ -14,7 +13,7 @@ class Flight extends Component {
     static propTypes = {
         children: PropTypes.node,
         cities: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             name: PropTypes.string,
             bounds: PropTypes.shape({
                 south: PropTypes.number, west: PropTypes.number,
@@ -22,14 +21,14 @@ class Flight extends Component {
             timezone: PropTypes.number
         })),
         flights: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             fromCity: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 name: PropTypes.string,
                 timezone: PropTypes.number
             }),
             toCity: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 name: PropTypes.string,
                 timezone: PropTypes.number
             }),
@@ -63,7 +62,7 @@ class Flight extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedFlight = props.flights.find(el => el.id == props.selectedFlight);
+        this.selectedFlight = props.flights.find(el => el._id == props.selectedFlight);
         this.state = {
             flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)
         };
@@ -78,9 +77,9 @@ class Flight extends Component {
     handleCityChange(city, from, to) {
         let state = Object.assign({}, this.handleCityNotFound(city, from));
         let otherCity = this.props['selectedCity' + to];
-        if (city && otherCity) Object.assign(state, this.handleCitiesEqual(city.id, otherCity));
+        if (city && otherCity) Object.assign(state, this.handleCitiesEqual(city._id, otherCity));
         this.setState(state);
-        this.props.actions.selectCity(city && city.id, from);
+        this.props.actions.selectCity(city && city._id, from);
     }
 
     _handleCityFromChange(city) {
@@ -105,7 +104,7 @@ class Flight extends Component {
 
     filterFlights(flights = this.props.flights) {
         if (flights) return flights
-            .filter(el => el.fromCity.id == this.props.selectedCityFrom && el.toCity.id == this.props.selectedCityTo);
+            .filter(el => el.fromCity._id == this.props.selectedCityFrom && el.toCity._id == this.props.selectedCityTo);
         return [];
     }
 
@@ -142,11 +141,11 @@ class Flight extends Component {
     }
 
     clearSelections(current, prev) {
-        return !(current && prev && (current.fromCity.id == prev.fromCity.id) && (current.toCity.id == prev.toCity.id));
+        return !(current && prev && (current.fromCity._id == prev.fromCity._id) && (current.toCity._id == prev.toCity._id));
     }
 
     _selectFlight(flight) {
-        this.props.actions.selectFlight(flight.id, this.clearSelections(flight, this.selectedFlight));
+        this.props.actions.selectFlight(flight._id, this.clearSelections(flight, this.selectedFlight));
         this.selectedFlight = flight;
     }
 
@@ -155,13 +154,12 @@ class Flight extends Component {
     }
 
     canFinish() {
-        return this.selectedFlight && this.selectedFlight.toCity.id == this.props.homeCity;
+        return this.selectedFlight && this.selectedFlight.toCity._id == this.props.homeCity;
     }
 
     render() {
         return (
             <div className="height-100 flight-page">
-                <Progress loaded={!!this.props.cities.length} />
                 <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
                     <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCityFrom}
                             id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
@@ -198,7 +196,7 @@ class Flight extends Component {
                             {this.state.flights.length &&
                             <ul className="flights-list">
                                 {this.state.flights.map(flight =>
-                                        <FlightCard key={flight.id} flight={flight} date={this.props.date}
+                                        <FlightCard key={flight._id} flight={flight} date={this.props.date}
                                                     onClick={this.selectFlight} />
                                 )}
                             </ul> ||

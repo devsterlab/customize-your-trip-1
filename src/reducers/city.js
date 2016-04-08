@@ -12,7 +12,7 @@ export default function city(state = initialState, action = '') {
         case types.SET_CITIES:
             return Object.assign({}, state, {cities: action.cities, citiesLoaded: true});
         case types.SELECT_CITY:
-            return Object.assign({}, state, {['selectedCity' + action.toFrom]: action.id});
+            return Object.assign({}, state, {['selectedCity' + action.toFrom]: action._id});
 
         case types.CONTINUE_TRIP:
             return Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''});

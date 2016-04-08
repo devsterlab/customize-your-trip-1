@@ -16,7 +16,7 @@ class Car extends Component {
     static propTypes = {
         children: PropTypes.node,
         city: PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             name: PropTypes.string,
             bounds: PropTypes.shape({
                 south: PropTypes.number, west: PropTypes.number,
@@ -24,9 +24,9 @@ class Car extends Component {
             timezone: PropTypes.number
         }),
         cars: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             city: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 name: PropTypes.string
             }),
             brand: PropTypes.string,
@@ -59,7 +59,7 @@ class Car extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedCar = props.cars.find(el => el.id == props.selectedCar);
+        this.selectedCar = props.cars.find(el => el._id == props.selectedCar);
         let filteredCars = this.filter(props.cars, props.filters);
         this.state = {
             brands: this.readAvailableTypes(props.cars, 'brand'),
@@ -115,7 +115,7 @@ class Car extends Component {
 
     _selectCar(car) {
         this.selectedCar = car;
-        this.props.actions.selectCar(car && car.id);
+        this.props.actions.selectCar(car && car._id);
     }
 
     readAvailableTypes(cars, field) {
@@ -239,7 +239,7 @@ class Car extends Component {
                         </div>
                         {this.state.cars.length && <ul>
                             {this.state.cars.map(car =>
-                                <CarCard key={car.id} car={car} onClick={this.selectCar} />
+                                <CarCard key={car._id} car={car} onClick={this.selectCar} />
                             )}
                         </ul>
                         ||
@@ -276,7 +276,7 @@ function mapStateToProps(state) {
     let city = flightCity(state);
     return {
         city,
-        cars: city && state.car.cars.filter(el => el.city.id == city.id) || [],
+        cars: city && state.car.cars.filter(el => el.city._id == city._id) || [],
         selectedHotel: state.hotel.selectedHotel,
         selectedCar: state.car.selectedCar,
         sorting: state.car.sorting,

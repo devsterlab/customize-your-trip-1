@@ -22,14 +22,14 @@ class Summary extends Component {
         children: PropTypes.node,
         steps: PropTypes.arrayOf(PropTypes.shape({
             flight: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 fromCity: PropTypes.shape({
-                    id: PropTypes.string,
+                    _id: PropTypes.string,
                     name: PropTypes.string,
                     timezone: PropTypes.number
                 }),
                 toCity: PropTypes.shape({
-                    id: PropTypes.string,
+                    _id: PropTypes.string,
                     name: PropTypes.string,
                     timezone: PropTypes.number
                 }),
@@ -40,9 +40,9 @@ class Summary extends Component {
                 duration: PropTypes.string
             }),
             hotel: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 city: PropTypes.shape({
-                    id: PropTypes.string,
+                    _id: PropTypes.string,
                     name: PropTypes.string
                 }),
                 name: PropTypes.string,
@@ -56,9 +56,9 @@ class Summary extends Component {
                 price: PropTypes.number
             }),
             car: PropTypes.shape({
-                id: PropTypes.string,
+                _id: PropTypes.string,
                 city: PropTypes.shape({
-                    id: PropTypes.string,
+                    _id: PropTypes.string,
                     name: PropTypes.string
                 }),
                 brand: PropTypes.string,
@@ -123,7 +123,7 @@ class Summary extends Component {
         const summaryAvailable = steps.length;
         if (summaryAvailable) {
             var firstStep = steps[0], lastStep = steps[steps.length - 1];
-            var tripFinished = lastStep.flight.toCity.id == homeCity && !lastStep.hotel;
+            var tripFinished = lastStep.flight.toCity._id == homeCity && !lastStep.hotel;
             var finishSecondary = `${DateHelper.formatDateMonth(firstStep.date)} - `
                 + `${DateHelper.formatDateMonth(lastStep.dateTo)}`
                 + ` | ${DateHelper.formatDays(days || 0)}`;
@@ -145,7 +145,7 @@ class Summary extends Component {
                         const isFirstStep = index == 0, isLastStep = index == steps.length - 1,
                             secondary = `${DateHelper.formatDateMonth(step.dateFrom)} - `
                                 + `${DateHelper.formatDateMonth(step.dateTo)} | ${DateHelper.formatDays(step.days)}`,
-                            isHome = step.flight.toCity.id == homeCity;
+                            isHome = step.flight.toCity._id == homeCity;
                         const isFinish = isHome && !step.hotel;
                         if (!isLastStep) var nextStep = steps[index + 1];
                         return (

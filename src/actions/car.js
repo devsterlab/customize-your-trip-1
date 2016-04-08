@@ -4,8 +4,8 @@ export function setCars(cars) {
     return { type: types.SET_CARS, cars };
 }
 
-export function selectCar(id) {
-    return { type: types.SELECT_CAR, id };
+export function selectCar(_id) {
+    return { type: types.SELECT_CAR, _id };
 }
 
 export function setCarsSort(field, asc) {

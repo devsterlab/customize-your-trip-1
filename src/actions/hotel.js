@@ -4,8 +4,8 @@ export function setHotels(hotels) {
     return { type: types.SET_HOTELS, hotels };
 }
 
-export function selectHotel(id) {
-    return { type: types.SELECT_HOTEL, id };
+export function selectHotel(_id) {
+    return { type: types.SELECT_HOTEL, _id };
 }
 
 export function setHotelsSort(field, asc) {

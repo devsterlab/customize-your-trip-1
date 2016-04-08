@@ -7,13 +7,13 @@ const initialState = {
     days: 1
 };
 
-function setCar(state, id) {
-    return Object.assign({}, state, {selectedCar: id || ''});
+function setCar(state, _id) {
+    return Object.assign({}, state, {selectedCar: _id || ''});
 }
 
 function editItem(state, step) {
     return Object.assign({}, state, {
-        selectedCar: step.car && step.car.id || '',
+        selectedCar: step.car && step.car._id || '',
         days: step.carDays || 0
     });
 }
@@ -23,7 +23,7 @@ export default function car(state = initialState, action = '') {
         case types.SET_CARS:
             return Object.assign({}, state, {cars: action.cars, carsLoaded: true});
         case types.SELECT_CAR:
-            return setCar(state, action.id);
+            return setCar(state, action._id);
         case types.SET_CARS_SORT:
             return Object.assign({}, state, {sorting: {field: action.field, asc: action.asc}});
         case types.SET_CARS_FILTERS:

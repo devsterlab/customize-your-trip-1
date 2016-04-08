@@ -19,17 +19,7 @@ class Select extends Component {
     constructor(props) {
         super(props);
 
-        let item;
-        if (props.itemId) item = props.collection.find(el => el.id == props.itemId);
-        else if (props.itemName) item = props.collection.find(el => el.name == props.itemName);
-
-        this.state = {
-            item: item || {},
-            itemName: item && item[props.nameField] || props.itemName || '',
-            hideOptions: true,
-            searchCollection: [],
-            restCollection: props.collection
-        };
+        this.state = this.initState(props);
 
         this.handleItemNameChange = this._handleItemNameChange.bind(this);
         this.onClick = this._onClick.bind(this);
@@ -37,12 +27,23 @@ class Select extends Component {
         this.onClear = this._onClear.bind(this);
     }
 
+    initState(props) {
+        let item;
+        if (props.itemId) item = props.collection.find(el => el._id == props.itemId);
+        else if (props.itemName) item = props.collection.find(el => el.name == props.itemName);
+
+        return {
+            item: item || {},
+            itemName: item && item[props.nameField] || props.itemName || '',
+            hideOptions: true,
+            searchCollection: [],
+            restCollection: props.collection
+        };
+    }
+
     componentWillReceiveProps(props) {
-        if (this.props.collection.length != props.collection.length) {
-            this.setState({
-                searchCollection: [],
-                restCollection: props.collection
-            });
+        if (this.props.collection != props.collection) {
+            this.setState(this.initState(props));
         }
     }
 
