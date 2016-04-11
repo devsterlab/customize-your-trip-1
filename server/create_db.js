@@ -1,16 +1,17 @@
 var mongoose = require('./lib/mongoose');
 var async = require('async');
 
-var cities = require('models/mocks_data/cities.json').cities;
-var cars = require('models/mocks_data/cars.json').cars;
-var flights = require('models/mocks_data/flights.json').flights;
-var hotels = require('models/mocks_data/hotels.json').hotels;
+var cities;
+var cars;
+var flights;
+var hotels;
 
 mongoose.set('debug', true);
 
 async.series([
 	open,
 	dropDatabase,
+	getAllData,
 	requireModels,
 	createUsers,
 	createCities,
@@ -30,6 +31,19 @@ function open(callback) {
 function dropDatabase(callback) {
 	var db = mongoose.connection.db;
 	db.dropDatabase(callback);
+}
+
+function getAllData(callback) {
+	var getMocks = require('models/mocks_data');
+
+	getMocks(function (data) {
+		cities = data.cities;
+		cars = data.cars;
+		flights = data.flights;
+		hotels = data.hotels;
+
+		callback()
+	});
 }
 
 function requireModels(callback) {
@@ -66,81 +80,66 @@ function createCities(callback) {
 }
 
 function createCars(callback) {
+	async.each(cars, function (carData, callback) {
+		var city = getCitiesById(carData.city);
 
-	mongoose.models.City.find({}, function (err, cities) {
+		carData.city = {
+			_id: city._id,
+			name: city.name,
+			timezone: city.timezone
+		};
 
-		for (var i = 0, len = cars.length; i < len; i++) {
-			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
-			cars[i].city = {
-				_id: cities[randomCitiesIndex].id,
-				name: cities[randomCitiesIndex].name,
-				timezone: cities[randomCitiesIndex].timezone
-			};
-		}
-
-		async.each(cars, function (carData, callback) {
-			var car = new mongoose.models.Car(carData);
-			car.save(callback)
-		}, callback);
-	});
+		var car = new mongoose.models.Car(carData);
+		car.save(callback)
+	}, callback);
 
 }
 
 function createFlights(callback) {
+	async.each(flights, function (flightData, callback) {
 
-	mongoose.models.City.find({}, function (err, cities) {
+		var fromCity = getCitiesById(flightData.fromCity);
+		var toCity = getCitiesById(flightData.toCity);
 
-		for (var i = 0, len = flights.length; i < len; i++) {
-			var randomFromCities = Math.floor(Math.random() * (cities.length));
-			flights[i].fromCity = {
-				_id: cities[randomFromCities].id,
-				name: cities[randomFromCities].name,
-				timezone: cities[randomFromCities].timezone
-			};
+		flightData.fromCity = {
+			_id: fromCity._id,
+			name: fromCity.name,
+			timezone: fromCity.timezone
+		};
 
-			var randomToCities = Math.floor(Math.random() * (cities.length));
+		flightData.toCity = {
+			_id: toCity._id,
+			name: toCity.name,
+			timezone: toCity.timezone
+		};
 
-			if(randomToCities === randomFromCities){
-				flights[i].toCity = {
-					_id: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].id,
-					name: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].name,
-					timezone: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].timezone
-				};
-			} else {
-				flights[i].toCity = {
-					_id: cities[randomToCities].id,
-					name: cities[randomToCities].name,
-					timezone: cities[randomToCities].timezone
-				};
-			}
-		}
-
-		async.each(flights, function (flightData, callback) {
-			var flight = new mongoose.models.Flight(flightData);
-			flight.save(callback)
-		}, callback);
-	});
+		var flight = new mongoose.models.Flight(flightData);
+		flight.save(callback)
+	}, callback);
 
 }
 
 function createHotels(callback) {
+	async.each(hotels, function (hotelData, callback) {
 
-	mongoose.models.City.find({}, function (err, cities) {
+		var city = getCitiesById(hotelData.city);
 
-		for (var i = 0, len = hotels.length; i < len; i++) {
-			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
-			hotels[i].city = {
-				_id: cities[randomCitiesIndex].id,
-				name: cities[randomCitiesIndex].name,
-				timezone: cities[randomCitiesIndex].timezone
-			};
+		hotelData.city = {
+			_id: city._id,
+			name: city.name,
+			timezone: city.timezone
+		};
+
+		var hotel = new mongoose.models.Hotel(hotelData);
+		hotel.save(callback)
+	}, callback);
+
+}
+
+function getCitiesById(cityId) {
+	for (var i = 0, len = cities.length; i < len; i++) {
+		if (cities[i]._id === cityId) {
+			return cities[i]
 		}
-
-		async.each(hotels, function (hotelData, callback) {
-			var hotel = new mongoose.models.Hotel(hotelData);
-			hotel.save(callback)
-		}, callback);
-	});
-
-
+	}
 }
