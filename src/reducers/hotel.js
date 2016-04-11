@@ -18,6 +18,11 @@ function editItem(state, step) {
     });
 }
 
+function removeItem(state, itemType) {
+    if (itemType != 'car') return Object.assign({}, state, {selectedHotel: ''});
+    return state;
+}
+
 export default function hotel(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_HOTELS:
@@ -35,6 +40,8 @@ export default function hotel(state = initialState, action = '') {
             return setHotel(state);
         case types.EDIT_ITEM:
             return editItem(state, action.step);
+        case types.REMOVE_ITEM:
+            return removeItem(state, action.itemType);
         default:
             return state;
     }

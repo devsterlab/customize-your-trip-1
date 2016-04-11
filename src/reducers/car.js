@@ -37,6 +37,8 @@ export default function car(state = initialState, action = '') {
             return setCar(state);
         case types.EDIT_ITEM:
             return editItem(state, action.step);
+        case types.REMOVE_ITEM:
+            return setCar(state);
         default:
             return state;
     }

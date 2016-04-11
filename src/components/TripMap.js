@@ -63,7 +63,7 @@ class TripMap extends Component {
 
     render() {
         return (
-            <section className={'height-100 ' + this.props.className}>
+            <section className={`height-100 ${this.props.className || ''}`}>
                 <GoogleMapLoader
                     containerElement={
                         <div {...this.props} className="height-100"/>

@@ -12,6 +12,6 @@ export function setFlightsSort(field, asc) {
     return { type: types.SET_FLIGHTS_SORT, field, asc };
 }
 
-export function setFlightsSearched() {
-    return { type: types.SET_FLIGHTS_SEARCHED };
+export function setFlightsSearched(notSearched = false) {
+    return { type: types.SET_FLIGHTS_SEARCHED, notSearched };
 }

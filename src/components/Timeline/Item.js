@@ -12,7 +12,7 @@ class Item extends Component {
         return (
             <div className={`item row ${className || ''}`} {...other}>
                 <div className="side medium-2 columns">
-                    <i className={`icon mdi ${icon}`}></i>
+                    <i className={`icon mdi ${icon || ''}`}></i>
                 </div>
                 {children}
                 <div className="line top"/>

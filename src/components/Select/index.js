@@ -110,17 +110,17 @@ class Select extends Component {
 
     render () {
         return (
-            <div className={`select ${this.props.className}`}>
-                <label className={this.isValid() ? '': 'is-invalid-label'}>
+            <div className={`select ${this.props.className || ''}`}>
+                <label className={!this.isValid() && 'is-invalid-label' || ''}>
                     {this.props.children}
-                    <input className={!this.isValid() && 'is-invalid-input'} readOnly={this.props.readOnly}
+                    <input className={!this.isValid() && 'is-invalid-input' || ''} readOnly={this.props.readOnly}
                            onClick={this.onClick} onBlur={this.onBlur}
                            type="text" placeholder={this.props.placeholder}
                            value={this.state.itemName} onChange={this.handleItemNameChange} />
                     {this.props.clearButton && this.state.itemName.length &&
                         <IconButton className="mdi-close-circle clear-button" title="Clear" onClick={this.onClear}/>
                     || ''}
-                    <span className={'form-error ' + (!this.isValid() ? 'is-visible' : '')}>
+                    <span className={`form-error ${!this.isValid() && 'is-visible' || ''}`}>
                         {this.props.error}
                     </span>
                 </label>

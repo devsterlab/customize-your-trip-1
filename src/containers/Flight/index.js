@@ -74,6 +74,10 @@ class Flight extends Component {
         this.selectFlight = this._selectFlight.bind(this);
     }
 
+    componentWillMount() {
+        if (!this.props.selectedCityFrom || !this.props.selectedCityTo) this.props.actions.setFlightsSearched(true);
+    }
+
     handleCityChange(city, from, to) {
         let state = Object.assign({}, this.handleCityNotFound(city, from));
         let otherCity = this.props['selectedCity' + to];
@@ -153,6 +157,10 @@ class Flight extends Component {
         return this.canSearch() || this.state.flights.length || this.props.selectedFlight;
     }
 
+    hideFlightsResults() {
+        return !this.selectCitiesHeaderHide() || (this.props.notSearched && !this.props.selectedFlight);
+    }
+
     canFinish() {
         return this.selectedFlight && this.selectedFlight.toCity._id == this.props.homeCity;
     }
@@ -182,7 +190,7 @@ class Flight extends Component {
                     <h3 className={`text-center subheader ${this.selectCitiesHeaderHide() && 'hide' || ''}`}>
                         Select cities to start
                     </h3>
-                    <div className={(!this.selectCitiesHeaderHide() || this.props.notSearched) && 'hide' || ''}>
+                    <div className={this.hideFlightsResults() && 'hide' || ''}>
                         <div className="medium-8 columns flights-results">
                             <div>
                                 <h4 className="inline">Sort by:</h4>
@@ -200,9 +208,10 @@ class Flight extends Component {
                                                     onClick={this.selectFlight} />
                                 )}
                             </ul> ||
+                            (!this.props.notSearched &&
                             <h2 className="subheader">
                                 Flights not found
-                            </h2>}
+                            </h2> || null)}
                         </div>
                         <div className="medium-4 columns selected-flight">
                             <h4>Current selection</h4>

@@ -7,6 +7,10 @@ const initialState = {
     selectedCityTo: ''
 };
 
+function resetSelectedCities(state) {
+    return Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''});
+}
+
 export default function city(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_CITIES:
@@ -15,7 +19,9 @@ export default function city(state = initialState, action = '') {
             return Object.assign({}, state, {['selectedCity' + action.toFrom]: action._id});
 
         case types.CONTINUE_TRIP:
-            return Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''});
+            return resetSelectedCities(state);
+        case types.REMOVE_ITEM:
+            return action.itemType != 'car' && resetSelectedCities(state) || state;
         default:
             return state;
     }

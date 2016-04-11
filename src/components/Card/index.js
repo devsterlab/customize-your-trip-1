@@ -21,7 +21,7 @@ class Card extends Component {
                 <div className={`${image && 'small-8' || 'small-12'} columns content`}>
                     {children}
                 </div>
-                {price && <div className={`price text-center ${days && 'days'}`}>
+                {price && <div className={`price text-center ${days && 'days' || ''}`}>
                     {days ? <div>
                         <span className="calc">${price} x {DateHelper.formatDays(days)} = </span>
                         ${price * days}

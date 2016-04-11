@@ -11,15 +11,21 @@ import Socket from './util/socket';
 const store = createStore();
 
 Socket.connect(store)
-    .then(() => Socket.loadCities())
+    .then(() => Promise.all([
+        Socket.loadCities(),
+        Socket.loadFlights(),
+        Socket.loadHotels(),
+        Socket.loadCars()
+    ]))
     .then(() => {
-        Socket.loadFlights();
-        Socket.loadHotels();
-        Socket.loadCars();
+        let state = store.getState();
+        if (!state.city.cities.length || !state.flight.flights.length || !state.hotel.hotels.length) {
+            loadMocks(store).then(() => console.log('Bad server data... Mocks loaded.'));
+        }
+        else console.log('Real data loaded!');
     })
-    .then(() => console.log('Real data loaded!'))
     .catch(err => {
-        loadMocks(store).then(() => console.log('Mocks loaded!'));
+        loadMocks(store).then(() => console.log('Connection failed... Mocks loaded.'));
     });
 
 render(

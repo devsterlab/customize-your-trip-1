@@ -25,9 +25,9 @@ class Sort extends Component {
 
     render() {
         return (
-            <div className={'sort inline ' + this.props.className} onClick={this.handleClick}>
-                <h5 className={this.props.selected ? '' : 'disabled'}>{this.props.children}
-                    <i className={'mdi ' + (this.state.asc ? 'mdi-chevron-up' : 'mdi-chevron-down')} />
+            <div className={`sort inline ${this.props.className || ''}`} onClick={this.handleClick}>
+                <h5 className={!this.props.selected && 'disabled' || ''}>{this.props.children}
+                    <i className={`mdi ${this.state.asc && 'mdi-chevron-up' || 'mdi-chevron-down'}`} />
                 </h5>
             </div>
         );

@@ -15,7 +15,7 @@ class Title extends Component {
         return (
             <div className={`title row ${className || ''}`} {...other}>
                 <div className="side medium-2 columns">
-                    <i className={`icon mdi ${icon} mdi-24px`}></i>
+                    <i className={`icon mdi ${icon || ''} mdi-24px`}></i>
                     <div className="date">
                         <div className="day">{DateHelper.zerofy(date.getDate())}</div>
                         <div className="month">{DateHelper.shortMonth(date)}</div>

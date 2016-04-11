@@ -87,21 +87,21 @@ class Summary extends Component {
     constructor(props) {
         super(props);
 
-        this.currentStepConcated = false;
         this.state = { steps: props.steps };
-        setTimeout(() => props.actions.setCurrentStep(), 0);
+    }
+
+    componentWillMount() {
+        this.props.actions.setCurrentStep();
     }
 
     componentWillReceiveProps(props) {
-        if (!this.currentStepConcated && props.currentStep) {
-            this.currentStepConcated = true;
-            this.setState({
-                steps: props.steps
-                    .slice(0, props.index)
-                    .concat([props.currentStep])
-                    .concat(props.steps.slice(props.index, props.steps.length))
-            });
-        }
+        this.setState({
+            steps: props.currentStep && props.steps
+                .slice(0, props.index)
+                .concat([props.currentStep])
+                .concat(props.steps.slice(props.index, props.steps.length))
+                || props.steps
+        });
     }
 
     handleContinueClick() {
@@ -114,7 +114,7 @@ class Summary extends Component {
     }
 
     removeItem(step, index, itemType) {
-
+        this.props.actions.removeItem(step, index, itemType);
     }
 
     render() {
@@ -165,7 +165,7 @@ class Summary extends Component {
                                            secondary={isFinish && finishSecondary || secondary}>
                                         {isFinish &&
                                         <span>Trip end:&nbsp;
-                                            <strong>${price + (currentStep && currentStep.price || 0)}</strong>
+                                            <strong>${price  || 0}</strong>
                                         </span> ||
                                         step.flight.toCity.name}
                                     </Title>
