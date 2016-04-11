@@ -1,10 +1,10 @@
 var mongoose = require('./lib/mongoose');
 var async = require('async');
 
-var cities = require('models/cities.json').cities;
-var cars = require('models/cars.json').cars;
-var flights = require('models/flights.json').flights;
-var hotels = require('models/hotels.json').hotels;
+var cities = require('models/mocks_data/cities.json').cities;
+var cars = require('models/mocks_data/cars.json').cars;
+var flights = require('models/mocks_data/flights.json').flights;
+var hotels = require('models/mocks_data/hotels.json').hotels;
 
 mongoose.set('debug', true);
 
