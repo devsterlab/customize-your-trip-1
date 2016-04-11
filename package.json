@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/alexeychikk/reacdux-foundpack",
   "devDependencies": {
+    "babel-cli": "^6.7.5",
     "babel-core": "^6.5.1",
     "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.3",

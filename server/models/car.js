@@ -26,14 +26,8 @@ var schema = new Schema({
 		type: String
 	},
 	city: {
-		type: Schema.ObjectId,
-		//type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
+		type: Schema.Types.Mixed
 	}
-	//cityName: {
-	//	type: mongoose.Schema.Types.ObjectId,
-	//	ref: 'User'
-	//}
 });
 
 exports.Car = mongoose.model('Car', schema);

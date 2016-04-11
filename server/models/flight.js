@@ -20,23 +20,11 @@ var schema = new Schema({
 		type: Number
 	},
 	fromCity: {
-		type: Schema.ObjectId
-		//type: mongoose.Schema.Types.ObjectId,
-		//ref: 'User'
+		type: Schema.Types.Mixed
 	},
 	toCity: {
-		type: Schema.ObjectId
-		//type: mongoose.Schema.Types.ObjectId,
-		//ref: 'User'
+		type: Schema.Types.Mixed
 	}
-	//fromCity: {
-	//	type: mongoose.Schema.Types.ObjectId,
-	//	ref: 'User'
-	//}
-	//toCity: {
-	//	type: mongoose.Schema.Types.ObjectId,
-	//	ref: 'User'
-	//}
 });
 
 exports.Flight = mongoose.model('Flight', schema);

@@ -1,5 +1,6 @@
 {
   "port": 8081,
+  "url": "0.0.0.0",
   "mongoose": {
     "uri": "mongodb://127.0.0.1:27017/trip",
     "options": {

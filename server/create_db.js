@@ -70,8 +70,12 @@ function createCars(callback) {
 	mongoose.models.City.find({}, function (err, cities) {
 
 		for (var i = 0, len = cars.length; i < len; i++) {
-			var randomCitiesIndex = Math.floor(Math.random() * (cities.length))
-			cars[i].city = cities[randomCitiesIndex].id
+			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
+			cars[i].city = {
+				id: cities[randomCitiesIndex].id,
+				name: cities[randomCitiesIndex].name,
+				timezone: cities[randomCitiesIndex].timezone
+			};
 		}
 
 		async.each(cars, function (carData, callback) {
@@ -88,12 +92,24 @@ function createFlights(callback) {
 
 		for (var i = 0, len = flights.length; i < len; i++) {
 			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
-			flights[i].fromCity = cities[randomCitiesIndex].id;
+			flights[i].fromCity = {
+				id: cities[randomCitiesIndex].id,
+				name: cities[randomCitiesIndex].name,
+				timezone: cities[randomCitiesIndex].timezone
+			};
 
 			if(randomCitiesIndex === 0){
-				flights[i].toCity = cities[randomCitiesIndex + 1].id
+				flights[i].toCity = {
+					id: cities[randomCitiesIndex + 1].id,
+					name: cities[randomCitiesIndex + 1].name,
+					timezone: cities[randomCitiesIndex + 1].timezone
+				};
 			} else {
-				flights[i].toCity = cities[randomCitiesIndex - 1].id
+				flights[i].toCity = {
+					id: cities[randomCitiesIndex - 1].id,
+					name: cities[randomCitiesIndex - 1].name,
+					timezone: cities[randomCitiesIndex - 1].timezone
+				};
 			}
 		}
 
@@ -111,7 +127,11 @@ function createHotels(callback) {
 
 		for (var i = 0, len = hotels.length; i < len; i++) {
 			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
-			hotels[i].fromCity = cities[randomCitiesIndex].id;
+			hotels[i].city = {
+				id: cities[randomCitiesIndex].id,
+				name: cities[randomCitiesIndex].name,
+				timezone: cities[randomCitiesIndex].timezone
+			};
 		}
 
 		async.each(hotels, function (hotelData, callback) {
