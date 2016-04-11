@@ -72,7 +72,7 @@ function createCars(callback) {
 		for (var i = 0, len = cars.length; i < len; i++) {
 			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
 			cars[i].city = {
-				id: cities[randomCitiesIndex].id,
+				_id: cities[randomCitiesIndex].id,
 				name: cities[randomCitiesIndex].name,
 				timezone: cities[randomCitiesIndex].timezone
 			};
@@ -91,24 +91,26 @@ function createFlights(callback) {
 	mongoose.models.City.find({}, function (err, cities) {
 
 		for (var i = 0, len = flights.length; i < len; i++) {
-			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
+			var randomFromCities = Math.floor(Math.random() * (cities.length));
 			flights[i].fromCity = {
-				id: cities[randomCitiesIndex].id,
-				name: cities[randomCitiesIndex].name,
-				timezone: cities[randomCitiesIndex].timezone
+				_id: cities[randomFromCities].id,
+				name: cities[randomFromCities].name,
+				timezone: cities[randomFromCities].timezone
 			};
 
-			if(randomCitiesIndex === 0){
+			var randomToCities = Math.floor(Math.random() * (cities.length));
+
+			if(randomToCities === randomFromCities){
 				flights[i].toCity = {
-					id: cities[randomCitiesIndex + 1].id,
-					name: cities[randomCitiesIndex + 1].name,
-					timezone: cities[randomCitiesIndex + 1].timezone
+					_id: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].id,
+					name: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].name,
+					timezone: cities[randomToCities === 0 ? randomToCities + 1 : randomToCities - 1].timezone
 				};
 			} else {
 				flights[i].toCity = {
-					id: cities[randomCitiesIndex - 1].id,
-					name: cities[randomCitiesIndex - 1].name,
-					timezone: cities[randomCitiesIndex - 1].timezone
+					_id: cities[randomToCities].id,
+					name: cities[randomToCities].name,
+					timezone: cities[randomToCities].timezone
 				};
 			}
 		}
@@ -128,7 +130,7 @@ function createHotels(callback) {
 		for (var i = 0, len = hotels.length; i < len; i++) {
 			var randomCitiesIndex = Math.floor(Math.random() * (cities.length));
 			hotels[i].city = {
-				id: cities[randomCitiesIndex].id,
+				_id: cities[randomCitiesIndex].id,
 				name: cities[randomCitiesIndex].name,
 				timezone: cities[randomCitiesIndex].timezone
 			};
