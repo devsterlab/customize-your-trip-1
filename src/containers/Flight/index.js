@@ -20,24 +20,7 @@ class Flight extends Component {
                 north: PropTypes.number, east: PropTypes.number}),
             timezone: PropTypes.number
         })),
-        flights: PropTypes.arrayOf(PropTypes.shape({
-            _id: PropTypes.string,
-            fromCity: PropTypes.shape({
-                _id: PropTypes.string,
-                name: PropTypes.string,
-                timezone: PropTypes.number
-            }),
-            toCity: PropTypes.shape({
-                _id: PropTypes.string,
-                name: PropTypes.string,
-                timezone: PropTypes.number
-            }),
-            companyName: PropTypes.string,
-            available: PropTypes.number,
-            price: PropTypes.number,
-            departTime: PropTypes.string,
-            duration: PropTypes.string
-        })),
+        flights: PropTypes.array,
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,
         sorting: PropTypes.object,

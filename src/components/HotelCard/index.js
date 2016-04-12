@@ -4,8 +4,22 @@ import Stars from '../Stars';
 
 class HotelCard extends Component {
     static propTypes = {
-        children: PropTypes.node,
-        hotel: PropTypes.object,
+        hotel: PropTypes.shape({
+            _id: PropTypes.string,
+            city: PropTypes.shape({
+                _id: PropTypes.string,
+                name: PropTypes.string
+            }),
+            name: PropTypes.string,
+            popularity: PropTypes.number,
+            images: PropTypes.arrayOf(PropTypes.string),
+            stars: PropTypes.number,
+            latitude: PropTypes.number,
+            longitude: PropTypes.number,
+            address: PropTypes.string,
+            description: PropTypes.string,
+            price: PropTypes.number
+        }),
         onClick: PropTypes.func,
         onInfoClick: PropTypes.func,
         className: PropTypes.string,
@@ -18,7 +32,7 @@ class HotelCard extends Component {
     }
 
     render() {
-        let { children, hotel, onClick, onInfoClick, className, price, ...other } = this.props;
+        let { hotel, onClick, onInfoClick, className, price, ...other } = this.props;
         return (
             <Card className={`hotel-card ${className || ''}`} image={hotel.images[0]} {...other}
                   price={price > 0 && price || hotel.price}

@@ -4,15 +4,27 @@ import Stars from '../Stars';
 
 class CarCard extends Component {
     static propTypes = {
-        children: PropTypes.node,
-        car: PropTypes.object,
+        car: PropTypes.shape({
+            _id: PropTypes.string,
+            city: PropTypes.shape({
+                _id: PropTypes.string,
+                name: PropTypes.string
+            }),
+            brand: PropTypes.string,
+            model: PropTypes.string,
+            image: PropTypes.string,
+            carType: PropTypes.string,
+            price: PropTypes.number,
+            transmission: PropTypes.oneOf(['manual', 'automatic']),
+            maxPassengers: PropTypes.number
+        }),
         onClick: PropTypes.func,
         className: PropTypes.string,
         price: PropTypes.number
     };
 
     render() {
-        let { children, car, onClick, className, price, ...other } = this.props;
+        let { car, onClick, className, price, ...other } = this.props;
         return (
             <Card className={`car-card ${className || ''}`} image={car.image} {...other}
                   price={price > 0 && price || car.price}

@@ -4,8 +4,24 @@ import Card from '../Card';
 
 class FlightCard extends Component {
     static propTypes = {
-        children: PropTypes.node,
-        flight: PropTypes.object,
+        flight: PropTypes.shape({
+            _id: PropTypes.string,
+            fromCity: PropTypes.shape({
+                _id: PropTypes.string,
+                name: PropTypes.string,
+                timezone: PropTypes.number
+            }),
+            toCity: PropTypes.shape({
+                _id: PropTypes.string,
+                name: PropTypes.string,
+                timezone: PropTypes.number
+            }),
+            companyName: PropTypes.string,
+            available: PropTypes.number,
+            price: PropTypes.number,
+            departTime: PropTypes.string,
+            duration: PropTypes.string
+        }),
         onClick: PropTypes.func,
         small: PropTypes.bool,
         className: PropTypes.string,

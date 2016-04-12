@@ -21,54 +21,9 @@ class Summary extends Component {
     static propTypes = {
         children: PropTypes.node,
         steps: PropTypes.arrayOf(PropTypes.shape({
-            flight: PropTypes.shape({
-                _id: PropTypes.string,
-                fromCity: PropTypes.shape({
-                    _id: PropTypes.string,
-                    name: PropTypes.string,
-                    timezone: PropTypes.number
-                }),
-                toCity: PropTypes.shape({
-                    _id: PropTypes.string,
-                    name: PropTypes.string,
-                    timezone: PropTypes.number
-                }),
-                companyName: PropTypes.string,
-                available: PropTypes.number,
-                price: PropTypes.number,
-                departTime: PropTypes.string,
-                duration: PropTypes.string
-            }),
-            hotel: PropTypes.shape({
-                _id: PropTypes.string,
-                city: PropTypes.shape({
-                    _id: PropTypes.string,
-                    name: PropTypes.string
-                }),
-                name: PropTypes.string,
-                popularity: PropTypes.number,
-                images: PropTypes.arrayOf(PropTypes.string),
-                stars: PropTypes.number,
-                latitude: PropTypes.number,
-                longitude: PropTypes.number,
-                address: PropTypes.string,
-                description: PropTypes.string,
-                price: PropTypes.number
-            }),
-            car: PropTypes.shape({
-                _id: PropTypes.string,
-                city: PropTypes.shape({
-                    _id: PropTypes.string,
-                    name: PropTypes.string
-                }),
-                brand: PropTypes.string,
-                model: PropTypes.string,
-                image: PropTypes.string,
-                carType: PropTypes.string,
-                price: PropTypes.number,
-                transmission: PropTypes.oneOf(['manual', 'automatic']),
-                maxPassengers: PropTypes.number
-            }),
+            flight: PropTypes.object,
+            hotel: PropTypes.object,
+            car: PropTypes.object,
             hotelDays: PropTypes.number,
             carDays: PropTypes.number,
             date: PropTypes.object,

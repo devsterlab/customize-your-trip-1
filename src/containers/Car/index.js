@@ -23,20 +23,7 @@ class Car extends Component {
                 north: PropTypes.number, east: PropTypes.number}),
             timezone: PropTypes.number
         }),
-        cars: PropTypes.arrayOf(PropTypes.shape({
-            _id: PropTypes.string,
-            city: PropTypes.shape({
-                _id: PropTypes.string,
-                name: PropTypes.string
-            }),
-            brand: PropTypes.string,
-            model: PropTypes.string,
-            image: PropTypes.string,
-            carType: PropTypes.string,
-            price: PropTypes.number,
-            transmission: PropTypes.oneOf(['manual', 'automatic']),
-            maxPassengers: PropTypes.number
-        })),
+        cars: PropTypes.array,
         selectedHotel: PropTypes.string,
         selectedCar: PropTypes.string,
         sorting: PropTypes.object,

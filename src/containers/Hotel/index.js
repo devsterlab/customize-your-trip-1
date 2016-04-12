@@ -24,22 +24,7 @@ class Hotel extends Component {
                 north: PropTypes.number, east: PropTypes.number}),
             timezone: PropTypes.number
         }),
-        hotels: PropTypes.arrayOf(PropTypes.shape({
-            _id: PropTypes.string,
-            city: PropTypes.shape({
-                _id: PropTypes.string,
-                name: PropTypes.string
-            }),
-            name: PropTypes.string,
-            popularity: PropTypes.number,
-            images: PropTypes.arrayOf(PropTypes.string),
-            stars: PropTypes.number,
-            latitude: PropTypes.number,
-            longitude: PropTypes.number,
-            address: PropTypes.string,
-            description: PropTypes.string,
-            price: PropTypes.number
-        })),
+        hotels: PropTypes.array,
         selectedHotel: PropTypes.string,
         selectedFlight: PropTypes.string,
         sorting: PropTypes.object,
