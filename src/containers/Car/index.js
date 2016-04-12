@@ -7,7 +7,7 @@ import DateHelper from '../../util/dateHelper';
 import Sorting from '../../util/sorting';
 import CarCard from '../../components/CarCard';
 import Button from '../../components/Button';
-import Sort from '../../components/Sort';
+import CarsSort from './CarsSort';
 import IconButton from '../../components/IconButton';
 import Select from '../../components/Select';
 import InputNumber from '../../components/InputNumber';
@@ -39,6 +39,7 @@ class Car extends Component {
         })),
         selectedHotel: PropTypes.string,
         selectedCar: PropTypes.string,
+        sorting: PropTypes.object,
         hotelDays: PropTypes.number,
         carDays: PropTypes.number,
         filters: PropTypes.object,
@@ -71,6 +72,7 @@ class Car extends Component {
         };
 
         this.selectCar = this._selectCar.bind(this);
+        this.handleSortChange = this._handleSortChange.bind(this);
     }
 
     sort(cars, field = this.props.sorting.field, asc = this.props.sorting.asc) {
@@ -107,7 +109,7 @@ class Car extends Component {
         });
     }
 
-    setCarsSort(field, asc) {
+    _handleSortChange(field, asc) {
         let cars = this.sort(this.state.cars, field, asc);
         this.setState({cars});
         this.props.actions.setCarsSort(field, asc);
@@ -226,17 +228,7 @@ class Car extends Component {
                         </fieldset>
                     </div>
                     <div className="medium-5 columns cars-list">
-                        <div>
-                            <h4 className="inline">Sort by:</h4>
-                            <Sort selected={this.props.sorting.field == 'brand'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setCarsSort('brand', asc)}>brand</Sort>
-                            <Sort selected={this.props.sorting.field == 'model'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setCarsSort('model', asc)}>model</Sort>
-                            <Sort selected={this.props.sorting.field == 'price'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setCarsSort('price', asc)}>price</Sort>
-                            <Sort selected={this.props.sorting.field == 'carType'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setCarsSort('carType', asc)}>carType</Sort>
-                        </div>
+                        <CarsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                         {this.state.cars.length && <ul>
                             {this.state.cars.map(car =>
                                 <CarCard key={car._id} car={car} onClick={this.selectCar} />

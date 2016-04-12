@@ -7,7 +7,7 @@ import DateHelper from '../../util/dateHelper';
 import Sorting from '../../util/sorting';
 import TripMap from '../../components/TripMap';
 import HotelCard from '../../components/HotelCard';
-import Sort from '../../components/Sort';
+import HotelsSort from './HotelsSort';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import HotelInfo from '../../components/HotelInfo';
@@ -42,10 +42,7 @@ class Hotel extends Component {
         })),
         selectedHotel: PropTypes.string,
         selectedFlight: PropTypes.string,
-        sorting: PropTypes.shape({
-            field: PropTypes.string,
-            asc: PropTypes.bool
-        }),
+        sorting: PropTypes.object,
         days: PropTypes.number,
         date: PropTypes.object
     };
@@ -72,6 +69,7 @@ class Hotel extends Component {
         
         this.selectHotel = this._selectHotel.bind(this);
         this.handleHotelInfoClick = this._handleHotelInfoClick.bind(this);
+        this.handleSortChange = this._handleSortChange.bind(this);
     }
     
     sort(hotels, field = this.props.sorting.field, asc = this.props.sorting.asc) {
@@ -91,7 +89,7 @@ class Hotel extends Component {
         }
     }
 
-    setHotelsSort(field, asc) {
+    _handleSortChange(field, asc) {
         let hotels = this.sort(this.state.hotels, field, asc);
         this.setState({hotels});
         this.props.actions.setHotelsSort(field, asc);
@@ -152,15 +150,7 @@ class Hotel extends Component {
                             <hr className="selection-hr"/>
                         </div>}
                         <h4>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
-                        <div>
-                            <h5 className="inline">Sort by:</h5>
-                            <Sort selected={this.props.sorting.field == 'price'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setHotelsSort('price', asc)}>price</Sort>
-                            <Sort selected={this.props.sorting.field == 'stars'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setHotelsSort('stars', asc)}>stars</Sort>
-                            <Sort selected={this.props.sorting.field == 'popularity'} asc={this.props.sorting.asc}
-                                  onClick={asc => this.setHotelsSort('popularity', asc)}>popularity</Sort>
-                        </div>
+                        <HotelsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>
                             <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}`}

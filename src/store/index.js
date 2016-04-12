@@ -3,6 +3,16 @@ import rootReducer from '../reducers';
 import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 
+const createPersistentStore = compose(
+    applyMiddleware(thunk),
+    persistState(null, {key: 'customizeTrip', deserialize, slicer}),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+)(createStore);
+
+export default function configureStore(initialState) {
+    return createPersistentStore(rootReducer, initialState);
+}
+
 function deserialize(stateString) {
     let state = JSON.parse(stateString);
 
@@ -28,26 +38,32 @@ function deserialize(stateString) {
         };
         state.flight = {
             selectedFlight: state.selectedFlight,
+            sorting: state.sortingFlights,
             flights: []
         };
         state.hotel = {
             selectedHotel: state.selectedHotel,
             days: state.hotelDays,
+            sorting: state.sortingHotels,
             hotels: []
         };
         state.car = {
             selectedCar: state.selectedCar,
             days: state.carDays,
+            sorting: state.sortingCars,
             cars: []
         };
 
         delete state.selectedCityFrom;
         delete state.selectedCityTo;
         delete state.selectedFlight;
+        delete state.sortingFlights;
         delete state.selectedHotel;
         delete state.hotelDays;
+        delete state.sortingHotels;
         delete state.selectedCar;
         delete state.carDays;
+        delete state.sortingCars;
     }
 
     return state;
@@ -59,23 +75,16 @@ function slicer() {
             selectedCityFrom: state.city.selectedCityFrom,
             selectedCityTo: state.city.selectedCityTo,
             selectedFlight: state.flight.selectedFlight,
+            sortingFlights: state.flight.sorting,
             selectedHotel: state.hotel.selectedHotel,
             hotelDays: state.hotel.days,
+            sortingHotels: state.hotel.sorting,
             selectedCar: state.car.selectedCar,
             carDays: state.car.days,
+            sortingCars: state.car.sorting,
             summary: state.summary
         };
 
         return subset;
     };
-}
-
-const createPersistentStore = compose(
-    applyMiddleware(thunk),
-    persistState(null, {key: 'customizeTrip', deserialize, slicer}),
-    window.devToolsExtension ? window.devToolsExtension() : f => f
-)(createStore);
-
-export default function configureStore(initialState) {
-    return createPersistentStore(rootReducer, initialState);
 }

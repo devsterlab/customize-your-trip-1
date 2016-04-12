@@ -6,7 +6,7 @@ import { selectFlight, setFlightsSort, setFlightsSearched } from '../../actions/
 import Sorting from '../../util/sorting';
 import Select from '../../components/Select';
 import FlightCard from '../../components/FlightCard';
-import Sort from '../../components/Sort';
+import FlightsSort from './FlightsSort';
 import Button from '../../components/Button';
 
 class Flight extends Component {
@@ -40,10 +40,7 @@ class Flight extends Component {
         })),
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,
-        sorting: PropTypes.shape({
-            field: PropTypes.string,
-            asc: PropTypes.bool
-        }),
+        sorting: PropTypes.object,
         selectedFlight: PropTypes.string,
         actions: PropTypes.object,
         date: PropTypes.object,
@@ -70,6 +67,7 @@ class Flight extends Component {
 
         this.handleCityFromChange = this._handleCityFromChange.bind(this);
         this.handleCityToChange = this._handleCityToChange.bind(this);
+        this.handleSortChange = this._handleSortChange.bind(this);
         this.searchFlights = this._searchFlights.bind(this);
         this.selectFlight = this._selectFlight.bind(this);
     }
@@ -138,7 +136,7 @@ class Flight extends Component {
         }
     }
 
-    setFlightsSort(field, asc) {
+    _handleSortChange(field, asc) {
         let flights = this.sort(this.state.flights, field, asc);
         this.setState({flights});
         this.props.actions.setFlightsSort(field, asc);
@@ -192,15 +190,7 @@ class Flight extends Component {
                     </h3>
                     <div className={this.hideFlightsResults() && 'hide' || ''}>
                         <div className="medium-8 columns flights-results">
-                            <div>
-                                <h4 className="inline">Sort by:</h4>
-                                <Sort selected={this.props.sorting.field == 'price'} asc={this.props.sorting.asc}
-                                      onClick={asc => this.setFlightsSort('price', asc)}>price</Sort>
-                                <Sort selected={this.props.sorting.field == 'duration'} asc={this.props.sorting.asc}
-                                      onClick={asc => this.setFlightsSort('duration', asc)}>duration</Sort>
-                                <Sort selected={this.props.sorting.field == 'departTime'} asc={this.props.sorting.asc}
-                                      onClick={asc => this.setFlightsSort('departTime', asc)}>depart time</Sort>
-                            </div>
+                            <FlightsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                             {this.state.flights.length &&
                             <ul className="flights-list">
                                 {this.state.flights.map(flight =>
