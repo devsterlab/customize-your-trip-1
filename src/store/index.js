@@ -51,6 +51,7 @@ function deserialize(stateString) {
             selectedCar: state.selectedCar,
             days: state.carDays,
             sorting: state.sortingCars,
+            filters: state.carsFilters,
             cars: []
         };
 
@@ -64,6 +65,7 @@ function deserialize(stateString) {
         delete state.selectedCar;
         delete state.carDays;
         delete state.sortingCars;
+        delete state.carsFilters;
     }
 
     return state;
@@ -82,6 +84,7 @@ function slicer() {
             selectedCar: state.car.selectedCar,
             carDays: state.car.days,
             sortingCars: state.car.sorting,
+            carsFilters: state.car.filters,
             summary: state.summary
         };
 
