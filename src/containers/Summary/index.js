@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
+import history from '../../util/history';
 import * as actions from '../../actions/summary';
 import DateHelper from '../../util/dateHelper';
 
@@ -110,7 +110,7 @@ class Summary extends Component {
 
     editItem(step, index, itemType) {
         this.props.actions.editItem(step, index, itemType);
-        hashHistory.push(`/${itemType}`);
+        history.push(`/${itemType}`);
     }
 
     removeItem(step, index, itemType) {

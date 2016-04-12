@@ -1,14 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
+import { Router } from 'react-router';
+import history from './util/history';
 import routes from './routes';
 import createStore from './store';
 import './app.scss';
 import loadMocks from './util/mocks';
 import Socket from './util/socket';
 
-Window.Perf = window.Perf; //Use Window.Perf in Console for performance debugging. Accessible only in dev mode.
+/*  Use Window.Perf in Console for performance debugging. Accessible only in dev mode.
+    Assignment needed because window.Perf is supplied by webpack so it is not accessible from Console. */
+Window.Perf = window.Perf;
 
 const store = createStore();
 
@@ -32,6 +35,6 @@ Socket.connect(store)
 
 render(
     <Provider store={store}>
-        <Router history={hashHistory} routes={routes}/>
+        <Router history={history} routes={routes}/>
     </Provider>, document.getElementById('root')
 );

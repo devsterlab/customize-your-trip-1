@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { hashHistory } from 'react-router';
+import history from '../util/history';
 
 class Button extends Component {
     static propTypes = {
@@ -16,7 +16,7 @@ class Button extends Component {
 
     _handleOnClick(e) {
         this.props.onClick && this.props.onClick(e);
-        this.props.link && hashHistory.push(this.props.link);
+        this.props.link && history.push(this.props.link);
     }
 
     render() {

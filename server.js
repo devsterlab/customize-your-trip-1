@@ -1,5 +1,8 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
+
+process.env.OPENED = true;
+
 var config = require(`./webpack.config${process.argv[2] == '-p' && '.prod' || ''}`);
 var ip = require('./getIP');
 config.entry[0] = config.entry[0].replace('localhost', ip);
