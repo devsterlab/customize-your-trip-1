@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { selectCity } from '../../actions/city';
 import { selectFlight, setFlightsSort, setFlightsSearched } from '../../actions/flight';
 import Sorting from '../../util/sorting';
-import Select from '../../components/Select';
+import CitiesSearch from './CitiesSearch';
 import FlightCard from '../../components/FlightCard';
 import FlightsSort from './FlightsSort';
 import Button from '../../components/Button';
@@ -12,14 +12,7 @@ import Button from '../../components/Button';
 class Flight extends Component {
     static propTypes = {
         children: PropTypes.node,
-        cities: PropTypes.arrayOf(PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            bounds: PropTypes.shape({
-                south: PropTypes.number, west: PropTypes.number,
-                north: PropTypes.number, east: PropTypes.number}),
-            timezone: PropTypes.number
-        })),
+        cities: PropTypes.array,
         flights: PropTypes.array,
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,
@@ -29,7 +22,8 @@ class Flight extends Component {
         date: PropTypes.object,
         homeCity: PropTypes.string,
         lastCityFrom: PropTypes.string,
-        lastCityTo: PropTypes.string
+        lastCityTo: PropTypes.string,
+        notSearched: PropTypes.bool
     };
 
     static defaultProps = {
@@ -46,12 +40,10 @@ class Flight extends Component {
         this.state = {
             flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)
         };
-        Object.assign(this.state, this.handleCitiesEqual(props.selectedCityFrom, props.selectedCityTo));
 
-        this.handleCityFromChange = this._handleCityFromChange.bind(this);
-        this.handleCityToChange = this._handleCityToChange.bind(this);
+        this.handleCityChange = this._handleCityChange.bind(this);
+        this.handleFlightsSearch = this._handleFlightsSearch.bind(this);
         this.handleSortChange = this._handleSortChange.bind(this);
-        this.searchFlights = this._searchFlights.bind(this);
         this.selectFlight = this._selectFlight.bind(this);
     }
 
@@ -59,47 +51,20 @@ class Flight extends Component {
         if (!this.props.selectedCityFrom || !this.props.selectedCityTo) this.props.actions.setFlightsSearched(true);
     }
 
-    handleCityChange(city, from, to) {
-        let state = Object.assign({}, this.handleCityNotFound(city, from));
-        let otherCity = this.props['selectedCity' + to];
-        if (city && otherCity) Object.assign(state, this.handleCitiesEqual(city._id, otherCity));
-        this.setState(state);
-        this.props.actions.selectCity(city && city._id, from);
+    _handleCityChange(cityId, fromTo, canSearch) {
+        this.setState({canSearch});
+        this.props.actions.selectCity(cityId, fromTo);
     }
 
-    _handleCityFromChange(city) {
-        this.handleCityChange(city, 'From', 'To');
-    }
-
-    _handleCityToChange(city) {
-        this.handleCityChange(city, 'To', 'From');
-    }
-
-    handleCityNotFound(city, fromTo) {
-        if (!city) return {['errorCity' + fromTo]: 'City not found'};
-        return {['errorCity' + fromTo]: null};
-    }
-
-    handleCitiesEqual(cityFromId, cityToId) {
-        if (cityFromId == cityToId) {
-            return {errorCityTo: 'Select another city'};
-        }
-        return {errorCityTo: null};
+    _handleFlightsSearch() {
+        this.setState({flights: this.sort(this.filterFlights())});
+        this.props.actions.setFlightsSearched();
     }
 
     filterFlights(flights = this.props.flights) {
         if (flights) return flights
             .filter(el => el.fromCity._id == this.props.selectedCityFrom && el.toCity._id == this.props.selectedCityTo);
         return [];
-    }
-
-    canSearch() {
-        return this.props.selectedCityFrom && this.props.selectedCityTo && !this.state.errorCityTo;
-    }
-
-    _searchFlights() {
-        this.setState({flights: this.sort(this.filterFlights())});
-        this.props.actions.setFlightsSearched();
     }
 
     sort(flights, field = this.props.sorting.field, asc = this.props.sorting.asc) {
@@ -135,7 +100,7 @@ class Flight extends Component {
     }
 
     selectCitiesHeaderHide() {
-        return this.canSearch() || this.state.flights.length || this.props.selectedFlight;
+        return this.state.canSearch || this.state.flights.length || this.props.selectedFlight;
     }
 
     hideFlightsResults() {
@@ -149,23 +114,10 @@ class Flight extends Component {
     render() {
         return (
             <div className="height-100 flight-page">
-                <form className="row" style={{display: this.props.cities.length ? 'inherit' : 'none'}}>
-                    <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCityFrom}
-                            id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
-                            nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
-                        From city
-                    </Select>
-                    <Select className="medium-5 columns" error={this.state.errorCityTo} readOnly={!!this.props.lastCityTo}
-                            id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
-                            nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
-                        To city
-                    </Select>
-                    <div className="medium-2 columns">
-                        <Button className="inline-button" onClick={this.searchFlights} disabled={!this.canSearch()}>
-                            Search
-                        </Button>
-                    </div>
-                </form>
+                <CitiesSearch cities={this.props.cities} selectedCityFrom={this.props.selectedCityFrom}
+                              selectedCityTo={this.props.selectedCityTo} lastCityFrom={this.props.lastCityFrom}
+                              lastCityTo={this.props.lastCityTo} onCityChange={this.handleCityChange}
+                              onFlightsSearch={this.handleFlightsSearch}/>
                 <hr/>
                 <div className="flights-search">
                     <h3 className={`text-center subheader ${this.selectCitiesHeaderHide() && 'hide' || ''}`}>
