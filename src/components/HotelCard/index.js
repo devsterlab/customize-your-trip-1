@@ -17,6 +17,10 @@ class HotelCard extends Component {
         this.props.onInfoClick(this.props.hotel);
     }
 
+    shouldComponentUpdate() {
+        return false;
+    }
+
     render() {
         let { children, hotel, onClick, onInfoClick, className, price, ...other } = this.props;
         return (

@@ -8,6 +8,8 @@ import './app.scss';
 import loadMocks from './mocks';
 import Socket from './util/socket';
 
+Window.Perf = window.Perf; //Use Window.Perf in Console for performance debugging. Accessible only in dev mode.
+
 const store = createStore();
 
 Socket.connect(store)

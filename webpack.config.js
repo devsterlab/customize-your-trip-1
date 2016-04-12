@@ -18,7 +18,9 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            "window.jQuery": "jquery"
+            "window.jQuery": "jquery",
+            Perf: "react-addons-perf",
+            "window.Perf": "react-addons-perf"
         })
     ],
     module: {
