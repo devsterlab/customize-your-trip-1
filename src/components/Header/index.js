@@ -16,7 +16,7 @@ class Header extends Component {
             {path: '/flight', name: 'Flight'},
             {path: '/hotel', name: 'Hotel'},
             {path: '/car', name: 'Car'},
-            {path: '/phase4', name: 'Phase 4'},
+            //{path: '/phase4', name: 'Phase 4'},
             {path: '/summary', name: 'Summary'} ]
     };
 
