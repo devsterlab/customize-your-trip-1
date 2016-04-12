@@ -5,7 +5,7 @@ import { Router, hashHistory } from 'react-router';
 import routes from './routes';
 import createStore from './store';
 import './app.scss';
-import loadMocks from './mocks';
+import loadMocks from './util/mocks';
 import Socket from './util/socket';
 
 Window.Perf = window.Perf; //Use Window.Perf in Console for performance debugging. Accessible only in dev mode.
