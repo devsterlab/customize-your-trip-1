@@ -7,7 +7,7 @@ function onConnectError(socket, err, onSocketError, store) {
 
 export default (onSocketError) => {
     return store => {
-        let socket = io.connect('http://192.168.1.48:8081');
+        let socket = io.connect(SERVER_URL);
 
         socket.on('error', err => onConnectError(socket, err, onSocketError, store));
         socket.on('connect_timeout', err => onConnectError(socket, err, onSocketError, store));

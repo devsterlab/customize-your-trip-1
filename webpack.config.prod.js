@@ -15,7 +15,8 @@ module.exports = {
         new CleanPlugin(['./dist']),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"',
-            HISTORY_TYPE: process.env.OPENED ? "'browserHistory'" : "'hashHistory'"
+            HISTORY_TYPE: process.env.OPENED ? "'browserHistory'" : "'hashHistory'",
+            SERVER_URL: `'${process.env.SERVER_URL}'`
         }),
         new webpack.ProvidePlugin({
             $: "jquery",

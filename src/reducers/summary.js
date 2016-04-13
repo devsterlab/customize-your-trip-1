@@ -158,6 +158,6 @@ export default function summary(state = initialState, action = '') {
         case types.REMOVE_ITEM:
             return removeItem(state, action.step, action.index, action.itemType);
         default:
-            return state.summary;
+            return state.summary || initialState;
     }
 }

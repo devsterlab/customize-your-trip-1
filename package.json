@@ -9,7 +9,10 @@
     "build": "webpack",
     "buildProd": "webpack --config webpack.config.prod.js",
     "open": "node server",
-    "openProd": "node server -p"
+    "openProd": "node server -p",
+    "openWork": "node server -w",
+    "openProdWork": "node server -p -w",
+    "startServer": "babel-node server/create_db.js && babel-node server/app.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
   },
   "homepage": "https://github.com/alexeychikk/customize-your-trip",
   "devDependencies": {
+    "babel-cli": "^6.7.5",
     "babel-core": "^6.5.1",
     "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.3",
@@ -59,6 +63,8 @@
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^2.2.2",
     "mdi": "^1.5.54",
+    "mongoose": "^4.4.12",
+    "nconf": "^0.8.4",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-google-maps": "^4.9.1",
@@ -67,6 +73,7 @@
     "redux": "^3.3.1",
     "redux-localstorage": "^0.4.0",
     "redux-thunk": "^2.0.1",
+    "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5"
   }
 }
