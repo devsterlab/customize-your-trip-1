@@ -1,16 +1,26 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers';
 import persistState from 'redux-localstorage';
-import thunk from 'redux-thunk';
+import socketMiddleware from '../middleware/socket';
+import loadMocks from '../util/mocks';
 
 const createPersistentStore = compose(
-    applyMiddleware(thunk),
     persistState(null, {key: 'customizeTrip', deserialize, slicer}),
+    applyMiddleware(socketMiddleware(onSocketError)),
     window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 
 export default function configureStore(initialState) {
     return createPersistentStore(rootReducer, initialState);
+}
+
+let mocksLoadStart = false;
+function onSocketError(err, store) {
+    console.log('Socket error: ' + err);
+    if (!mocksLoadStart) {
+        mocksLoadStart = true;
+        loadMocks(store).then(() => console.log('Mocks loaded.'));
+    }
 }
 
 function deserialize(stateString) {

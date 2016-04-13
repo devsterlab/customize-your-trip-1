@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { getAllCities } from '../actions/city';
+import { getAllFlights } from '../actions/flight';
+import { getAllHotels } from '../actions/hotel';
+import { getAllCars } from '../actions/car';
 import Header from '../components/Header';
 import Progress from '../components/Progress';
 
@@ -9,6 +14,14 @@ class App extends Component {
         location: PropTypes.object,
         loaded: PropTypes.bool
     };
+
+    constructor(props) {
+        super(props);
+        props.actions.getAllCities();
+        props.actions.getAllFlights();
+        props.actions.getAllHotels();
+        props.actions.getAllCars();
+    }
 
     render() {
         return (
@@ -36,4 +49,10 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({getAllCities, getAllFlights, getAllHotels, getAllCars}, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

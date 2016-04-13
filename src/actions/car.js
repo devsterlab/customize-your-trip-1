@@ -1,4 +1,5 @@
 import * as types from '../constants/actionTypes';
+import * as events from '../constants/socketEvents';
 
 export function setCars(cars) {
     return { type: types.SET_CARS, cars };
@@ -18,4 +19,14 @@ export function setCarsFilters(filters) {
 
 export function setCarDays(days) {
     return { type: types.SET_CAR_DAYS, days };
+}
+
+export function getAllCars() {
+    return {
+        type: events.GET_ALL_CARS,
+        socket: {
+            path: events.GET_ALL_CARS,
+            action: setCars
+        }
+    };
 }
