@@ -15,6 +15,11 @@ class Image extends Component {
         this.handleImageError = this._handleImageError.bind(this);
     }
 
+    shouldComponentUpdate(props, state) {
+        return props.src !== this.props.src
+            || state.imageStatus !== this.state.imageStatus;
+    }
+
     _handleImageLoaded() {
         this.setState({imageStatus: true});
     }

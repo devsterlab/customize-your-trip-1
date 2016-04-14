@@ -26,6 +26,12 @@ class HotelCard extends Component {
         price: PropTypes.number
     };
 
+    shouldComponentUpdate(props) {
+        return props.hotel !== this.props.hotel
+            || props.price !== this.props.price
+            || props.days !== this.props.days;
+    }
+
     handleInfoClick(e) {
         e.stopPropagation();
         this.props.onInfoClick(this.props.hotel);

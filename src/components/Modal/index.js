@@ -24,6 +24,11 @@ class Modal extends Component {
         }
     }
 
+    shouldComponentUpdate(props, state) {
+        return props.show != this.props.show
+            || state.show != this.state.show;
+    }
+
     close() {
         this.setState({show: false});
         this.props.onClose && this.props.onClose();

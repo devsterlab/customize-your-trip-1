@@ -20,6 +20,10 @@ class Header extends Component {
             {path: '/summary', name: 'Summary'} ]
     };
 
+    shouldComponentUpdate(props) {
+        return props.location.pathname !== this.props.location.pathname;
+    }
+
     isActive(path) {
         const pathname = this.props.location.pathname;
         return pathname === '/' && (pathname === path || path === '/flight')

@@ -1,22 +1,26 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-const propTypes = {
-    count: PropTypes.number,
-    className: PropTypes.string
-};
+class Stars extends Component {
+    static propTypes = {
+        count: PropTypes.number,
+        className: PropTypes.string
+    };
 
-function Stars(props) {
-    let stars = [];
-    for (let i = 0; i < props.count; i++) {
-        stars.push(<i key={i} className="mdi mdi-star mdi-24px" />);
+    shouldComponentUpdate(props) {
+        return props.count !== this.props.count;
     }
-    return (
-        <div className={`stars ${props.className || ''}`}>
-            {stars}
-        </div>
-    );
-}
 
-Stars.propTypes = propTypes;
+    render() {
+        let stars = [];
+        for (let i = 0; i < this.props.count; i++) {
+            stars.push(<i key={i} className="mdi mdi-star mdi-24px"/>);
+        }
+        return (
+            <div className={`stars ${this.props.className || ''}`}>
+                {stars}
+            </div>
+        );
+    }
+}
 
 export default Stars;

@@ -16,6 +16,12 @@ class Sort extends Component {
         this.state = {asc: props.asc == null || props.asc};
     }
 
+    shouldComponentUpdate(props, state) {
+        return props.selected !== this.props.selected
+            || props.asc !== this.props.asc
+            || state.asc !== this.state.asc;
+    }
+
     _handleClick() {
         let asc = this.state.asc;
         if (this.props.selected) asc = !asc;

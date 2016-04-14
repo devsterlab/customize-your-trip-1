@@ -60,6 +60,12 @@ class Summary extends Component {
         });
     }
 
+    shouldComponentUpdate(props, state) {
+        return props.steps != this.props.steps
+            || state.steps != this.state.steps
+            || state.removeData != this.state.removeData;
+    }
+
     handleContinueClick() {
         this.props.actions.continueTrip();
     }

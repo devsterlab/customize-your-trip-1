@@ -37,6 +37,10 @@ class FlightCard extends Component {
         this.convertDates(props);
     }
 
+    shouldComponentUpdate(props) {
+        return props.flight !== this.props.flight;
+    }
+
     convertDates(props) {
         this.departDate = DateHelper.timeZStrToDate(props.date, props.flight.departTime, 2);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);

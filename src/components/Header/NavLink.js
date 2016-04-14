@@ -1,20 +1,26 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-const propTypes = {
-    path: PropTypes.string,
-    active: PropTypes.bool,
-    children: PropTypes.node
-};
+class NavLink extends Component {
+    static propTypes = {
+        path: PropTypes.string,
+        active: PropTypes.bool,
+        children: PropTypes.node
+    };
 
-function NavLink(props) {
-    return (
-        <li className="tabs-title">
-            <Link to={props.path} aria-selected={props.active}>{props.children}</Link>
-        </li>
-    );
+    shouldComponentUpdate(props) {
+        return props.active != this.props.active;
+    }
+
+    render() {
+        return (
+            <li className="tabs-title">
+                <Link to={this.props.path} aria-selected={this.props.active}>
+                    {this.props.children}
+                </Link>
+            </li>
+        );
+    }
 }
-
-NavLink.propTypes = propTypes;
 
 export default NavLink;

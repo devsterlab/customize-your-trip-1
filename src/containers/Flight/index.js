@@ -75,11 +75,11 @@ class Flight extends Component {
                 ));
             case 'duration':
                 return flights.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'price'}, {field: 'departTime', type: 'timeStr'}]
+                    [{field, asc, type: 'timeStr'}, {field: 'price'}, {field: 'departTime', type: 'timeStr'}]
                 ));
             case 'departTime':
                 return flights.sort(Sorting.byObjectFields(
-                    [{field, asc},  {field: 'price'}, {field: 'duration', type: 'timeStr'}]
+                    [{field, asc, type: 'timeStr'},  {field: 'price'}, {field: 'duration', type: 'timeStr'}]
                 ));
         }
     }

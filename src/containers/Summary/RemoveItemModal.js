@@ -21,6 +21,10 @@ class RemoveItemModal extends Component {
         this.setState({itemName: this.getItemName(props)});
     }
 
+    shouldComponentUpdate(props) {
+        return props.removeData !== this.props.removeData;
+    }
+
     getItemName(props) {
         if (props.removeData) {
             let item = props.removeData.step[props.removeData.itemType];

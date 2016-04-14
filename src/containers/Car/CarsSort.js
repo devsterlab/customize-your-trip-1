@@ -10,6 +10,10 @@ class CarsSort extends Component {
         onSortChange: PropTypes.func
     };
 
+    shouldComponentUpdate(props) {
+        return props.sorting !== this.props.sorting;
+    }
+
     render() {
         return (
             <div>

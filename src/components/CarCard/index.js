@@ -23,6 +23,12 @@ class CarCard extends Component {
         price: PropTypes.number
     };
 
+    shouldComponentUpdate(props) {
+        return props.car !== this.props.car
+            || props.price !== this.props.price
+            || props.days !== this.props.days;
+    }
+
     render() {
         let { car, onClick, className, price, ...other } = this.props;
         return (

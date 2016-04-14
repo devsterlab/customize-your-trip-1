@@ -20,6 +20,12 @@ class Progress extends Component {
         }
     }
 
+    shouldComponentUpdate(props, state) {
+        return props.loaded !== this.props.loaded
+            || state.percent != this.state.percent
+            || state.hide != this.state.hide;
+    }
+
     _incrementProgress() {
         if (this.state.percent >= 90) {
             return clearInterval(this.intervalId);

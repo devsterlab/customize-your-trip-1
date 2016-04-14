@@ -1,16 +1,20 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-const propTypes = {
-    className: PropTypes.string
-};
+class IconButton extends Component {
+    static propTypes = {
+        className: PropTypes.string
+    };
 
-function IconButton(props) {
-    let { className, ...other } = props;
-    return (
-        <i className={`mdi mdi-24px icon-button ${className || ''}`} {...other}/>
-    );
+    shouldComponentUpdate(props) {
+        return props.className != this.props.className;
+    }
+
+    render() {
+        let { className, ...other } = this.props;
+        return (
+            <i className={`mdi mdi-24px icon-button ${className || ''}`} {...other}/>
+        );
+    }
 }
-
-IconButton.propTypes = propTypes;
 
 export default IconButton;

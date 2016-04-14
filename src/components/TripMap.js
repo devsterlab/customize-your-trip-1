@@ -31,6 +31,11 @@ class TripMap extends Component {
         }
     }
 
+    shouldComponentUpdate(props) {
+        return props.city !== this.props.city
+            || props.selectedHotel !== this.props.selectedHotel;
+    }
+
     hotelPosition(hotel) {
         return {lat: hotel.latitude, lng: hotel.longitude};
     }
