@@ -32,4 +32,14 @@
       height: calc(100vh - 76px - #{$navtabs-height});
     }
   }
+
+  .remove-item-modal {
+    button {
+      margin-bottom: 0;
+    }
+  }
+
+  .remove-actions {
+    margin-top: 10px;
+  }
 }

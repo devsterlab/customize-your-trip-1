@@ -16,6 +16,7 @@ import FlightCard from '../../components/FlightCard';
 import HotelCard from '../../components/HotelCard';
 import CarCard from '../../components/CarCard';
 import Button from '../../components/Button';
+import RemoveItemModal from './RemoveItemModal';
 
 class Summary extends Component {
     static propTypes = {
@@ -68,8 +69,18 @@ class Summary extends Component {
         history.push(`/${itemType}`);
     }
 
-    removeItem(step, index, itemType) {
+    removeItem() {
+        let {step, index, itemType} = this.state.removeData;
         this.props.actions.removeItem(step, index, itemType);
+        this.closeRemoveModal();
+    }
+
+    handleRemoveItem(step, index, itemType) {
+        this.setState({removeData: {step, index, itemType}});
+    }
+
+    closeRemoveModal() {
+        this.setState({removeData: null});
     }
 
     render() {
@@ -112,7 +123,7 @@ class Summary extends Component {
                                             <FlightCard flight={step.flight} date={step.date}/>
                                         </Content>
                                         <Actions onEdit={() => this.editItem(step, index, 'flight')}
-                                                 onRemove={() => this.removeItem(step, index, 'flight')}/>
+                                                 onRemove={() => this.handleRemoveItem(step, index, 'flight')}/>
                                     </Item>
                                 </Category>}
                                 <Category className={isFinish && 'last' || ''}>
@@ -130,21 +141,21 @@ class Summary extends Component {
                                                 <HotelCard hotel={step.hotel} price={step.hotel.price} days={step.hotelDays}/>
                                             </Content>
                                             <Actions onEdit={() => this.editItem(step, index, 'hotel')}
-                                                     onRemove={() => this.removeItem(step, index, 'hotel')}/>
+                                                     onRemove={() => this.handleRemoveItem(step, index, 'hotel')}/>
                                         </Item>
                                         {step.car && <Item icon="mdi-car" className={isLastStep && 'last' || ''}>
                                             <Content>
                                                 <CarCard car={step.car} price={step.car.price} days={step.carDays}/>
                                             </Content>
                                             <Actions onEdit={() => this.editItem(step, index, 'car')}
-                                                     onRemove={() => this.removeItem(step, index, 'car')}/>
+                                                     onRemove={() => this.handleRemoveItem(step, index, 'car')}/>
                                         </Item>}
                                         {!isLastStep && <Item icon="mdi-airplane" className="last">
                                             <Content>
                                                 <FlightCard flight={nextStep.flight} date={nextStep.date}/>
                                             </Content>
                                             <Actions onEdit={() => this.editItem(nextStep, index + 1, 'flight')}
-                                                     onRemove={() => this.removeItem(nextStep, index + 1, 'flight')}/>
+                                                     onRemove={() => this.handleRemoveItem(nextStep, index + 1, 'flight')}/>
                                         </Item> || ''}
                                     </div>}
                                 </Category>
@@ -158,6 +169,8 @@ class Summary extends Component {
                         </Title>
                     </Category>}
                 </Timeline>
+                <RemoveItemModal removeData={this.state.removeData} onRemove={() => this.removeItem()}
+                                 onClose={() => this.closeRemoveModal()}/>
             </div> ||
             <div className="height-100">
                 <h2 className="subheader text-center">Flight or hotel not selected</h2>

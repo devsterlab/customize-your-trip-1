@@ -13,7 +13,6 @@ class Sorting {
     }
 
     /**
-     *
      * @param options [{field: string, asc: bool}] or [{string}]
      * @param asc {bool} Used if options is [{string}]
      * @returns {Function, undefined}
