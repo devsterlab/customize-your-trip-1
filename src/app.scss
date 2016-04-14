@@ -23,14 +23,6 @@ button {
   outline: none;
 }
 
-.reveal-overlay {
-  overflow: auto;
-}
-
-.reveal {
-  margin-bottom: 100px;
-}
-
 .pagination li {
   border: 1px solid $medium-gray;
   border-radius: 50%;
@@ -83,6 +75,7 @@ button {
 @import './components/Select/select';
 @import './components/Spinner/spinner';
 @import './components/Timeline/timeline';
+@import './components/Modal/modal';
 
 @import './containers/Flight/flight';
 @import './containers/Hotel/hotel';

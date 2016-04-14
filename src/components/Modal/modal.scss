@@ -1,0 +1,28 @@
+
+.modal-overlay {
+  overflow: auto;
+  position: fixed;
+  top: -1px;
+  left: -1px;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, .54);
+  transition: opacity 0.15s linear;
+
+  &.show {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+  }
+}
+
+.reveal {
+  margin-bottom: 100px;
+
+  &.show {
+    display: block;
+  }
+}

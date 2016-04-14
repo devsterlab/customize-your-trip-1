@@ -30,18 +30,19 @@ class Modal extends Component {
     }
 
     render() {
-        let display = this.state.show ? 'block' : 'none';
+        let show = this.state.show && 'show' || '';
         return (
-            <div className="reveal-overlay" style={{display}}>
-                {this.state.show &&
-                <div className={`reveal ${this.props.className || ''}`} style={{display}}>
-                    {this.props.children}
-                    {this.props.closeButton &&
-                    <button className="close-button" type="button" onClick={() => this.close()}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>}
+            <div className={`modal-overlay ${show}`}>
+                <div className={`reveal ${this.props.className || ''} ${show}`}>
+                    {this.state.show &&
+                    <div>
+                        {this.props.children}
+                        {this.props.closeButton &&
+                        <button className="close-button" type="button" onClick={() => this.close()}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>}
+                    </div>}
                 </div>
-                }
             </div>
         );
     }
