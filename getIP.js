@@ -1,19 +1,17 @@
 'use strict';
 
 var os = require('os');
-var ifaces = os.networkInterfaces();
-var ip = '';
+var interfaces = os.networkInterfaces();
 
-Object.keys(ifaces).forEach(function (ifname) {
-    var alias = 0;
-
-    ifaces[ifname].forEach(function (iface) {
-        if ('IPv4' !== iface.family || iface.internal !== false) {
-            return;
+var ip = (function () {
+    for (var k in interfaces) {
+        for (var k2 in interfaces[k]) {
+            var address = interfaces[k][k2];
+            if (address.family === 'IPv4' && !address.internal) {
+                return address.address;
+            }
         }
-
-        ip = iface.address;
-    });
-});
+    }
+})();
 
 module.exports = ip;

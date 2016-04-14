@@ -17,7 +17,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
             HISTORY_TYPE: process.env.OPENED ? "'browserHistory'" : "'hashHistory'",
-            SERVER_URL: `'${process.env.SERVER_URL}'`
+            SERVER_URL: `'${process.env.SERVER_URL || 'localhost'}'`
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
