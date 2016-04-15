@@ -9,12 +9,12 @@ class FlightCard extends Component {
             fromCity: PropTypes.shape({
                 _id: PropTypes.string,
                 name: PropTypes.string,
-                timezone: PropTypes.number
+                timezone: PropTypes.string
             }),
             toCity: PropTypes.shape({
                 _id: PropTypes.string,
                 name: PropTypes.string,
-                timezone: PropTypes.number
+                timezone: PropTypes.string
             }),
             companyName: PropTypes.string,
             available: PropTypes.number,
@@ -34,7 +34,7 @@ class FlightCard extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.convertDates(props);
+        if (props.flight !== this.props.flight) this.convertDates(props);
     }
 
     shouldComponentUpdate(props) {
@@ -42,10 +42,10 @@ class FlightCard extends Component {
     }
 
     convertDates(props) {
-        this.departDate = DateHelper.timeZStrToDate(props.date, props.flight.departTime, 2);
+        this.departDate = DateHelper.timeZStrToDate(props.date, props.flight.departTime, props.flight.fromCity.timezone);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);
         this.departDateStr = DateHelper.formatDateMonth(this.departDate);
-        this.arriveDate = DateHelper.addTimeStr(this.departDate, props.flight.duration);
+        this.arriveDate = DateHelper.addTimeZStr(this.departDate, props.flight.duration, props.flight.toCity.timezone);
         this.arriveTimeStr = DateHelper.toTimeStr(this.arriveDate);
         this.arriveDateStr = DateHelper.formatDateMonth(this.arriveDate);
     }

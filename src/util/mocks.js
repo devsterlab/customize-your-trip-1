@@ -71,43 +71,43 @@ const mocks = {
             "_id": "56f3e8a1373e84f9dc234780",
             "name": "Kyiv",
             "bounds": {"south": 50.213273, "west": 30.239440100000024, "north": 50.590798, "east": 30.825941000000057},
-            "timezone": 2
+            "timezone": "+0200"
         },
         {
             "_id": "56f3e8a172a967f8f2d00e31",
             "name": "London",
             "bounds": {"south": 51.38494009999999, "west": -0.351468299999965, "north": 51.6723432, "east": 0.14827100000002247},
-            "timezone": 0
+            "timezone": "+0000"
         },
         {
             "_id": "56f3e8a13268e77a5c38a225",
             "name": "New York",
             "bounds": {"south": 40.4960439, "west": -74.2557349, "north": 40.91525559999999, "east": -73.7002721},
-            "timezone": -4
+            "timezone": "-0400"
         },
         {
             "_id": "56f3e8a1cf164ee2dbc85372",
             "name": "Toronto",
             "bounds": {"south": 43.5810245, "west": -79.63921900000003, "north": 43.8554579, "east": -79.116897},
-            "timezone": -4
+            "timezone": "-0400"
         },
         {
             "_id": "56f3e8a12e711621a7db29a2",
             "name": "Sydney",
             "bounds": {"south": -34.1692489, "west": 150.50222899999994, "north": -33.4245981, "east": 151.34263609999994},
-            "timezone": 11
+            "timezone": "+1100"
         },
         {
             "_id": "56f3e8a11973fb60f402e64e",
             "name": "Madrid",
             "bounds": {"south": 40.3120639, "west": -3.834161799999947, "north": 40.5638447, "east": -3.52491150000003},
-            "timezone": 1
+            "timezone": "+0100"
         },
         {
             "_id": "56f3e8a19bd6937df3cfe793",
             "name": "Paris",
             "bounds": {"south": 48.815573, "west": 2.22519299999999, "north": 48.9021449, "east": 2.4699207999999544},
-            "timezone": 1
+            "timezone": "+0100"
         }
     ],
 

@@ -10,7 +10,7 @@ class CitiesSearch extends Component {
             bounds: PropTypes.shape({
                 south: PropTypes.number, west: PropTypes.number,
                 north: PropTypes.number, east: PropTypes.number}),
-            timezone: PropTypes.number
+            timezone: PropTypes.string
         })),
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,

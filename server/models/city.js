@@ -9,7 +9,7 @@ var schema = new Schema({
 		unique: true
 	},
 	timezone: {
-		type: Number,
+		type: String,
 		required: true
 	},
 	bounds: {

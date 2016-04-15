@@ -35,7 +35,7 @@ function getCurrentStep(state) {
 function calcStep(initDate, step) {
     const days = Math.max(step.hotel && step.hotelDays || 0, step.car && step.carDays || 0);
     const date = DateHelper.timeZStrToDate(initDate, step.flight.departTime, step.flight.fromCity.timezone);
-    const dateFrom = DateHelper.addTimeStr(date, step.flight.duration);
+    const dateFrom = DateHelper.addTimeZStr(date, step.flight.duration, step.flight.toCity.timezone);
     const dateTo = DateHelper.addDays(dateFrom, days);
     const price = step.flight.price
         + (step.hotel && (step.hotelDays * step.hotel.price) || 0)
