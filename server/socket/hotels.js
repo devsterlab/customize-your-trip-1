@@ -1,4 +1,4 @@
-var Hotel = require('../models/hotel').Hotel;
+var Hotel = require('../models/hotel');
 
 module.exports = function (socket) {
 

@@ -1,4 +1,4 @@
-var Car = require('../models/car').Car;
+var Car = require('../models/car');
 
 module.exports = (socket) => {
 

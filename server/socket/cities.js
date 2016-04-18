@@ -1,4 +1,4 @@
-var City = require('../models/city').City;
+var City = require('../models/city');
 
 module.exports = (socket) => {
 

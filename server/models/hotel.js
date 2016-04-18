@@ -37,4 +37,4 @@ var schema = new Schema({
 
 });
 
-exports.Hotel = mongoose.model('Hotel', schema);
+module.exports = mongoose.model('Hotel', schema);

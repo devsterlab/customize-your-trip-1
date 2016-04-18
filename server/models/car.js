@@ -30,4 +30,4 @@ var schema = new Schema({
 	}
 });
 
-exports.Car = mongoose.model('Car', schema);
+module.exports = mongoose.model('Car', schema);
