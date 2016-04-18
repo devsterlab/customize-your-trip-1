@@ -12,7 +12,8 @@
     "openProd": "node server -p",
     "openWork": "node server -w",
     "openProdWork": "node server -p -w",
-    "startServer": "node server/app.js"
+    "startServer": "node server/app.js",
+    "startServerProd": "NODE_ENV=production node server/app.js"
   },
   "repository": {
     "type": "git",

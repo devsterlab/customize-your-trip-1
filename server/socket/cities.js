@@ -1,43 +1,11 @@
 var City = require('../models/city');
+var convertToMongoParams = require('../socket').convertToMongoParams;
 
-module.exports = (socket) => {
-
-	socket.on('get_all_cities', (data) => {
-
-		if (data && data.id) {
-
-			if (Array.isArray(data.id)) {
-
-				City.findAsync({'_id': {$in: data.id}})
-					.then((cities) => {
-						socket.emit('get_all_cities', cities);
-					})
-					.catch((err) => {
-						console.log(err)
-					})
-			} else {
-
-				City.findAsync({'_id': data.id})
-					.then((cities) => {
-						socket.emit('get_all_cities', cities);
-					})
-					.catch((err) => {
-						console.log(err)
-					})
-			}
-
-		} else {
-
-			City.findAsync({})
-				.then((cities) => {
-					socket.emit('get_all_cities', cities);
-				})
-				.catch((err) => {
-					console.log(err)
-				})
-		}
-
-
-	});
-
+module.exports = function(socket) {
+    socket.on('get_cities', function (data) {
+        var params = convertToMongoParams(data);
+        City.findAsync(params.query, params.fields)
+            .then(cities => socket.emit('get_cities', cities))
+            .catch(err => console.log(err));
+    });
 };

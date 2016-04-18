@@ -1,45 +1,11 @@
 var Car = require('../models/car');
+var convertToMongoParams = require('../socket').convertToMongoParams;
 
-module.exports = (socket) => {
-
-	socket.on('get_all_cars', (data) => {
-
-		if (data && data.id) {
-
-			if (Array.isArray(data.id)) {
-
-				Car.find({'_id': {$in: data.id}})
-					.then((cars) => {
-						socket.emit('get_all_cars', cars);
-					})
-					.catch((err) => {
-						console.log(err)
-					})
-
-			} else {
-
-				Car.find({'_id': data.id})
-					.then((cars) => {
-						socket.emit('get_all_cars', cars);
-					})
-					.catch((err) => {
-						console.log(err)
-					})
-
-			}
-		} else {
-
-			Car.find({})
-				.then((cars) => {
-					socket.emit('get_all_cars', cars);
-				})
-				.catch((err) => {
-					console.log(err)
-				})
-
-		}
-
-
-	});
-
+module.exports = function(socket) {
+    socket.on('get_cars', function (data) {
+        var params = convertToMongoParams(data);
+        Car.findAsync(params.query, params.fields)
+            .then(cars => socket.emit('get_cars', cars))
+            .catch(err => console.log(err));
+    });
 };
