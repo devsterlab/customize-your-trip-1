@@ -132,7 +132,13 @@ class Car extends Component {
             state = {['error' + type]: null};
         }
         state.cars = this.sort(this.filter(this.props.cars, filters));
-        state.models = this.readAvailableTypes(state.cars, 'model');
+        if (this.props.filters.brand != filters.brand) {
+            let withoutModelFilters = Object.assign({}, filters);
+            delete withoutModelFilters.model;
+            let modelCars = this.filter(this.props.cars, withoutModelFilters);
+            state.models = this.readAvailableTypes(modelCars, 'model');
+            delete filters.model;
+        }
         this.setState(state);
         this.props.actions.setCarsFilters(filters);
     }
