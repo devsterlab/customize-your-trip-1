@@ -39,6 +39,7 @@ function deserialize(stateString) {
                 step.dateFrom = new Date(step.dateFrom);
                 step.dateTo = new Date(step.dateTo);
             }
+            delete state.summary.connected;
         }
 
         state.city = {

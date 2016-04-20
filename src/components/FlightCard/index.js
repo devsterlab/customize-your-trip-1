@@ -20,7 +20,7 @@ class FlightCard extends Component {
             available: PropTypes.number,
             price: PropTypes.number,
             departTime: PropTypes.string,
-            duration: PropTypes.string
+            duration: PropTypes.number
         }),
         onClick: PropTypes.func,
         small: PropTypes.bool,
@@ -45,9 +45,10 @@ class FlightCard extends Component {
         this.departDate = DateHelper.timeZStrToDate(props.date, props.flight.departTime, props.flight.fromCity.timezone);
         this.departTimeStr = DateHelper.toTimeStr(this.departDate);
         this.departDateStr = DateHelper.formatDateMonth(this.departDate);
-        this.arriveDate = DateHelper.addTimeZStr(this.departDate, props.flight.duration, props.flight.toCity.timezone);
+        this.arriveDate = DateHelper.addMinutesZ(this.departDate, props.flight.duration, props.flight.toCity.timezone);
         this.arriveTimeStr = DateHelper.toTimeStr(this.arriveDate);
         this.arriveDateStr = DateHelper.formatDateMonth(this.arriveDate);
+        this.durationStr = DateHelper.formatDuration(props.flight.duration);
     }
 
     render() {
@@ -69,7 +70,7 @@ class FlightCard extends Component {
                         </div>
                         <div className="medium-4 columns text-center middle">
                             <div>Duration</div>
-                            <h3>{flight.duration}</h3>
+                            <h3>{this.durationStr}</h3>
                             <div className="text-center">{this.props.flight.available} places available</div>
                         </div>
                         <div className={'columns text-right right ' + (small ? 'medium-6' : 'medium-4')}>

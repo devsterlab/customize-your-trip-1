@@ -1,8 +1,3 @@
-import DateHelper from './dateHelper';
-
-const types = {
-    'timeStr': DateHelper.timeStrToInt
-};
 
 class Sorting {
     static compareSimple(arg1, arg2, asc = true) {
@@ -33,10 +28,6 @@ class Sorting {
             let res;
             for (let sort of options) {
                 let f1 = arg1[sort.field], f2 = arg2[sort.field];
-                if (sort.type) {
-                    f1 = types[sort.type](f1);
-                    f2 = types[sort.type](f2);
-                }
                 res = Sorting.compareSimple(f1, f2, sort.asc);
                 if (res) break;
             }

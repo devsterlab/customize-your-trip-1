@@ -23,11 +23,14 @@ class DateHelper {
         return +(timezone[0] + ((timezone[1] + timezone[2]) * HOUR + (timezone[3] + timezone[4]) * MINUTE));
     }
 
-    static addTimeZStr(date, timeStr, timezone) {
-        let [hours, minutes] = timeStr.split(':');
-        let duration = hours * HOUR + minutes * MINUTE;
+    static addMinutesZ(date, minutes, timezone) {
+        let duration = minutes * MINUTE;
         let offset = -date.getTimezoneOffset() * MINUTE - DateHelper.timezoneToInt(timezone);
         return new Date(date.getTime() + duration - offset);
+    }
+
+    static formatDuration(duration) {
+        return Math.floor(duration / 60) + ':' + DateHelper.zerofy(duration % 60);
     }
 
     static addDays(date, days) {

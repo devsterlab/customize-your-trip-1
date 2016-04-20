@@ -10,7 +10,8 @@ const initialState = {
     days: 0,
     price: 0,
     currentStep: null,
-    index: 0
+    index: 0,
+    connected: false
 };
 
 function getCurrentStep(state) {
@@ -35,7 +36,7 @@ function getCurrentStep(state) {
 function calcStep(initDate, step) {
     const days = Math.max(step.hotel && step.hotelDays || 0, step.car && step.carDays || 0);
     const date = DateHelper.timeZStrToDate(initDate, step.flight.departTime, step.flight.fromCity.timezone);
-    const dateFrom = DateHelper.addTimeZStr(date, step.flight.duration, step.flight.toCity.timezone);
+    const dateFrom = DateHelper.addMinutesZ(date, step.flight.duration, step.flight.toCity.timezone);
     const dateTo = DateHelper.addDays(dateFrom, days);
     const price = step.flight.price
         + (step.hotel && (step.hotelDays * step.hotel.price) || 0)
@@ -86,7 +87,7 @@ function removeItem(state, step, index, itemType) {
     let summaryState = Object.assign({}, state.summary);
     if (itemType == 'flight' || (itemType == 'hotel' &&
         !(step.flight.toCity._id == summaryState.homeCity && index == summaryState.steps.length))) {
-        if (index == 0) return initialState;
+        if (index == 0) return Object.assign({}, initialState, {connected: true});
         if (summaryState.currentStep)
             summaryState.steps = concatStep(summaryState.steps, summaryState.currentStep, summaryState.index);
         summaryState.steps = summaryState.steps.slice(0, index);
@@ -157,6 +158,8 @@ export default function summary(state = initialState, action = '') {
             return editItem(state, action.step, action.index);
         case types.REMOVE_ITEM:
             return removeItem(state, action.step, action.index, action.itemType);
+        case types.CONNECTED:
+            return Object.assign({}, state.summary, {connected: action.connected});
         default:
             return state.summary || initialState;
     }

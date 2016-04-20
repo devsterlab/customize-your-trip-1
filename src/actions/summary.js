@@ -15,3 +15,7 @@ export function editItem(step, index, itemType) {
 export function removeItem(step, index, itemType) {
     return { type: types.REMOVE_ITEM, step, index, itemType };
 }
+
+export function setConnected(connected = true) {
+    return { type: types.CONNECTED, connected };
+}

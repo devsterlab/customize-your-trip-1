@@ -13,32 +13,21 @@ class Select extends Component {
         error: PropTypes.string,
         onChange: PropTypes.func,
         clearButton: PropTypes.bool,
-        readOnly: PropTypes.bool
+        readOnly: PropTypes.bool,
+        getCollection: PropTypes.func
     };
 
     constructor(props) {
         super(props);
 
         this.state = this.initState(props);
+        if (props.itemId) this.fetchItem(props.itemId);
+        else if (props.getCollection) this.fetchCollection('', true);
 
         this.handleItemNameChange = this._handleItemNameChange.bind(this);
         this.onClick = this._onClick.bind(this);
         this.onBlur = this._onBlur.bind(this);
         this.onClear = this._onClear.bind(this);
-    }
-
-    initState(props) {
-        let item;
-        if (props.itemId) item = props.collection.find(el => el._id == props.itemId);
-        else if (props.itemName) item = props.collection.find(el => el.name == props.itemName);
-
-        return {
-            item: item || {},
-            itemName: item && item[props.nameField] || props.itemName || '',
-            hideOptions: true,
-            searchCollection: [],
-            restCollection: props.collection
-        };
     }
 
     componentWillReceiveProps(props) {
@@ -47,20 +36,64 @@ class Select extends Component {
         }
     }
 
-    _handleItemNameChange(e, hideOptions = false) {
-        let item = this.props.collection.find(el => el[this.props.nameField] == e.target.value);
+    initState(props) {
+        let item;
+        if (props.collection) {
+            if (props.itemId) item = props.collection.find(el => el._id == props.itemId);
+            else if (props.itemName) item = props.collection.find(el => el.name == props.itemName);
+        }
+        return {
+            item: item || {},
+            itemName: item && item[props.nameField] || props.itemName || '',
+            hideOptions: true,
+            searchCollection: [],
+            restCollection: props.collection || []
+        };
+    }
+
+    filterCollection(collection, value, hideOptions) {
+        let item = collection.find(el => el[this.props.nameField] == value);
         this.props.onChange(item);
         let [searchCollection, restCollection] = this.searchFilter(
-            this.props.collection, item, this.props.nameField, e.target.value);
+            collection, item, this.props.nameField, value);
         this.setState({
-            item, itemName: item && item[this.props.nameField] || e.target.value,
+            item,
             hideOptions,
             searchCollection,
             restCollection
         });
     }
 
+    fetchItem(id) {
+        let data = {id, fields: {[this.props.nameField]: true}};
+        this.props.getCollection({
+            data,
+            callback: collection => {
+                let itemName = collection[0][this.props.nameField];
+                this.setState({itemName});
+                this.fetchCollection(itemName, true)
+            }
+        });
+    }
+
+    fetchCollection(value, hideOptions) {
+        let data = {fields: {[this.props.nameField]: true}, notEnough: true};
+        if (value) data.search = value;
+        this.props.getCollection({
+            data,
+            callback: collection => this.filterCollection(collection, value, hideOptions)
+        });
+    }
+
+    _handleItemNameChange(e, hideOptions = false) {
+        let value = e.target.value;
+        this.setState({itemName: value});
+        if (this.props.getCollection) this.fetchCollection(value, hideOptions);
+        else this.filterCollection(this.props.collection, value, hideOptions);
+    }
+
     searchFilter(collection, item, nameField, value) {
+        if (!value) return [[], collection];
         value = value.toLowerCase();
         let search = [], rest = [];
         if (item || !value.trim().length) rest = collection;
@@ -83,12 +116,18 @@ class Select extends Component {
     setItem(item) {
         this.itemSet = true;
         this.props.onChange(item);
-        this.setState({
+        let state = {
             item, itemName: item && item[this.props.nameField] || this.state.itemName,
-            hideOptions: true,
+            hideOptions: true
+        };
+        Object.assign(state, {
             searchCollection: [],
-            restCollection: this.props.collection
+            restCollection: this.props.getCollection ?
+                this.state.searchCollection.concat(this.state.restCollection)
+                    .sort((el1, el2) => el1[this.props.nameField] > el2[this.props.nameField])
+                : this.props.collection
         });
+        this.setState(state);
     }
 
     _onClick() {

@@ -4,20 +4,13 @@ import Button from '../../components/Button';
 
 class CitiesSearch extends Component {
     static propTypes = {
-        cities: PropTypes.arrayOf(PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            bounds: PropTypes.shape({
-                south: PropTypes.number, west: PropTypes.number,
-                north: PropTypes.number, east: PropTypes.number}),
-            timezone: PropTypes.string
-        })),
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,
         lastCityFrom: PropTypes.string,
         lastCityTo: PropTypes.string,
         onCityChange: PropTypes.func,
-        onFlightsSearch: PropTypes.func
+        onFlightsSearch: PropTypes.func,
+        getCities: PropTypes.func
     };
 
     constructor(props) {
@@ -64,12 +57,12 @@ class CitiesSearch extends Component {
         return (
             <form className="row">
                 <Select className="medium-5 columns" error={this.state.errorCityFrom} readOnly={!!this.props.lastCityFrom}
-                        id="selectCityFrom" collection={this.props.cities} itemId={this.props.selectedCityFrom}
+                        getCollection={this.props.getCities} itemId={this.props.selectedCityFrom}
                         nameField="name" placeholder="Where you want to start" onChange={this.handleCityFromChange}>
                     From city
                 </Select>
                 <Select className="medium-5 columns" error={this.state.errorCityTo} readOnly={!!this.props.lastCityTo}
-                        id="selectCityTo" collection={this.props.cities} itemId={this.props.selectedCityTo}
+                        getCollection={this.props.getCities} itemId={this.props.selectedCityTo}
                         nameField="name" placeholder="Where you travel" onChange={this.handleCityToChange}>
                     To city
                 </Select>

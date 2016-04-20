@@ -1,11 +1,20 @@
 var Car = require('../models/car');
-var convertToMongoParams = require('../socket').convertToMongoParams;
+var methods = require('../socket');
+var convertToMongoParams = methods.convertToMongoParams;
+var handleNotEnoughResults = methods.handleNotEnoughResults;
+var respondWithId = methods.respondWithId;
+var logError = methods.logError;
+
+var path = 'get_cars';
+var sort = {brand: 1, model: 1};
 
 module.exports = function(socket) {
-    socket.on('get_cars', function (data) {
-        var params = convertToMongoParams(data);
-        Car.findAsync(params.query, params.fields)
-            .then(cars => socket.emit('get_cars', cars))
-            .catch(err => console.log(err));
+    socket.on(path, function (req) {
+        var params = convertToMongoParams(req);
+        var sort = params.sort || sort;
+        Car.find(params.query, params.fields).sort(sort).execAsync()
+            .then(handleNotEnoughResults(Car, req, sort))
+            .then(respondWithId(socket, path, req))
+            .catch(logError);
     });
 };

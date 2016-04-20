@@ -1,11 +1,20 @@
 var Hotel = require('../models/hotel');
-var convertToMongoParams = require('../socket').convertToMongoParams;
+var methods = require('../socket');
+var convertToMongoParams = methods.convertToMongoParams;
+var handleNotEnoughResults = methods.handleNotEnoughResults;
+var respondWithId = methods.respondWithId;
+var logError = methods.logError;
+
+var path = 'get_hotels';
+var sort = {popularity: -1, name: 1};
 
 module.exports = function(socket) {
-    socket.on('get_hotels', function (data) {
-        var params = convertToMongoParams(data);
-        Hotel.findAsync(params.query, params.fields)
-            .then(hotels => socket.emit('get_hotels', hotels))
-            .catch(err => console.log(err));
+    socket.on(path, function (req) {
+        var params = convertToMongoParams(req);
+        var sort = params.sort || sort;
+        Hotel.find(params.query, params.fields).sort(sort).execAsync()
+            .then(handleNotEnoughResults(Hotel, req, sort))
+            .then(respondWithId(socket, path, req))
+            .catch(logError);
     });
 };

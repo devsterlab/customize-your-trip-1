@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectHotel, setHotelsSort, setHotelDays } from '../../actions/hotel';
+import { selectHotel, getHotels, getCityHotels, setHotelsSort, setHotelDays } from '../../actions/hotel';
 import { flightCity } from '../../reducers';
 import DateHelper from '../../util/dateHelper';
 import Sorting from '../../util/sorting';
@@ -16,14 +16,7 @@ import InputNumber from '../../components/InputNumber';
 class Hotel extends Component {
     static propTypes = {
         children: PropTypes.node,
-        city: PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            bounds: PropTypes.shape({
-                south: PropTypes.number, west: PropTypes.number,
-                north: PropTypes.number, east: PropTypes.number}),
-            timezone: PropTypes.string
-        }),
+        city: PropTypes.string,
         hotels: PropTypes.array,
         selectedHotel: PropTypes.string,
         selectedFlight: PropTypes.string,
@@ -46,9 +39,11 @@ class Hotel extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedHotel = props.hotels.find(el => el._id == props.selectedHotel);
+        this.fetchSelectedHotel(props);
+        this.fetchCityHotels(props);
+
         this.state = {
-            hotels: this.sort(props.hotels, props.sorting.field, props.sorting.asc),
+            hotels: [],
             hotelInfo: null
         };
         
@@ -56,27 +51,22 @@ class Hotel extends Component {
         this.handleHotelInfoClick = this._handleHotelInfoClick.bind(this);
         this.handleSortChange = this._handleSortChange.bind(this);
     }
-    
-    sort(hotels, field = this.props.sorting.field, asc = this.props.sorting.asc) {
-        switch (field) {
-            case 'price':
-                return hotels.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'stars', asc: false}, {field: 'popularity', asc: false}]
-                ));
-            case 'stars':
-                return hotels.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'popularity', asc: false}, {field: 'price'}]
-                ));
-            case 'popularity':
-                return hotels.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'stars', asc: false}, {field: 'price'}]
-                ));
-        }
+
+    fetchSelectedHotel(props) {
+        props.actions.getHotels({
+            data: {id: props.selectedHotel},
+            callback: hotels => this.selectedHotel = hotels && hotels[0]
+        });
+    }
+
+    fetchCityHotels(props, sorting) {
+        props.actions.getCityHotels(props.city, sorting || props.sorting,
+                hotels => this.setState({hotels})
+        );
     }
 
     _handleSortChange(field, asc) {
-        let hotels = this.sort(this.state.hotels, field, asc);
-        this.setState({hotels});
+        this.fetchCityHotels(this.props, {field, asc});
         this.props.actions.setHotelsSort(field, asc);
     }
 
@@ -114,7 +104,7 @@ class Hotel extends Component {
                 <hr/>
                 <div className="row hotels-search">
                     <div className="medium-7 columns map-wrap">
-                        <TripMap city={this.props.city} hotels={this.props.hotels} selectedHotel={this.selectedHotel}
+                        <TripMap city={{_id: this.props.city, bounds: {}}} hotels={this.props.hotels} selectedHotel={this.selectedHotel}
                                  onMarkerClick={this.selectHotel}/>
                     </div>
                     <div className="medium-5 columns">
@@ -156,10 +146,8 @@ class Hotel extends Component {
 }
 
 function mapStateToProps(state) {
-    let city = flightCity(state);
     return {
-        city,
-        hotels: city && state.hotel.hotels.filter(el => el.city._id == city._id) || [],
+        city: state.flight.flightCity,
         selectedHotel: state.hotel.selectedHotel,
         selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,
@@ -170,7 +158,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({selectHotel, setHotelsSort, setHotelDays}, dispatch)
+        actions: bindActionCreators({
+            getHotels, getCityHotels, selectHotel, setHotelsSort, setHotelDays
+        }, dispatch)
     };
 }
 

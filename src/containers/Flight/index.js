@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectCity } from '../../actions/city';
-import { selectFlight, setFlightsSort, setFlightsSearched } from '../../actions/flight';
+import { selectCity, getCities } from '../../actions/city';
+import { selectFlight, getFlights, getCurrentFlights, setFlightsSort, setFlightsSearched } from '../../actions/flight';
 import Sorting from '../../util/sorting';
 import CitiesSearch from './CitiesSearch';
 import FlightCard from '../../components/FlightCard';
@@ -12,8 +12,6 @@ import Button from '../../components/Button';
 class Flight extends Component {
     static propTypes = {
         children: PropTypes.node,
-        cities: PropTypes.array,
-        flights: PropTypes.array,
         selectedCityFrom: PropTypes.string,
         selectedCityTo: PropTypes.string,
         sorting: PropTypes.object,
@@ -36,10 +34,10 @@ class Flight extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedFlight = props.flights.find(el => el._id == props.selectedFlight);
-        this.state = {
-            flights: this.sort(this.filterFlights(props.flights), props.sorting.field, props.sorting.asc)
-        };
+        this.fetchSelectedFlight(props);
+        this.fetchCurrentFlights(props);
+
+        this.state = {flights: []};
 
         this.handleCityChange = this._handleCityChange.bind(this);
         this.handleFlightsSearch = this._handleFlightsSearch.bind(this);
@@ -47,8 +45,27 @@ class Flight extends Component {
         this.selectFlight = this._selectFlight.bind(this);
     }
 
+/*    componentWillReceiveProps(props) {
+        if (props.selectedFlight && props.selectedFlight != this.props.selectedFlight) {
+
+        }
+    }*/
+
     componentWillMount() {
         if (!this.props.selectedCityFrom || !this.props.selectedCityTo) this.props.actions.setFlightsSearched(true);
+    }
+
+    fetchSelectedFlight(props) {
+        props.actions.getFlights({
+            data: {id: props.selectedFlight},
+            callback: flights => this.selectedFlight = flights && flights[0]
+        });
+    }
+
+    fetchCurrentFlights(props, sorting) {
+        props.actions.getCurrentFlights(props.selectedCityFrom, props.selectedCityTo, sorting || props.sorting,
+                flights => this.setState({flights})
+        );
     }
 
     _handleCityChange(cityId, fromTo, canSearch) {
@@ -57,36 +74,12 @@ class Flight extends Component {
     }
 
     _handleFlightsSearch() {
-        this.setState({flights: this.sort(this.filterFlights())});
+        this.fetchCurrentFlights(this.props);
         this.props.actions.setFlightsSearched();
     }
 
-    filterFlights(flights = this.props.flights) {
-        if (flights) return flights
-            .filter(el => el.fromCity._id == this.props.selectedCityFrom && el.toCity._id == this.props.selectedCityTo);
-        return [];
-    }
-
-    sort(flights, field = this.props.sorting.field, asc = this.props.sorting.asc) {
-        switch (field) {
-            case 'price':
-                return flights.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'departTime', type: 'timeStr'}, {field: 'duration', type: 'timeStr'}]
-                ));
-            case 'duration':
-                return flights.sort(Sorting.byObjectFields(
-                    [{field, asc, type: 'timeStr'}, {field: 'price'}, {field: 'departTime', type: 'timeStr'}]
-                ));
-            case 'departTime':
-                return flights.sort(Sorting.byObjectFields(
-                    [{field, asc, type: 'timeStr'},  {field: 'price'}, {field: 'duration', type: 'timeStr'}]
-                ));
-        }
-    }
-
     _handleSortChange(field, asc) {
-        let flights = this.sort(this.state.flights, field, asc);
-        this.setState({flights});
+        this.fetchCurrentFlights(this.props, {field, asc});
         this.props.actions.setFlightsSort(field, asc);
     }
 
@@ -95,7 +88,7 @@ class Flight extends Component {
     }
 
     _selectFlight(flight) {
-        this.props.actions.selectFlight(flight._id, this.clearSelections(flight, this.selectedFlight));
+        this.props.actions.selectFlight(flight, this.clearSelections(flight, this.selectedFlight));
         this.selectedFlight = flight;
     }
 
@@ -114,10 +107,10 @@ class Flight extends Component {
     render() {
         return (
             <div className="height-100 flight-page">
-                <CitiesSearch cities={this.props.cities} selectedCityFrom={this.props.selectedCityFrom}
-                              selectedCityTo={this.props.selectedCityTo} lastCityFrom={this.props.lastCityFrom}
-                              lastCityTo={this.props.lastCityTo} onCityChange={this.handleCityChange}
-                              onFlightsSearch={this.handleFlightsSearch}/>
+                <CitiesSearch selectedCityFrom={this.props.selectedCityFrom} selectedCityTo={this.props.selectedCityTo}
+                              lastCityFrom={this.props.lastCityFrom} lastCityTo={this.props.lastCityTo}
+                              onCityChange={this.handleCityChange} onFlightsSearch={this.handleFlightsSearch}
+                              getCities={this.props.actions.getCities}/>
                 <hr/>
                 <div className="flights-search">
                     <h3 className={`text-center subheader ${this.selectCitiesHeaderHide() && 'hide' || ''}`}>
@@ -143,7 +136,7 @@ class Flight extends Component {
                             {this.selectedFlight &&
                             <div>
                                 <FlightCard flight={this.selectedFlight} small className="selected"
-                                             date={this.props.date}/>
+                                            date={this.props.date}/>
                                 <Button className="expanded success large" link="/hotel">
                                     Continue
                                 </Button>
@@ -163,8 +156,6 @@ class Flight extends Component {
 
 function mapStateToProps(state) {
     return {
-        cities: state.city.cities,
-        flights: state.flight.flights,
         selectedCityFrom: state.summary.lastCityFrom || state.city.selectedCityFrom,
         selectedCityTo: state.summary.lastCityTo || state.city.selectedCityTo,
         sorting: state.flight.sorting,
@@ -180,7 +171,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({selectCity, selectFlight, setFlightsSort, setFlightsSearched}, dispatch)
+        actions: bindActionCreators({
+            selectCity, selectFlight, getFlights, getCurrentFlights, setFlightsSort, setFlightsSearched, getCities
+        }, dispatch)
     };
 }
 

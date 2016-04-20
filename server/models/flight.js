@@ -11,7 +11,7 @@ var schema = new Schema({
 		type: String
 	},
 	duration: {
-		type: String
+		type: Number
 	},
 	available: {
 		type: Number

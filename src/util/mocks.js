@@ -3,6 +3,7 @@ import {setCars} from '../actions/car';
 import {setCities} from '../actions/city';
 import {setFlights} from '../actions/flight';
 import {setHotels} from '../actions/hotel';
+import {setConnected} from '../actions/summary';
 
 const linkToJson = 'http://beta.json-generator.com/api/json/get/V1N4803Tg';
 
@@ -61,6 +62,7 @@ export default function loadMocks(store) {
             store.dispatch(setCities(mocks.cities));
             store.dispatch(setFlights(mocks.flights));
             store.dispatch(setHotels(mocks.hotels));
+            store.dispatch(setConnected());
         });
 }
 
@@ -128,7 +130,9 @@ const mocks = {
                 available: '{{integer(10, 100)}}',
                 price: '{{integer(15, 200) * 10}}',
                 departTime: '{{date().toTimeString().slice(0, 5)}}',
-                duration: '{{integer(2, 12)}}:{{random("00", "30")}}'
+                duration: function (tags) {
+                    return tags.integer(2, 11) * 60 + tags.random(0, 30);
+                }
             }
         }
     ],

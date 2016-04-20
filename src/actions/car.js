@@ -21,12 +21,13 @@ export function setCarDays(days) {
     return { type: types.SET_CAR_DAYS, days };
 }
 
-export function getAllCars() {
+export function getCars(id, fields, search) {
     return {
-        type: events.GET_ALL_CARS,
+        type: events.GET_CARS,
         socket: {
-            path: events.GET_ALL_CARS,
-            action: setCars
+            path: events.GET_CARS,
+            action: setCars,
+            data: {id, fields, search}
         }
     };
 }
