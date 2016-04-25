@@ -1,11 +1,18 @@
 import * as types from '../constants/actionTypes';
+import {assignArrToObj} from '../reducers';
 
 const initialState = {
-    cities: [],
+    cities: {},
     citiesLoaded: false,
     selectedCityFrom: '',
     selectedCityTo: ''
 };
+
+function setCities(state, cities) {
+    let newState = Object.assign({}, state, {citiesLoaded: true});
+    assignArrToObj(newState.cities, cities);
+    return newState;
+}
 
 function resetSelectedCities(state) {
     return Object.assign({}, state, {selectedCityFrom: '', selectedCityTo: ''});
@@ -14,7 +21,7 @@ function resetSelectedCities(state) {
 export default function city(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_CITIES:
-            return Object.assign({}, state, {cities: action.cities, citiesLoaded: true});
+            return setCities(state, action.cities);
         case types.SELECT_CITY:
             return Object.assign({}, state, {['selectedCity' + action.toFrom]: action._id});
 

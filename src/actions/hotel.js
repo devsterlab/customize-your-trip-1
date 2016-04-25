@@ -5,6 +5,10 @@ export function setHotels(hotels) {
     return { type: types.SET_HOTELS, hotels };
 }
 
+export function setCurrentHotels(ids) {
+    return { type: types.SET_CURRENT_HOTELS, ids };
+}
+
 export function selectHotel(_id) {
     return { type: types.SELECT_HOTEL, _id };
 }
@@ -22,23 +26,23 @@ export function getHotels(options) {
         type: events.GET_HOTELS,
         socket: {
             path: events.GET_HOTELS,
+            data: options.data,
             action: options.action,
-            callback: options.callback,
-            data: options.data
+            callback: options.callback
         }
     };
 }
 
-export function getCityHotels(city, sorting, callback) {
+export function getCityHotels(cityId, sorting) {
     return {
         type: events.GET_HOTELS,
         socket: {
             path: events.GET_HOTELS,
             data: {
-                search: {"city._id": city},
+                search: {"city._id": cityId},
                 sort: {[sorting.field]: sorting.asc ? 1 : -1}
             },
-            callback
+            action: [setHotels, hotels => setCurrentHotels(hotels.map(h => h._id))]
         }
     };
 }

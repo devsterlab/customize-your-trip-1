@@ -5,6 +5,10 @@ export function setFlights(flights) {
     return { type: types.SET_FLIGHTS, flights };
 }
 
+export function setCurrentFlights(ids) {
+    return { type: types.SET_CURRENT_FLIGHTS, ids };
+}
+
 export function selectFlight(flight, clearSelections) {
     return { type: types.SELECT_FLIGHT, flight, clearSelections };
 }
@@ -13,7 +17,7 @@ export function setFlightsSort(field, asc) {
     return { type: types.SET_FLIGHTS_SORT, field, asc };
 }
 
-export function setFlightsSearched(notSearched = false) {
+export function setFlightsNotSearched(notSearched = false) {
     return { type: types.SET_FLIGHTS_SEARCHED, notSearched };
 }
 
@@ -22,14 +26,14 @@ export function getFlights(options) {
         type: events.GET_FLIGHTS,
         socket: {
             path: events.GET_FLIGHTS,
+            data: options.data,
             action: options.action,
-            callback: options.callback,
-            data: options.data
+            callback: options.callback
         }
     };
 }
 
-export function getCurrentFlights(selectedCityFrom, selectedCityTo, sorting, callback) {
+export function getCurrentFlights(selectedCityFrom, selectedCityTo, sorting) {
     return {
         type: events.GET_FLIGHTS,
         socket: {
@@ -38,7 +42,7 @@ export function getCurrentFlights(selectedCityFrom, selectedCityTo, sorting, cal
                 search: {"fromCity._id": selectedCityFrom, "toCity._id": selectedCityTo},
                 sort: {[sorting.field]: sorting.asc ? 1 : -1}
             },
-            callback
+            action: [setFlights, flights => setCurrentFlights(flights.map(fl => fl._id))]
         }
     };
 }

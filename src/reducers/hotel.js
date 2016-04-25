@@ -1,11 +1,19 @@
 import * as types from '../constants/actionTypes';
+import {assignArrToObj} from '../reducers';
 
 const initialState = {
-    hotels: [],
+    hotels: {},
+    currentHotels: [],
     hotelsLoaded: false,
     selectedHotel: '',
     days: 1
 };
+
+function setHotels(state, hotels) {
+    let newState = Object.assign({}, state, {hotelsLoaded: true});
+    assignArrToObj(newState.hotels, hotels);
+    return newState;
+}
 
 function setHotel(state, _id) {
     return Object.assign({}, state, {selectedHotel: _id || ''});
@@ -26,7 +34,9 @@ function removeItem(state, itemType) {
 export default function hotel(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_HOTELS:
-            return Object.assign({}, state, {hotels: action.hotels, hotelsLoaded: true});
+            return setHotels(state, action.hotels);
+        case types.SET_CURRENT_HOTELS:
+            return Object.assign({}, state, {currentHotels: action.ids});
         case types.SELECT_HOTEL:
             return setHotel(state, action._id);
         case types.SET_HOTELS_SORT:

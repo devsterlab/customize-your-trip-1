@@ -5,6 +5,10 @@ export function setCars(cars) {
     return { type: types.SET_CARS, cars };
 }
 
+export function setCurrentCars(ids) {
+    return { type: types.SET_CURRENT_CARS, ids };
+}
+
 export function selectCar(_id) {
     return { type: types.SELECT_CAR, _id };
 }
@@ -21,13 +25,14 @@ export function setCarDays(days) {
     return { type: types.SET_CAR_DAYS, days };
 }
 
-export function getCars(id, fields, search) {
+export function getCars(options) {
     return {
         type: events.GET_CARS,
         socket: {
             path: events.GET_CARS,
-            action: setCars,
-            data: {id, fields, search}
+            data: options.data,
+            action: options.action,
+            callback: options.callback
         }
     };
 }

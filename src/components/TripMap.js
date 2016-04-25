@@ -13,26 +13,27 @@ class TripMap extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = this.initState(props);
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.selectedHotel && (props.selectedHotel != this.props.selectedHotel) ||
+            props.hotels && (props.hotels != this.props.hotels)) {
+            this.setState(this.initState(props));
+        }
+    }
+
+    initState(props) {
+        return {
             zoom: props.selectedHotel && 15 || 11,
             center: props.selectedHotel && this.hotelPosition(props.selectedHotel) || this.calcCenter(props.city.bounds),
             markers: this.createMarkers(props.hotels, props.selectedHotel && props.selectedHotel._id, props.onMarkerClick)
         };
     }
 
-    componentWillReceiveProps(props) {
-        if (props.selectedHotel &&
-            (!this.props.selectedHotel || props.selectedHotel._id != this.props.selectedHotel._id)) {
-            this.setState({
-                zoom: 15,
-                center: this.hotelPosition(props.selectedHotel),
-                markers: this.createMarkers(props.hotels, props.selectedHotel._id, props.onMarkerClick)
-            });
-        }
-    }
-
     shouldComponentUpdate(props) {
         return props.city !== this.props.city
+            || props.hotels !== this.props.hotels
             || props.selectedHotel !== this.props.selectedHotel;
     }
 

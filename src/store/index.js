@@ -45,25 +45,27 @@ function deserialize(stateString) {
         state.city = {
             selectedCityFrom: state.selectedCityFrom,
             selectedCityTo: state.selectedCityTo,
-            cities: []
+            cities: {}
         };
         state.flight = {
             selectedFlight: state.selectedFlight,
             sorting: state.sortingFlights,
-            flights: []
+            flights: {},
+            currentFlights: []
         };
         state.hotel = {
             selectedHotel: state.selectedHotel,
             days: state.hotelDays,
             sorting: state.sortingHotels,
-            hotels: []
+            hotels: {},
+            currentHotels: []
         };
         state.car = {
             selectedCar: state.selectedCar,
             days: state.carDays,
             sorting: state.sortingCars,
             filters: state.carsFilters,
-            cars: []
+            cars: {}
         };
 
         delete state.selectedCityFrom;

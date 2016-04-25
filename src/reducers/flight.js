@@ -1,22 +1,26 @@
 import * as types from '../constants/actionTypes';
+import {assignArrToObj} from '../reducers';
 
 const initialState = {
-    flights: [],
+    flights: {},
+    currentFlights: [],
     flightsLoaded: false,
     selectedFlight: '',
-    flightCity: '',
     notSearched: true
 };
 
-function setFlight(state, _id) {
+function setFlights(state, flights) {
+    let newState = Object.assign({}, state, {flightsLoaded: true});
+    assignArrToObj(newState.flights, flights);
+    return newState;
+}
+
+function setSelectedFlight(state, _id) {
     return Object.assign({}, state, {selectedFlight: _id || ''});
 }
 
 function selectFlight(state, flight) {
-    return Object.assign({}, state, {
-        selectedFlight: flight && flight._id || '',
-        flightCity: flight && flight.toCity._id || ''
-    });
+    return Object.assign({}, state, {selectedFlight: flight && flight._id || ''});
 }
 
 function removeItem(state, itemType) {
@@ -27,7 +31,9 @@ function removeItem(state, itemType) {
 export default function flight(state = initialState, action = '') {
     switch (action.type) {
         case types.SET_FLIGHTS:
-            return Object.assign({}, state, {flights: action.flights, flightsLoaded: true});
+            return setFlights(state, action.flights);
+        case types.SET_CURRENT_FLIGHTS:
+            return Object.assign({}, state, {currentFlights: action.ids});
         case types.SELECT_FLIGHT:
             return selectFlight(state, action.flight);
         case types.SET_FLIGHTS_SORT:
@@ -36,9 +42,9 @@ export default function flight(state = initialState, action = '') {
             return Object.assign({}, state, {notSearched: action.notSearched});
 
         case types.CONTINUE_TRIP:
-            return Object.assign({}, setFlight(state), {notSearched: true});
+            return Object.assign({}, setSelectedFlight(state), {notSearched: true});
         case types.EDIT_ITEM:
-            return setFlight(state, action.step.flight._id);
+            return setSelectedFlight(state, action.step.flight._id);
         case types.REMOVE_ITEM:
             return removeItem(state, action.itemType);
         default:

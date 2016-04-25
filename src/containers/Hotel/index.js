@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectHotel, getHotels, getCityHotels, setHotelsSort, setHotelDays } from '../../actions/hotel';
+import * as hotelActions from '../../actions/hotel';
 import { flightCity } from '../../reducers';
 import DateHelper from '../../util/dateHelper';
 import Sorting from '../../util/sorting';
@@ -16,8 +16,9 @@ import InputNumber from '../../components/InputNumber';
 class Hotel extends Component {
     static propTypes = {
         children: PropTypes.node,
-        city: PropTypes.string,
-        hotels: PropTypes.array,
+        city: PropTypes.object,
+        hotels: PropTypes.object,
+        currentHotels: PropTypes.array,
         selectedHotel: PropTypes.string,
         selectedFlight: PropTypes.string,
         sorting: PropTypes.object,
@@ -39,30 +40,29 @@ class Hotel extends Component {
     constructor(props) {
         super(props);
 
-        this.fetchSelectedHotel(props);
-        this.fetchCityHotels(props);
+        this.selectedHotel = props.hotels[props.selectedHotel];
+        if (!props.currentHotels || !props.currentHotels.length) this.fetchCityHotels(props);
 
-        this.state = {
-            hotels: [],
-            hotelInfo: null
-        };
+        this.state = { hotels: this.getHotels(props), hotelInfo: null };
         
         this.selectHotel = this._selectHotel.bind(this);
         this.handleHotelInfoClick = this._handleHotelInfoClick.bind(this);
         this.handleSortChange = this._handleSortChange.bind(this);
     }
 
-    fetchSelectedHotel(props) {
-        props.actions.getHotels({
-            data: {id: props.selectedHotel},
-            callback: hotels => this.selectedHotel = hotels && hotels[0]
-        });
+    componentWillReceiveProps(props) {
+        if (props.currentHotels && (props.currentHotels != this.props.currentHotels)) {
+            this.setState({hotels: this.getHotels(props)});
+        }
+    }
+
+    getHotels(props) {
+        return props.currentHotels && props.currentHotels.map(id => props.hotels[id]) || [];
     }
 
     fetchCityHotels(props, sorting) {
-        props.actions.getCityHotels(props.city, sorting || props.sorting,
-                hotels => this.setState({hotels})
-        );
+        props.city &&
+        props.actions.getCityHotels(props.city._id, sorting || props.sorting);
     }
 
     _handleSortChange(field, asc) {
@@ -104,8 +104,8 @@ class Hotel extends Component {
                 <hr/>
                 <div className="row hotels-search">
                     <div className="medium-7 columns map-wrap">
-                        <TripMap city={{_id: this.props.city, bounds: {}}} hotels={this.props.hotels} selectedHotel={this.selectedHotel}
-                                 onMarkerClick={this.selectHotel}/>
+                        <TripMap city={this.props.city} hotels={this.state.hotels}
+                                 selectedHotel={this.selectedHotel} onMarkerClick={this.selectHotel}/>
                     </div>
                     <div className="medium-5 columns">
                         {this.selectedHotel &&
@@ -147,7 +147,9 @@ class Hotel extends Component {
 
 function mapStateToProps(state) {
     return {
-        city: state.flight.flightCity,
+        city: flightCity(state),
+        hotels: state.hotel.hotels,
+        currentHotels: state.hotel.currentHotels,
         selectedHotel: state.hotel.selectedHotel,
         selectedFlight: state.flight.selectedFlight,
         sorting: state.hotel.sorting,
@@ -158,9 +160,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getHotels, getCityHotels, selectHotel, setHotelsSort, setHotelDays
-        }, dispatch)
+        actions: bindActionCreators(hotelActions, dispatch)
     };
 }
 

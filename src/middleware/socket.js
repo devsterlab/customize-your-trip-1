@@ -23,7 +23,14 @@ export default (onSocketError) => {
                 if (action.socket.action || action.socket.callback) {
                     var socketOn = function (res) {
                         if (res.sockId == action.socket.sockId) {
-                            action.socket.action && store.dispatch(action.socket.action(res.data));
+                            if (action.socket.action) {
+                                if (Array.isArray(action.socket.action)) {
+                                    for (let i = 0; i < action.socket.action.length; i++) {
+                                        store.dispatch(action.socket.action[i](res.data))
+                                    }
+                                }
+                                else store.dispatch(action.socket.action(res.data));
+                            }
                             action.socket.callback && action.socket.callback(res.data);
                             socket.removeListener(action.socket.path, socketOn);
                         }

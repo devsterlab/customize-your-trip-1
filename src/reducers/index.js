@@ -17,8 +17,14 @@ export default function rootReducer(state, action) {
 
 export function flightCity(state) {
     if (!state.flight.selectedFlight) return;
-    let selectedFlight = state.flight.flights.find(el => el._id == state.flight.selectedFlight);
-    let flightCityId = selectedFlight && selectedFlight.toCity._id;
-    if (!flightCityId) return;
-    return state.city.cities.find(el => el._id == flightCityId);
+    let currentFlight = state.flight.flights[state.flight.selectedFlight];
+    if (!currentFlight) return;
+    return state.city.cities[currentFlight.toCity._id];
+}
+
+export function assignArrToObj(obj, arr, field = '_id') {
+    for (let i = 0; i < arr.length; i++) {
+        let el = arr[i];
+        obj[el[field]] = Object.assign({}, obj[el[field]], el);
+    }
 }
