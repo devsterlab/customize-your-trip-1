@@ -36,3 +36,17 @@ export function getCars(options) {
         }
     };
 }
+
+export function getCityCars(cityId, sorting) {
+    return {
+        type: events.GET_CARS,
+        socket: {
+            path: events.GET_CARS,
+            data: {
+                search: {"city._id": cityId},
+                sort: {[sorting.field]: sorting.asc ? 1 : -1}
+            },
+            action: [setCars, hotels => setCurrentCars(hotels.map(h => h._id))]
+        }
+    };
+}

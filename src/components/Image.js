@@ -33,7 +33,7 @@ class Image extends Component {
         return (
             <div className={`image ${this.props.className || ''}`}>
                 <img src={this.props.src} onLoad={this.handleImageLoaded} onError={this.handleImageError}/>
-                <Spinner className={this.state.imageStatus != null && 'hide' || ''}/>
+                {this.state.imageStatus == null && <Spinner />}
             </div>
         );
     }
