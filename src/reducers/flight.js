@@ -44,7 +44,7 @@ export default function flight(state = initialState, action = '') {
         case types.CONTINUE_TRIP:
             return Object.assign({}, setSelectedFlight(state), {notSearched: true});
         case types.EDIT_ITEM:
-            return setSelectedFlight(state, action.step.flight._id);
+            return setSelectedFlight(state, action.step.flight);
         case types.REMOVE_ITEM:
             return removeItem(state, action.itemType);
         default:

@@ -23,7 +23,8 @@ class HotelCard extends Component {
         onClick: PropTypes.func,
         onInfoClick: PropTypes.func,
         className: PropTypes.string,
-        price: PropTypes.number
+        price: PropTypes.number,
+        spinnerParent: PropTypes.string
     };
 
     shouldComponentUpdate(props) {
@@ -38,10 +39,10 @@ class HotelCard extends Component {
     }
 
     render() {
-        let { hotel, onClick, onInfoClick, className, price, ...other } = this.props;
+        let { hotel, onClick, onInfoClick, className, price, spinnerParent, ...other } = this.props;
         return (
             <Card className={`hotel-card ${className || ''}`} image={hotel.images[0]} {...other}
-                  price={price > 0 && price || hotel.price} spinnerParent=".hotels-list"
+                  price={price > 0 && price || hotel.price} spinnerParent={spinnerParent || '.hotels-list'}
                   onClick={() => onClick && onClick(hotel)}>
                 <h5 className="name">{hotel.name}</h5>
                 <Stars count={hotel.stars}/>

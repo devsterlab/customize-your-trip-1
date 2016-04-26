@@ -20,7 +20,8 @@ class CarCard extends Component {
         }),
         onClick: PropTypes.func,
         className: PropTypes.string,
-        price: PropTypes.number
+        price: PropTypes.number,
+        spinnerParent: PropTypes.string
     };
 
     shouldComponentUpdate(props) {
@@ -30,10 +31,10 @@ class CarCard extends Component {
     }
 
     render() {
-        let { car, onClick, className, price, ...other } = this.props;
+        let { car, onClick, className, price, spinnerParent, ...other } = this.props;
         return (
             <Card className={`car-card ${className || ''}`} image={car.image} {...other}
-                  price={price > 0 && price || car.price} spinnerParent=".cars-list"
+                  price={price > 0 && price || car.price} spinnerParent={spinnerParent || '.cars-list'}
                   onClick={() => onClick && onClick(car)}>
                 <h5>{`${car.brand} ${car.model}`}</h5>
                 <div>Type: {car.carType}</div>

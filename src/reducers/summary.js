@@ -17,30 +17,30 @@ const initialState = {
 function getCurrentStep(state) {
     if (!state.flight.selectedFlight) return null;
 
-    const flight = state.flight.flights.find(el => el._id == state.flight.selectedFlight);
-
+    const flight = state.flight.flights[state.flight.selectedFlight];
     if (!flight || !state.hotel.selectedHotel && flight.toCity._id != state.summary.homeCity) return null;
 
-    const hotel = state.hotel.selectedHotel && state.hotel.hotels.find(el => el._id == state.hotel.selectedHotel) || null;
-    const car = state.car.selectedCar && state.car.cars.find(el => el._id == state.car.selectedCar) || null;
-
-    return calcStep(state.summary.date, {
-        flight,
-        hotel,
+    return calcStep(state, state.summary.date, {
+        flight: state.flight.selectedFlight,
+        hotel: state.hotel.selectedHotel,
         hotelDays: state.hotel.days,
-        car,
+        car: state.car.selectedCar,
         carDays: state.car.days
     });
 }
 
-function calcStep(initDate, step) {
+function calcStep(state, initDate, step) {
+    const flight = state.flight.flights[step.flight];
+    const hotel = state.hotel.hotels[step.hotel];
+    const car = state.car.cars[step.car];
+
     const days = Math.max(step.hotel && step.hotelDays || 0, step.car && step.carDays || 0);
-    const date = DateHelper.timeZStrToDate(initDate, step.flight.departTime, step.flight.fromCity.timezone);
-    const dateFrom = DateHelper.addMinutesZ(date, step.flight.duration, step.flight.toCity.timezone);
+    const date = DateHelper.timeZStrToDate(initDate, flight.departTime, flight.fromCity.timezone);
+    const dateFrom = DateHelper.addMinutesZ(date, flight.duration, flight.toCity.timezone);
     const dateTo = DateHelper.addDays(dateFrom, days);
-    const price = step.flight.price
-        + (step.hotel && (step.hotelDays * step.hotel.price) || 0)
-        + (step.car && (step.carDays * step.car.price) || 0);
+    const price = flight.price
+        + (step.hotel && (step.hotelDays * hotel.price) || 0)
+        + (step.car && (step.carDays * car.price) || 0);
 
     return Object.assign({}, step, {days, date, dateFrom, dateTo, price});
 }
@@ -64,7 +64,7 @@ function setCurrentStep(state) {
         var steps = concatStep(summaryState.steps, summaryState.currentStep, summaryState.index);
 
     if (steps && steps.length) {
-        recalcSteps(summaryState.date, steps);
+        recalcSteps(state, summaryState.date, steps);
         summaryState.days = calcTotalDays(summaryState.date, steps);
         summaryState.price = calcTotalPrice(steps);
     }
@@ -74,24 +74,29 @@ function setCurrentStep(state) {
 
 function editItem(state, step, index) {
     if (!state.summary.steps.length) return state.summary;
+
     let summaryState = continueTrip(state);
+    const flight = state.flight.flights[step.flight];
+
     summaryState.currentStep = summaryState.steps[index];
     summaryState.steps = sliceStep(summaryState.steps, index);
     summaryState.index = index;
-    summaryState.lastCityFrom = step.flight.fromCity._id;
-    summaryState.lastCityTo = summaryState.steps.length != index && step.flight.toCity._id || '';
+    summaryState.lastCityFrom = flight.fromCity._id;
+    summaryState.lastCityTo = summaryState.steps.length != index && flight.toCity._id || '';
     return summaryState;
 }
 
 function removeItem(state, step, index, itemType) {
     let summaryState = Object.assign({}, state.summary);
+    const flight = state.flight.flights[step.flight];
+
     if (itemType == 'flight' || (itemType == 'hotel' &&
-        !(step.flight.toCity._id == summaryState.homeCity && index == summaryState.steps.length))) {
+        !(flight.toCity._id == summaryState.homeCity && index == summaryState.steps.length))) {
         if (index == 0) return Object.assign({}, initialState, {connected: true});
         if (summaryState.currentStep)
             summaryState.steps = concatStep(summaryState.steps, summaryState.currentStep, summaryState.index);
         summaryState.steps = summaryState.steps.slice(0, index);
-        updateSummary(summaryState);
+        updateSummary(state, summaryState);
     }
     else {
         let steps = summaryState.currentStep ?
@@ -101,7 +106,7 @@ function removeItem(state, step, index, itemType) {
         if (itemType == 'hotel') {
             steps[index].car = null;
         }
-        recalcSteps(summaryState.date, steps);
+        recalcSteps(state, summaryState.date, steps);
         summaryState.days = calcTotalDays(summaryState.date, steps);
         summaryState.price = calcTotalPrice(steps);
     }
@@ -116,13 +121,14 @@ function continueTrip(state) {
         steps: concatStep(state.summary.steps, step, state.summary.index)
     });
 
-    return updateSummary(summaryState);
+    return updateSummary(state, summaryState);
 }
 
-function updateSummary(summaryState) {
-    recalcSteps(summaryState.date, summaryState.steps);
-    summaryState.homeCity = summaryState.steps[0].flight.fromCity._id;
-    summaryState.lastCityFrom = summaryState.steps[summaryState.steps.length - 1].flight.toCity._id;
+function updateSummary(state, summaryState) {
+    recalcSteps(state, summaryState.date, summaryState.steps);
+
+    summaryState.homeCity = state.flight.flights[summaryState.steps[0].flight].fromCity._id;
+    summaryState.lastCityFrom = state.flight.flights[summaryState.steps[summaryState.steps.length - 1].flight].toCity._id;
     summaryState.lastCityTo = '';
     summaryState.days = calcTotalDays(summaryState.date, summaryState.steps);
     summaryState.price = calcTotalPrice(summaryState.steps);
@@ -139,10 +145,10 @@ function calcTotalPrice(steps) {
     return steps.reduce((prev, next) => prev + next.price, 0);
 }
 
-function recalcSteps(initDate, steps) {
-    steps[0] = calcStep(initDate, steps[0]);
+function recalcSteps(state, initDate, steps) {
+    steps[0] = calcStep(state, initDate, steps[0]);
     for (let i = 1; i < steps.length; i++) {
-        Object.assign(steps[i], calcStep(steps[i - 1].dateTo, steps[i]));
+        Object.assign(steps[i], calcStep(state, steps[i - 1].dateTo, steps[i]));
     }
 }
 

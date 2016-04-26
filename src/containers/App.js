@@ -15,7 +15,8 @@ class App extends Component {
         connected: PropTypes.bool,
         selectedFlight: PropTypes.string,
         selectedHotel: PropTypes.string,
-        selectedCar: PropTypes.string
+        selectedCar: PropTypes.string,
+        steps: PropTypes.array
     };
 
     constructor(props) {
@@ -32,55 +33,65 @@ class App extends Component {
     loadData(props) {
         if (props.connected && !this.dataLoaded) {
             this.dataLoaded = true;
-            let loadState = {};
-            
-            if (props.selectedFlight) {
+            let loadState = {}, flightsIds = [], hotelsIds = [], carsIds = [];
+
+            for (let i = 0; i < this.props.steps.length; i++) {
+                let step = this.props.steps[i];
+                step.flight && flightsIds.push(step.flight);
+                step.hotel && hotelsIds.push(step.hotel);
+                step.car && carsIds.push(step.car);
+            }
+
+            props.selectedFlight && flightsIds.push(props.selectedFlight);
+            props.selectedHotel && hotelsIds.push(props.selectedHotel);
+            props.selectedCar && carsIds.push(props.selectedCar);
+
+            if (flightsIds.length) {
                 props.actions.getFlights({
-                    data: {id: props.selectedFlight},
+                    data: {id: flightsIds},
                     action: setFlights,
                     callback: (flights) => {
-                        let flight = flights && flights[0];
-                        if (flight) {
-                            this.setState({flightLoaded: true});
+                        if (flights.length) {
+                            this.setState({flightsLoaded: true});
                             props.actions.getCities({
-                                data: {id: flight.toCity._id},
+                                data: {id: [flights[0].fromCity._id].concat(flights.map(f => f.toCity._id))},
                                 action: setCities,
-                                callback: () => this.setState({cityLoaded: true})
+                                callback: () => this.setState({citiesLoaded: true})
                             });
                         }
-                        else this.setState({flightLoaded: true, cityLoaded: true});
+                        else this.setState({flightsLoaded: true, citiesLoaded: true});
                     }
                 });
             }
             else {
-                loadState.flightLoaded = true;
-                loadState.cityLoaded = true;
+                loadState.flightsLoaded = true;
+                loadState.citiesLoaded = true;
             }
 
-            if (props.selectedHotel) {
+            if (hotelsIds.length) {
                 props.actions.getHotels({
-                    data: {id: props.selectedHotel},
+                    data: {id: hotelsIds},
                     action: setHotels,
-                    callback: () => this.setState({hotelLoaded: true})
+                    callback: () => this.setState({hotelsLoaded: true})
                 });
             }
-            else loadState.hotelLoaded = true;
+            else loadState.hotelsLoaded = true;
 
-            if (props.selectedCar) {
+            if (carsIds.length) {
                 props.actions.getCars({
-                    data: {id: props.selectedCar},
+                    data: {id: carsIds},
                     action: setCars,
-                    callback: () => this.setState({carLoaded: true})
+                    callback: () => this.setState({carsLoaded: true})
                 });
             }
-            else loadState.carLoaded = true;
+            else loadState.carsLoaded = true;
 
             this.setState(loadState);
         }
     }
 
     isDataLoaded() {
-        return this.state.cityLoaded && this.state.flightLoaded && this.state.hotelLoaded && this.state.carLoaded;
+        return this.state.citiesLoaded && this.state.flightsLoaded && this.state.hotelsLoaded && this.state.carsLoaded;
     }
 
     render() {
@@ -105,7 +116,8 @@ function mapStateToProps(state) {
         connected: state.summary.connected,
         selectedFlight: state.flight.selectedFlight,
         selectedHotel: state.hotel.selectedHotel,
-        selectedCar: state.car.selectedCar
+        selectedCar: state.car.selectedCar,
+        steps: state.summary.steps
     };
 }
 

@@ -27,7 +27,7 @@ function selectFlight(state, clearSelections) {
 
 function editItem(state, step) {
     return Object.assign({}, state, {
-        selectedHotel: step.hotel && step.hotel._id || '',
+        selectedHotel: step.hotel || '',
         days: step.hotelDays || 0
     });
 }
