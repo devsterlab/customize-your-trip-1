@@ -7,6 +7,7 @@ import { setHotels, getHotels } from '../actions/hotel';
 import { setCars, getCars } from '../actions/car';
 import Header from '../components/Header';
 import Progress from '../components/Progress';
+import ConnectError from '../components/ConnectError';
 
 class App extends Component {
     static propTypes = {
@@ -101,8 +102,9 @@ class App extends Component {
                     <Header location={this.props.location}/>
                     <div className="tabs-content nav-tabs">
                         <div className="tabs-panel is-active height-100">
-                            <Progress loaded={this.isDataLoaded()} />
-                            {this.isDataLoaded() && this.props.children}
+                            <Progress loaded={this.isDataLoaded() || this.props.connected === false} />
+                            {this.props.connected && this.isDataLoaded() && this.props.children
+                                || this.props.connected === false && <ConnectError />}
                         </div>
                     </div>
                 </div>

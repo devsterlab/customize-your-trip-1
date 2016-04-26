@@ -1,5 +1,6 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers';
+import {setConnected} from '../actions/summary';
 import persistState from 'redux-localstorage';
 import socketMiddleware from '../middleware/socket';
 import loadMocks from '../util/mocks';
@@ -19,7 +20,8 @@ function onSocketError(err, store) {
     console.log('Socket error: ' + err);
     if (!mocksLoadStart) {
         mocksLoadStart = true;
-        loadMocks(store).then(() => console.log('Mocks loaded.'));
+        store.dispatch(setConnected(false));
+        //loadMocks(store).then(() => console.log('Mocks loaded.'));
     }
 }
 

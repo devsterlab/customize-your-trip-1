@@ -64,6 +64,16 @@ button {
   margin-left: -16px;
 }
 
+.connect-error {
+  padding-right: 30px;
+  padding-left: 30px;
+
+  .alert {
+    font-weight: 600;
+    color: #F44336;
+  }
+}
+
 @import './components/IconButton/icon-button';
 @import './components/Card/card';
 @import './components/Sort/sort';
