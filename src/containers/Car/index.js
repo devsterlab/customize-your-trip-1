@@ -23,7 +23,8 @@ class Car extends Component {
                 north: PropTypes.number, east: PropTypes.number}),
             timezone: PropTypes.string
         }),
-        cars: PropTypes.array,
+        cars: PropTypes.object,
+        currentCars: PropTypes.array,
         selectedHotel: PropTypes.string,
         selectedCar: PropTypes.string,
         sorting: PropTypes.object,
@@ -38,7 +39,8 @@ class Car extends Component {
             bounds: {}
         },
         sorting: {
-            field: 'price'
+            field: 'brand',
+            asc: true
         },
         filters: {},
         maxDays: 99
@@ -47,57 +49,43 @@ class Car extends Component {
     constructor(props) {
         super(props);
 
-        this.selectedCar = props.cars.find(el => el._id == props.selectedCar);
-        let filteredCars = this.filter(props.cars, props.filters);
-        this.state = {
-            brands: this.readAvailableTypes(props.cars, 'brand'),
-            models: this.readAvailableTypes(filteredCars, 'model'),
-            carTypes: this.readAvailableTypes(props.cars, 'carType'),
-            cars: this.sort(filteredCars, props.sorting.field, props.sorting.asc)
-        };
+        this.selectedCar = props.cars[props.selectedCar];
+        if (!props.currentCars || !props.currentCars.length) this.fetchCityCars(props);
+
+        this.state = this.newCarsState(props);
 
         this.selectCar = this._selectCar.bind(this);
         this.handleSortChange = this._handleSortChange.bind(this);
         this.handleFilterChange = this._handleFilterChange.bind(this);
     }
 
-    sort(cars, field = this.props.sorting.field, asc = this.props.sorting.asc) {
-        switch (field) {
-            case 'brand':
-                return cars.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'model'}, {field: 'price'}]
-                ));
-            case 'model':
-                return cars.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'brand'}, {field: 'price'}]
-                ));
-            case 'price':
-                return cars.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'brand'}, {field: 'model'}]
-                ));
-            case 'carType':
-                return cars.sort(Sorting.byObjectFields(
-                    [{field, asc}, {field: 'price'}, {field: 'brand'}]
-                ));
+    componentWillReceiveProps(props) {
+        if (props.currentCars && (props.currentCars != this.props.currentCars)) {
+            this.setState(this.newCarsState(props));
         }
     }
 
-    filter(cars, filters) {
-        if (!(filters && Object.keys(filters).length)) return cars;
-        return cars.filter(car => {
-            for (let field in filters) {
-                if (field == 'transmission') {
-                    if (!filters[field][car[field]]) return false;
-                }
-                else if (car[field] != filters[field]) return false;
-            }
-            return true;
-        });
+    getCars(props) {
+        return props.currentCars && props.currentCars.map(id => props.cars[id]) || [];
+    }
+
+    newCarsState(props) {
+        let cars = this.getCars(props);
+        return {
+            brands: this.readAvailableTypes(cars, 'brand'),
+            models: this.readAvailableTypes(cars, 'model'),
+            carTypes: this.readAvailableTypes(cars, 'carType'),
+            cars
+        };
+    }
+
+    fetchCityCars(props, sorting, filters) {
+        props.city &&
+        props.actions.getCityCars(props.city._id, sorting || props.sorting, filters || props.filters);
     }
 
     _handleSortChange(field, asc) {
-        let cars = this.sort(this.state.cars, field, asc);
-        this.setState({cars});
+        this.fetchCityCars(this.props, {field, asc});
         this.props.actions.setCarsSort(field, asc);
     }
 
@@ -122,24 +110,24 @@ class Car extends Component {
             if (!value) this.setState({['error' + type]: 'Not found'});
             return;
         }
-        let filters = Object.assign({}, this.props.filters), state;
+
+        let filters = Object.assign({}, this.props.filters), errors;
+
         if (!value) {
             delete filters[type];
-            state = {['error' + type]: 'Not found'};
+            errors = {['error' + type]: 'Not found'};
         }
         else {
             Object.assign(filters, {[type]: value.name});
-            state = {['error' + type]: null};
+            errors = {['error' + type]: null};
         }
-        state.cars = this.sort(this.filter(this.props.cars, filters));
+
         if (this.props.filters.brand != filters.brand) {
-            let withoutModelFilters = Object.assign({}, filters);
-            delete withoutModelFilters.model;
-            let modelCars = this.filter(this.props.cars, withoutModelFilters);
-            state.models = this.readAvailableTypes(modelCars, 'model');
             delete filters.model;
         }
-        this.setState(state);
+
+        this.fetchCityCars(this.props, this.props.sorting, filters);
+        this.setState(errors);
         this.props.actions.setCarsFilters(filters);
     }
 
@@ -166,9 +154,9 @@ class Car extends Component {
                                carTypes={this.state.carTypes} errorbrand={this.state.errorbrand}
                                errormodel={this.state.errormodel} errorcarType={this.state.errorcarType}
                                onFilterChange={this.handleFilterChange} />
-                    <div className="medium-5 columns cars-list">
+                    <div className="medium-5 columns cars-list-wrap">
                         <CarsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
-                        {this.state.cars.length && <ul>
+                        {this.state.cars.length && <ul className="cars-list">
                             {this.state.cars.map(car =>
                                 <CarCard key={car._id} car={car} onClick={this.selectCar} />
                             )}
@@ -204,10 +192,10 @@ class Car extends Component {
 }
 
 function mapStateToProps(state) {
-    let city = flightCity(state);
     return {
-        city,
-        cars: city && state.car.cars.filter(el => el.city._id == city._id) || [],
+        city: flightCity(state),
+        cars: state.car.cars,
+        currentCars: state.car.currentCars,
         selectedHotel: state.hotel.selectedHotel,
         selectedCar: state.car.selectedCar,
         sorting: state.car.sorting,

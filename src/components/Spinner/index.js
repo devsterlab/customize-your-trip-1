@@ -4,7 +4,8 @@ import DOM from '../../util/dom';
 
 class Spinner extends Component {
     static propTypes = {
-        className: PropTypes.string
+        className: PropTypes.string,
+        parent: PropTypes.string
     };
 
     constructor(props) {
@@ -14,7 +15,7 @@ class Spinner extends Component {
 
     componentDidMount() {
         this.spinner = findDOMNode(this);
-        this.hotelsList = $('.hotels-list');
+        this.hotelsList = $(this.props.parent);
         DOM.onVisibilityChange(this.spinner, this.hotelsList, visible => this.setState({visible}))
     }
 

@@ -33,7 +33,7 @@ class CarCard extends Component {
         let { car, onClick, className, price, ...other } = this.props;
         return (
             <Card className={`car-card ${className || ''}`} image={car.image} {...other}
-                  price={price > 0 && price || car.price}
+                  price={price > 0 && price || car.price} spinnerParent=".cars-list"
                   onClick={() => onClick && onClick(car)}>
                 <h5>{`${car.brand} ${car.model}`}</h5>
                 <div>Type: {car.carType}</div>

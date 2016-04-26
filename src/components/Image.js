@@ -4,7 +4,8 @@ import Spinner from './Spinner';
 class Image extends Component {
     static propTypes = {
         className: PropTypes.string,
-        src: PropTypes.string
+        src: PropTypes.string,
+        spinnerParent: PropTypes.string
     };
 
     constructor(props) {
@@ -33,7 +34,7 @@ class Image extends Component {
         return (
             <div className={`image ${this.props.className || ''}`}>
                 <img src={this.props.src} onLoad={this.handleImageLoaded} onError={this.handleImageError}/>
-                {this.state.imageStatus == null && <Spinner />}
+                {this.state.imageStatus == null && <Spinner parent={this.props.spinnerParent}/>}
             </div>
         );
     }

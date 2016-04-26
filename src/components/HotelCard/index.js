@@ -41,7 +41,7 @@ class HotelCard extends Component {
         let { hotel, onClick, onInfoClick, className, price, ...other } = this.props;
         return (
             <Card className={`hotel-card ${className || ''}`} image={hotel.images[0]} {...other}
-                  price={price > 0 && price || hotel.price}
+                  price={price > 0 && price || hotel.price} spinnerParent=".hotels-list"
                   onClick={() => onClick && onClick(hotel)}>
                 <h5 className="name">{hotel.name}</h5>
                 <Stars count={hotel.stars}/>

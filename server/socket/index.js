@@ -16,7 +16,10 @@ module.exports.convertToMongoParams = function (req) {
         }
         if (data.search) {
             for (var fieldName in data.search) {
-                res.query[fieldName] = new RegExp(data.search[fieldName], 'im')
+                if (typeof data.search[fieldName] === "string") {
+                    res.query[fieldName] = new RegExp(data.search[fieldName], 'im');
+                }
+                else res.query[fieldName] = data.search[fieldName];
             }
         }
         if (data.fields) res.fields = data.fields;

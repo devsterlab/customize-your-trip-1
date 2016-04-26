@@ -65,7 +65,8 @@ function deserialize(stateString) {
             days: state.carDays,
             sorting: state.sortingCars,
             filters: state.carsFilters,
-            cars: {}
+            cars: {},
+            currentCars: []
         };
 
         delete state.selectedCityFrom;

@@ -52,7 +52,10 @@ class App extends Component {
                     }
                 });
             }
-            else loadState.flightLoaded = true;
+            else {
+                loadState.flightLoaded = true;
+                loadState.cityLoaded = true;
+            }
 
             if (props.selectedHotel) {
                 props.actions.getHotels({

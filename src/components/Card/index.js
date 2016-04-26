@@ -8,15 +8,16 @@ class Card extends Component {
         image: PropTypes.string,
         className: PropTypes.string,
         price: PropTypes.number,
-        days: PropTypes.number
+        days: PropTypes.number,
+        spinnerParent: PropTypes.string
     };
 
     render() {
-        let { children, image, className, price, days, ...other } = this.props;
+        let { children, image, className, price, days, spinnerParent, ...other } = this.props;
         return (
             <div className={`callout row card ${className || ''}`} {...other}>
                 {image && <div className="small-4 columns image-wrap">
-                    <Image src={image} />
+                    <Image src={image} spinnerParent={spinnerParent}/>
                 </div>}
                 <div className={`${image && 'small-8' || 'small-12'} columns content`}>
                     {children}

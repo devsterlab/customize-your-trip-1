@@ -37,13 +37,20 @@ export function getCars(options) {
     };
 }
 
-export function getCityCars(cityId, sorting) {
+export function getCityCars(cityId, sorting, filters) {
+    if (filters.transmission) {
+        filters = Object.assign({}, filters);
+        if (filters.transmission.automatic == filters.transmission.manual)
+            delete filters.transmission;
+        else if (filters.transmission.automatic) filters.transmission = 'automatic';
+        else filters.transmission = 'manual';
+    }
     return {
         type: events.GET_CARS,
         socket: {
             path: events.GET_CARS,
             data: {
-                search: {"city._id": cityId},
+                search: Object.assign({"city._id": cityId}, filters),
                 sort: {[sorting.field]: sorting.asc ? 1 : -1}
             },
             action: [setCars, hotels => setCurrentCars(hotels.map(h => h._id))]

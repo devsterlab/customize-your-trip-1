@@ -16,7 +16,14 @@ import InputNumber from '../../components/InputNumber';
 class Hotel extends Component {
     static propTypes = {
         children: PropTypes.node,
-        city: PropTypes.object,
+        city: PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            bounds: PropTypes.shape({
+                south: PropTypes.number, west: PropTypes.number,
+                north: PropTypes.number, east: PropTypes.number}),
+            timezone: PropTypes.string
+        }),
         hotels: PropTypes.object,
         currentHotels: PropTypes.array,
         selectedHotel: PropTypes.string,
