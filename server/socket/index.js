@@ -1,9 +1,14 @@
 module.exports = function (io) {
+    var cities = require('./cities')(io);
+    var flights = require('./flights')(io);
+    var hotels = require('./hotels')(io);
+    var cars = require('./cars')(io);
+
     io.on('connection', function (socket) {
-        require('./cities')(socket);
-        require('./cars')(socket);
-        require('./hotels')(socket);
-        require('./flights')(socket);
+        cities(socket);
+        flights(socket);
+        hotels(socket);
+        cars(socket);
     });
 };
 

@@ -18,4 +18,7 @@ var schema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('City', schema);
+module.exports = {
+	schema,
+	model: mongoose.model('City', schema)
+};

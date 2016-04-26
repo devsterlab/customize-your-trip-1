@@ -8,13 +8,15 @@ var logError = methods.logError;
 var path = 'get_cars';
 var sort = {brand: 1, model: 1};
 
-module.exports = function(socket) {
-    socket.on(path, function (req) {
-        var params = convertToMongoParams(req);
-        var sort = params.sort || sort;
-        Car.find(params.query, params.fields).sort(sort).execAsync()
-            .then(handleNotEnoughResults(Car, req, sort))
-            .then(respondWithId(socket, path, req))
-            .catch(logError);
-    });
+module.exports = function(io) {
+    return function (socket) {
+        socket.on(path, function (req) {
+            var params = convertToMongoParams(req);
+            var sort = params.sort || sort;
+            Car.model.find(params.query, params.fields).sort(sort).execAsync()
+                .then(handleNotEnoughResults(Car.model, req, sort))
+                .then(respondWithId(socket, path, req))
+                .catch(logError);
+        });
+    };
 };

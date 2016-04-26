@@ -1,9 +1,9 @@
 var mongoose = require('./lib/mongoose');
-var UserModel = require('./models/user');
-var CityModel = require('./models/city');
-var CarModel = require('./models/car');
-var FlightModel = require('./models/flight');
-var HotelModel = require('./models/hotel');
+var UserModel = require('./models/user').model;
+var CityModel = require('./models/city').model;
+var CarModel = require('./models/car').model;
+var FlightModel = require('./models/flight').model;
+var HotelModel = require('./models/hotel').model;
 var loadMocks = require('./loadMocks');
 
 module.exports = function() {
