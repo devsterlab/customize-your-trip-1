@@ -9,7 +9,8 @@ class RemoveItemModal extends Component {
             index: PropTypes.number,
             itemType: PropTypes.string
         }),
-        onRemove: PropTypes.func
+        onRemove: PropTypes.func,
+        onClose: PropTypes.func
     };
 
     constructor(props) {

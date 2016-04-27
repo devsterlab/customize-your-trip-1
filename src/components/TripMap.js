@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {GoogleMapLoader, GoogleMap, Marker, Polygon} from 'react-google-maps';
+import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 
 class TripMap extends Component {
     static propTypes = {
@@ -88,7 +88,7 @@ class TripMap extends Component {
                 />
             </section>
         )
-    };
+    }
 }
 
 export default TripMap;

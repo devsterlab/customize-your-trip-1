@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Card from '../Card';
-import Stars from '../Stars';
 
 class CarCard extends Component {
     static propTypes = {
@@ -21,6 +20,7 @@ class CarCard extends Component {
         onClick: PropTypes.func,
         className: PropTypes.string,
         price: PropTypes.number,
+        days: PropTypes.number,
         spinnerParent: PropTypes.string
     };
 

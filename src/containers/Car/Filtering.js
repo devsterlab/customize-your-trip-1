@@ -81,7 +81,7 @@ class Filtering extends Component {
                 <fieldset>
                     <label>Max passengers
                         <input type="checkbox" checked={this.state.maxPassChecked} className="max-pass-check"
-                               onChange={e => this.handleMaxPassCheckChange()}/>
+                               onChange={() => this.handleMaxPassCheckChange()}/>
                         <InputNumber min={2} max={10} value={this.state.maxPassengers}
                                      readOnly={!this.state.maxPassChecked}
                                      onChange={num => this.handleMaxPassengersChange(num)} />

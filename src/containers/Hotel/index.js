@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import * as hotelActions from '../../actions/hotel';
 import { flightCity } from '../../reducers';
 import DateHelper from '../../util/dateHelper';
-import Sorting from '../../util/sorting';
 import TripMap from '../../components/TripMap';
 import HotelCard from '../../components/HotelCard';
 import HotelsSort from './HotelsSort';
 import Button from '../../components/Button';
+import IconButton from '../../components/IconButton';
 import Modal from '../../components/Modal';
 import HotelInfo from '../../components/HotelInfo';
 import InputNumber from '../../components/InputNumber';
@@ -16,6 +16,11 @@ import InputNumber from '../../components/InputNumber';
 class Hotel extends Component {
     static propTypes = {
         children: PropTypes.node,
+        actions: PropTypes.shape({
+            setHotelsSort: PropTypes.func,
+            selectHotel: PropTypes.func,
+            setHotelDays: PropTypes.func
+        }),
         city: PropTypes.shape({
             _id: PropTypes.string,
             name: PropTypes.string,
@@ -30,6 +35,7 @@ class Hotel extends Component {
         selectedFlight: PropTypes.string,
         sorting: PropTypes.object,
         days: PropTypes.number,
+        maxDays: PropTypes.number,
         date: PropTypes.object
     };
 
@@ -50,7 +56,7 @@ class Hotel extends Component {
         this.selectedHotel = props.hotels[props.selectedHotel];
         if (!props.currentHotels || !props.currentHotels.length) this.fetchCityHotels(props);
 
-        this.state = { hotels: this.getHotels(props), hotelInfo: null };
+        this.state = { hotels: this.getHotels(props), hotelInfo: null, hideSelected: false };
         
         this.selectHotel = this._selectHotel.bind(this);
         this.handleHotelInfoClick = this._handleHotelInfoClick.bind(this);
@@ -115,7 +121,7 @@ class Hotel extends Component {
                                  selectedHotel={this.selectedHotel} onMarkerClick={this.selectHotel}/>
                     </div>
                     <div className="medium-5 columns">
-                        {this.selectedHotel &&
+                        {this.selectedHotel && !this.state.hideSelected &&
                         <div>
                             <div>
                                 <h4 className="inline">Current selection</h4>
@@ -131,7 +137,11 @@ class Hotel extends Component {
                                        onInfoClick={this.handleHotelInfoClick}/>
                             <hr className="selection-hr"/>
                         </div>}
-                        <h4>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
+                        <div>
+                            <span>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</span>
+                            <IconButton className={this.state.hideSelected && 'mdi-chevron-down' || 'mdi-chevron-up'}
+                                        onClick={() => this.setState({hideSelected: !this.state.hideSelected})}/>
+                        </div>
                         <HotelsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>

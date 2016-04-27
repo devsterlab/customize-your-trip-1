@@ -12,6 +12,15 @@
     "browser": true,
     "node": true
   },
+  "globals": {
+    "$": true,
+    "jQuery": true,
+    "google": true,
+    "Promise": true,
+    "Map": true,
+    "SERVER_URL": true,
+    "HISTORY_TYPE": true
+  },
   "rules": {
 //    "quotes": [2, "single"],
     "strict": [2, "never"],

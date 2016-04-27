@@ -141,7 +141,7 @@ class Select extends Component {
         else this.itemSet = false;
     }
 
-    _onClear(e) {
+    _onClear() {
         if (this.props.readOnly) return;
         this.cleared = true;
         this.handleItemNameChange({target: {value: ''}}, true);

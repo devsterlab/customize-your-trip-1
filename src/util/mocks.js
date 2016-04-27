@@ -66,7 +66,7 @@ export default function loadMocks(store) {
         });
 }
 
-const mocks = {
+export const mocks = {
 
     cities: [
         {

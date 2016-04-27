@@ -20,6 +20,12 @@ import RemoveItemModal from './RemoveItemModal';
 
 class Summary extends Component {
     static propTypes = {
+        actions: PropTypes.shape({
+            setCurrentStep: PropTypes.func,
+            continueTrip: PropTypes.func,
+            editItem: PropTypes.func,
+            removeItem: PropTypes.func
+        }),
         children: PropTypes.node,
         cities: PropTypes.object,
         flights: PropTypes.object,

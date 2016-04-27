@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { flightCity } from '../../reducers';
 import * as actions from '../../actions/car';
 import DateHelper from '../../util/dateHelper';
-import Sorting from '../../util/sorting';
 import CarCard from '../../components/CarCard';
 import Button from '../../components/Button';
 import CarsSort from './CarsSort';
@@ -15,6 +14,13 @@ import InputNumber from '../../components/InputNumber';
 class Car extends Component {
     static propTypes = {
         children: PropTypes.node,
+        actions: PropTypes.shape({
+            setCarsSort: PropTypes.func,
+            selectCar: PropTypes.func,
+            setCarsFilters: PropTypes.func,
+            setCarDays: PropTypes.func,
+            getCityCars: PropTypes.func
+        }),
         city: PropTypes.shape({
             _id: PropTypes.string,
             name: PropTypes.string,
@@ -30,6 +36,7 @@ class Car extends Component {
         sorting: PropTypes.object,
         hotelDays: PropTypes.number,
         carDays: PropTypes.number,
+        maxDays: PropTypes.number,
         filters: PropTypes.object,
         date: PropTypes.object
     };
@@ -149,7 +156,7 @@ class Car extends Component {
                     </Button>
                 </div>
                 <hr/>
-                <div className="row" className="cars-search">
+                <div className="row cars-search">
                     <Filtering filters={this.props.filters} brands={this.state.brands} models={this.state.models}
                                carTypes={this.state.carTypes} errorbrand={this.state.errorbrand}
                                errormodel={this.state.errormodel} errorcarType={this.state.errorcarType}

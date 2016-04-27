@@ -24,6 +24,7 @@ class HotelCard extends Component {
         onInfoClick: PropTypes.func,
         className: PropTypes.string,
         price: PropTypes.number,
+        days: PropTypes.number,
         spinnerParent: PropTypes.string
     };
 

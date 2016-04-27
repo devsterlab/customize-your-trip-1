@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setCities, selectCity, getCities } from '../../actions/city';
 import * as flightActions from '../../actions/flight';
-import Sorting from '../../util/sorting';
 import CitiesSearch from './CitiesSearch';
 import FlightCard from '../../components/FlightCard';
 import FlightsSort from './FlightsSort';
@@ -11,6 +10,14 @@ import Button from '../../components/Button';
 
 class Flight extends Component {
     static propTypes = {
+        actions: PropTypes.shape({
+            setFlightsNotSearched: PropTypes.func,
+            getCurrentFlights: PropTypes.func,
+            getCities: PropTypes.func,
+            selectCity: PropTypes.func,
+            setFlightsSort: PropTypes.func,
+            selectFlight: PropTypes.func
+        }),
         cities: PropTypes.object,
         flights: PropTypes.object,
         currentFlights: PropTypes.arrayOf(PropTypes.string),
@@ -19,7 +26,6 @@ class Flight extends Component {
         selectedCityTo: PropTypes.string,
         sorting: PropTypes.object,
         selectedFlight: PropTypes.string,
-        actions: PropTypes.object,
         date: PropTypes.object,
         homeCity: PropTypes.string,
         lastCityFrom: PropTypes.string,

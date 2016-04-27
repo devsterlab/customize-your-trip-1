@@ -3,7 +3,6 @@ import rootReducer from '../reducers';
 import {setConnected} from '../actions/summary';
 import persistState from 'redux-localstorage';
 import socketMiddleware from '../middleware/socket';
-import loadMocks from '../util/mocks';
 
 const createPersistentStore = compose(
     persistState(null, {key: 'customizeTrip', deserialize, slicer}),
@@ -15,13 +14,12 @@ export default function configureStore(initialState) {
     return createPersistentStore(rootReducer, initialState);
 }
 
-let mocksLoadStart = false;
+let setConnectedDispatched = false;
 function onSocketError(err, store) {
     console.log('Socket error: ' + err);
-    if (!mocksLoadStart) {
-        mocksLoadStart = true;
+    if (!setConnectedDispatched) {
+        setConnectedDispatched = true;
         store.dispatch(setConnected(false));
-        //loadMocks(store).then(() => console.log('Mocks loaded.'));
     }
 }
 

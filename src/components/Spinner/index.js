@@ -45,7 +45,7 @@ class Spinner extends Component {
                 <div className="sk-circle12 sk-child" key={11} />]}
             </div>
         );
-    };
+    }
 }
 
 export default Spinner;
