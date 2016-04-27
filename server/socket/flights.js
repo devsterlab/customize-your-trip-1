@@ -9,14 +9,14 @@ var path = 'get_flights';
 var sort = {departTime: 1, companyName: 1};
 
 module.exports = function(io) {
-    Flight.schema.post('save', function(next) {
+/*    Flight.schema.post('save', function(next) {
         console.log(this);
         io.emit('update_flights', this);
         //next();
-    });
+    });*/
 
     return function(socket) {
-        Flight.model.updateAsync({_id: "57163eecc23fcb16df594cc7"}, {companyName: 'asdasdasd'}).then();
+        //Flight.model.updateAsync({_id: "57163eecc23fcb16df594cc7"}, {companyName: 'asdasdasd'}).then();
         socket.on(path, function (req) {
             var params = convertToMongoParams(req);
             var sort = params.sort || sort;
