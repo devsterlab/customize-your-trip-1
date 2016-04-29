@@ -31,7 +31,8 @@ class HotelCard extends Component {
     shouldComponentUpdate(props) {
         return props.hotel !== this.props.hotel
             || props.price !== this.props.price
-            || props.days !== this.props.days;
+            || props.days !== this.props.days
+            || props.className !== this.props.className;
     }
 
     handleInfoClick(e) {

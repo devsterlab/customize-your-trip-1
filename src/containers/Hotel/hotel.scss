@@ -25,6 +25,7 @@
     padding-left: 0;
     padding-right: 15px;
     &.selected { height: calc(100vh - 440px - #{$navtabs-height}); }
+    &.expanded { height: calc(100vh - 195px - #{$navtabs-height}); }
   }
 
   .selection-hr {
@@ -37,5 +38,13 @@
       width: 80px;
       margin-left: 16px;
     }
+  }
+
+  .select-hotel {
+    display: inline-block;
+  }
+
+  .expand-btn {
+    float: right;
   }
 }

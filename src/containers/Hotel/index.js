@@ -138,14 +138,15 @@ class Hotel extends Component {
                             <hr className="selection-hr"/>
                         </div>}
                         <div>
-                            <span>{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</span>
-                            <IconButton className={this.state.hideSelected && 'mdi-chevron-down' || 'mdi-chevron-up'}
+                            <h4 className="select-hotel">{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
+                            <IconButton className={`expand-btn ${this.state.hideSelected && 'mdi-chevron-down' || 'mdi-chevron-up'}`}
                                         onClick={() => this.setState({hideSelected: !this.state.hideSelected})}/>
                         </div>
                         <HotelsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
-                        <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''}`}>
+                        <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''} ${this.state.hideSelected && 'expanded' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>
-                            <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}`}
+                            <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}
+                                                   ${hotel._id == this.selectedHotel._id && 'selected'} || ''`}
                                        key={hotel._id} hotel={hotel} onClick={this.selectHotel}
                                        onInfoClick={this.handleHotelInfoClick}/>
                         )}
