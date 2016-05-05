@@ -38,7 +38,8 @@ class FlightCard extends Component {
     }
 
     shouldComponentUpdate(props) {
-        return props.flight !== this.props.flight;
+        return props.flight !== this.props.flight
+            || props.className !== this.props.className;
     }
 
     convertDates(props) {

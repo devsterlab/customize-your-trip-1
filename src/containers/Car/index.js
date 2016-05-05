@@ -165,7 +165,8 @@ class Car extends Component {
                         <CarsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                         {this.state.cars.length && <ul className="cars-list">
                             {this.state.cars.map(car =>
-                                <CarCard key={car._id} car={car} onClick={this.selectCar} />
+                                <CarCard key={car._id} car={car} onClick={this.selectCar}
+                                         className={`${this.selectedCar && (car._id == this.selectedCar._id) && 'selected'} || ''`}/>
                             )}
                         </ul>
                         ||

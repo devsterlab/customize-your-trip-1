@@ -102,7 +102,7 @@ class Flight extends Component {
     }
 
     selectCitiesHeaderHide() {
-        return this.state.canSearch || this.props.currentFlights.length || this.props.selectedFlight;
+        return this.state.canSearch || this.props.currentFlights.length || this.props.selectedFlight || !this.props.notSearched;
     }
 
     hideFlightsResults() {
@@ -132,6 +132,7 @@ class Flight extends Component {
                             <ul className="flights-list">
                                 {this.props.currentFlights.map(id =>
                                         <FlightCard key={id} flight={this.props.flights[id]} date={this.props.date}
+                                                    className={`${this.selectedFlight && (id == this.selectedFlight._id) && 'selected'} || ''`}
                                                     onClick={this.selectFlight} />
                                 )}
                             </ul> ||

@@ -27,7 +27,8 @@ class CarCard extends Component {
     shouldComponentUpdate(props) {
         return props.car !== this.props.car
             || props.price !== this.props.price
-            || props.days !== this.props.days;
+            || props.days !== this.props.days
+            || props.className !== this.props.className;
     }
 
     render() {

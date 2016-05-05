@@ -104,7 +104,7 @@ class App extends Component {
                         <div className="tabs-panel is-active height-100">
                             <Progress loaded={this.isDataLoaded() || this.props.connected === false} />
                             {this.props.connected && this.isDataLoaded() && this.props.children
-                                || this.props.connected === false && <ConnectError />}
+                                || (this.props.connected === false) && <ConnectError />}
                         </div>
                     </div>
                 </div>

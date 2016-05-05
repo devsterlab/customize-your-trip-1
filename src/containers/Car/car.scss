@@ -10,7 +10,8 @@
 
 .cars-search {
   .filtering {
-    padding-left: 0;
+    height: calc(100vh - 117px - #{$navtabs-height});
+    overflow-y: auto;
 
     fieldset {
       position: relative;
@@ -23,6 +24,7 @@
       left: 112px;
     }
   }
+
   .cars-list-wrap {
     padding-right: 0;
 
@@ -42,7 +44,6 @@
   }
 
   .selection {
-    padding-right: 0;
     .clear {
       margin-top: 5px;
     }

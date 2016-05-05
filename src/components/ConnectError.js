@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConnectError =
+const ConnectError = () =>
     <div className="height-100 text-center connect-error">
         <h1 className="alert">Connection error!</h1>
         <h3 className="subheader">

@@ -121,8 +121,8 @@ class Hotel extends Component {
                                  selectedHotel={this.selectedHotel} onMarkerClick={this.selectHotel}/>
                     </div>
                     <div className="medium-5 columns">
-                        {this.selectedHotel && !this.state.hideSelected &&
-                        <div>
+                        {this.selectedHotel &&
+                        <div className={this.state.hideSelected && 'hide' || ''}>
                             <div>
                                 <h4 className="inline">Current selection</h4>
                                 <div className="inline days">
@@ -146,7 +146,7 @@ class Hotel extends Component {
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''} ${this.state.hideSelected && 'expanded' || ''}`}>
                         {this.state.hotels.map((hotel, index) =>
                             <HotelCard className={`${index == this.props.hotels.length - 1 && 'last' || ''}
-                                                   ${hotel._id == this.selectedHotel._id && 'selected'} || ''`}
+                                                   ${this.selectedHotel && (hotel._id == this.selectedHotel._id) && 'selected'} || ''`}
                                        key={hotel._id} hotel={hotel} onClick={this.selectHotel}
                                        onInfoClick={this.handleHotelInfoClick}/>
                         )}
