@@ -15,8 +15,9 @@ module.exports = {
         new CleanPlugin(['./dist']),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"',
-            HISTORY_TYPE: process.env.OPENED ? "'browserHistory'" : "'hashHistory'",
-            SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`
+            HISTORY_TYPE: "'createHistory'",
+            SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`,
+            BASE_NAME: `'${process.env.BASE_NAME || '/portfolio/customize-your-trip'}'`
         }),
         new webpack.ProvidePlugin({
             $: "jquery",

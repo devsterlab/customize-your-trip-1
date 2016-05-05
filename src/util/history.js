@@ -1,3 +1,10 @@
-import { browserHistory, hashHistory } from 'react-router';
-let histories = { browserHistory, hashHistory };
-export default histories[HISTORY_TYPE];
+import { useRouterHistory } from 'react-router';
+import { createHistory, createHashHistory } from 'history';
+let createHistories = { createHistory, createHashHistory };
+let crHist = createHistories[HISTORY_TYPE];
+
+let history = useRouterHistory(crHist)({
+  basename: BASE_NAME
+});
+
+export default history;
