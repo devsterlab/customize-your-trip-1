@@ -19,7 +19,8 @@
     "Promise": true,
     "Map": true,
     "SERVER_URL": true,
-    "HISTORY_TYPE": true
+    "HISTORY_TYPE": true,
+    "BASE_NAME": true
   },
   "rules": {
 //    "quotes": [2, "single"],

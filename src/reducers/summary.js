@@ -10,8 +10,7 @@ const initialState = {
     days: 0,
     price: 0,
     currentStep: null,
-    index: 0,
-    connected: false
+    index: 0
 };
 
 function getCurrentStep(state) {

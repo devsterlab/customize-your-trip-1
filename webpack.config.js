@@ -3,6 +3,29 @@ var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var plugins = [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+        HISTORY_TYPE: process.env.OPENED || process.env.BUILD ? "'createHistory'" : "'createHashHistory'",
+        SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`,
+        BASE_NAME: `'${process.env.BASE_NAME || '/'}'`
+    }),
+    new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery",
+        Perf: "react-addons-perf",
+        "window.Perf": "react-addons-perf"
+    }),
+    new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: './index.html',
+        inject: false
+    })
+];
+
+if (process.env.BUILD) plugins.unshift(new CleanPlugin(['./dist']));
+
 module.exports = {
     devtool: 'eval',
     entry: process.env.BUILD && ['./src/index'] || [
@@ -15,27 +38,7 @@ module.exports = {
         filename: 'bundle.js',
         publicPath: '/dist/'
     },
-    plugins: [
-        process.env.BUILD && (new CleanPlugin(['./dist'])),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-            HISTORY_TYPE: process.env.OPENED || process.env.BUILD ? "'createHistory'" : "'createHashHistory'",
-            SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`,
-            BASE_NAME: `'${process.env.BASE_NAME || '/'}'`
-        }),
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            "window.jQuery": "jquery",
-            Perf: "react-addons-perf",
-            "window.Perf": "react-addons-perf"
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: './index.html',
-            inject: false
-        })
-    ],
+    plugins,
     module: {
         loaders: [
             {
