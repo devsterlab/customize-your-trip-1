@@ -7,11 +7,26 @@ var path = require('path');
 var config = require('./config');
 var createDB = require('./createDB');
 
+var baseUrl = process.env.BASE_NAME || '';
+
 if (process.env.NODE_ENV != 'production') createDB().then(startServer);
 else startServer();
 
 function startServer() {
-    app.use(express.static(path.join(__dirname, '../')));
+    app.use(baseUrl + '/dist', function(req, res, next) {
+        return express.static(path.join(__dirname, '../dist'))(req, res, next);
+    });
+
+    if (baseUrl !== '') {
+        app.use(baseUrl, function (req, res) {
+            return res.sendFile(path.join(__dirname, '../dist/index.html'));
+        });
+    }
+    else {
+        app.use('/', function (req, res) {
+            return res.sendFile(path.join(__dirname, '../dist/index.html'));
+        });
+    }
 
     require('./socket')(io);
 

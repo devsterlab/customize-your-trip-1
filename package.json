@@ -6,14 +6,15 @@
     "start": "webpack-dev-server",
     "startProd": "webpack-dev-server --config webpack.config.prod.js",
     "lint": "eslint src",
-    "build": "webpack",
-    "buildProd": "webpack --config webpack.config.prod.js",
+    "build": "BUILD=true webpack",
+    "buildProd": "BUILD=true webpack --config webpack.config.prod.js",
     "open": "node server",
     "openProd": "node server -p",
     "openWork": "node server -w",
     "openProdWork": "node server -p -w",
     "startServer": "node server/app.js",
-    "startServerProd": "NODE_ENV=production node server/app.js"
+    "startServerProd": "NODE_ENV=production node server/app.js",
+    "startServerBase": "BASE_NAME=/portfolio/customize-your-trip NODE_ENV=production node server/app.js"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "eslint-loader": "^1.3.0",
     "eslint-plugin-react": "^4.0.0",
     "file-loader": "^0.8.5",
+    "html-webpack-plugin": "^2.16.1",
     "node-sass": "^3.4.2",
     "react-addons-perf": "^15.0.1",
     "react-hot-loader": "^1.3.0",

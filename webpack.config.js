@@ -1,9 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
+var CleanPlugin = require('clean-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     devtool: 'eval',
-    entry: [
+    entry: process.env.BUILD && ['./src/index'] || [
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
         './src/index'
@@ -14,9 +16,10 @@ module.exports = {
         publicPath: '/dist/'
     },
     plugins: [
+        process.env.BUILD && (new CleanPlugin(['./dist'])),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            HISTORY_TYPE: process.env.OPENED ? "'createHistory'" : "'createHashHistory'",
+            HISTORY_TYPE: process.env.OPENED || process.env.BUILD ? "'createHistory'" : "'createHashHistory'",
             SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`,
             BASE_NAME: `'${process.env.BASE_NAME || '/'}'`
         }),
@@ -26,6 +29,11 @@ module.exports = {
             "window.jQuery": "jquery",
             Perf: "react-addons-perf",
             "window.Perf": "react-addons-perf"
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: './index.html',
+            inject: false
         })
     ],
     module: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 
 import App from './containers/App';
 import Flight from './containers/Flight';
@@ -16,6 +16,6 @@ export default (
         <Route path="car" component={Car}/>
         <Route path="phase4" component={Phase4}/>
         <Route path="summary" component={Summary}/>
-        <Route path="*" component={Flight}/>
+        <Redirect from="*" to="flight"/>
     </Route>
 );

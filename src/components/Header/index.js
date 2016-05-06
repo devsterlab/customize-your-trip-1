@@ -25,9 +25,10 @@ class Header extends Component {
     }
 
     isActive(path) {
-        const pathname = this.props.location.pathname;
-        return pathname === '/' && (pathname === path || path === '/flight')
-            || path !== '/' && pathname.includes(path);
+        let pathname = BASE_NAME + this.props.location.pathname;
+        pathname = pathname.replace('//', '/');
+        return pathname === BASE_NAME && (pathname === path || path === '/flight')
+            || path !== BASE_NAME && pathname.includes(path);
     }
 
     render() {

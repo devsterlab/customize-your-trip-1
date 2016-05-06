@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -17,7 +18,7 @@ module.exports = {
             'process.env.NODE_ENV': '"production"',
             HISTORY_TYPE: "'createHistory'",
             SERVER_URL: `'${process.env.SERVER_URL || 'localhost:8082'}'`,
-            BASE_NAME: `'${process.env.BASE_NAME || '/portfolio/customize-your-trip'}'`
+            BASE_NAME: `'${process.env.BASE_NAME || '/portfolio/customize-your-trip/'}'`
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
@@ -28,6 +29,11 @@ module.exports = {
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false }
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: './index.prod.html',
+            inject: false
         })
     ],
     module: {
