@@ -132,7 +132,7 @@ class Flight extends Component {
                             <ul className="flights-list">
                                 {this.props.currentFlights.map(id =>
                                         <FlightCard key={id} flight={this.props.flights[id]} date={this.props.date}
-                                                    className={`${this.selectedFlight && (id == this.selectedFlight._id) && 'selected'} || ''`}
+                                                    className={`${this.selectedFlight && (id == this.selectedFlight._id) && 'selected' || ''}`}
                                                     onClick={this.selectFlight} />
                                 )}
                             </ul> ||

@@ -166,7 +166,7 @@ class Car extends Component {
                         {this.state.cars.length && <ul className="cars-list">
                             {this.state.cars.map(car =>
                                 <CarCard key={car._id} car={car} onClick={this.selectCar}
-                                         className={`${this.selectedCar && (car._id == this.selectedCar._id) && 'selected'} || ''`}/>
+                                         className={`${this.selectedCar && (car._id == this.selectedCar._id) && 'selected' || ''}`}/>
                             )}
                         </ul>
                         ||
