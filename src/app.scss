@@ -74,6 +74,10 @@ button {
   }
 }
 
+.mdi-secondary {
+  color: rgba(0, 0, 0, .38);
+}
+
 @import './components/IconButton/icon-button';
 @import './components/Card/card';
 @import './components/Sort/sort';

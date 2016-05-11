@@ -11,9 +11,6 @@
 
   &.selected {
     border: 2px solid $success-color !important;
-    img {
-      max-height: 120px;
-    }
     > .price {
       content: 'Selected';
       background-color: $success-color;
@@ -29,8 +26,10 @@
   }
 
   img {
-    min-width: 119px;
-    min-height: 119px;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 120px;
+    max-height: 120px;
     background-color: #ddd;
   }
 
