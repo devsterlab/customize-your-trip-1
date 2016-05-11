@@ -139,8 +139,10 @@ class Hotel extends Component {
                         </div>}
                         <div>
                             <h4 className="select-hotel">{this.selectedHotel && 'Select another hotel' || 'Select hotel'}</h4>
+                            {this.selectedHotel &&
                             <IconButton className={`expand-btn ${this.state.hideSelected && 'mdi-chevron-down' || 'mdi-chevron-up'}`}
-                                        onClick={() => this.setState({hideSelected: !this.state.hideSelected})}/>
+                                        onClick={() => this.setState({hideSelected: !this.state.hideSelected})}
+                            />}
                         </div>
                         <HotelsSort sorting={this.props.sorting} onSortChange={this.handleSortChange} />
                         <ul className={`hotels-list ${this.selectedHotel && 'selected' || ''} ${this.state.hideSelected && 'expanded' || ''}`}>
