@@ -52,8 +52,15 @@ module.exports = {
                 loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
             },
             {
-                test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+                test: /\.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/,
                 loader: 'url-loader?limit=100000'
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)(\?[a-z0-9=\.]+)?$/,
+                loaders: [
+                    'file?hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ]
             }
         ]
     }
